@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="kendoui" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/lib/kendoui" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/lib/kendoui" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>

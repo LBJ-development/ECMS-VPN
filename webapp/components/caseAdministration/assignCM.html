@@ -1,0 +1,93 @@
+
+<div class="content-wrapper">
+	<div class="content-holder" ng-controller="AssignCMCtrl">
+		<div class="title-holder">
+			<span class="title">Assign Case Manager</span>
+		</div>
+        <!-- DATE RANGE ///////////////////////////////////////////////////////////////////////////////-->
+		<div class="filter-holder" role="query-filter">
+			<form name="dateRange-frm" ng-submit="changeDateRange()" role="form">
+        		<div class="filter-row-holder">
+        			<ul>
+        				<li class=" title-small" style="width: 320px">
+        					Select an other received date range:
+        				</li>
+        				<li style="padding-right: 0px">
+							<span class="labelText-small" >From:</span> 
+							<input kendo-date-picker k-on-change="enableSumbitBtn()" k-ng-model="startingDate" style="width: 180px"/> 
+						</li>
+						<li style="padding-right: 0px">
+							<span class="labelText-small" >to:</span> 
+							<input kendo-date-picker k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
+						</li>
+						<li  class="submit-btn">
+                			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
+                		</li>
+        			</ul>
+        		</div>
+        	</form>
+        </div>
+		<!-- DAILY ASSIGNMENT WORKSHEET /////////////////////////////////////////////////////////////////-->
+      	<div class="row-holder title-small" style="padding: 0px 0 0px 0px">
+			<ul>
+				<li class="linkButton toPDF"><a href=""  ng-click="">Daily assignment worksheet</a></li>
+			</ul>
+		</div>
+        
+        <!-- DATA GRID /////////////////////////////////////////////////////////////////-->
+		<div role="datagrid" class="grid-holder" >
+			<div>
+				<kendo-grid k-options="mainGridOptions" k-rebind="mainGridOptions"  k-ng-delay="mainGridOptions">
+                    <div k-detail-template type="text/x-kendo-template">
+                    
+                     <div kendo-grid id="grid" k-options="detailGridOptions(dataItem)"></div>
+                     
+        			</div>
+                </kendo-grid >
+			</div>  
+		</div>
+	</div>
+</div>
+
+<!--  GRID DETAIL /////////////////////////////////////////////////////////////////-->
+<script id="detail-template" type="text/x-kendo-template">
+	<div style="width: 100%, text-align: left, heigth: 15px" class="title-small"></div>
+	
+    <div class="gridDetail">
+	
+		<kendo-tabstrip>
+			<ul>
+				<li class="k-state-active">Case Detail</li>
+				<li>Narratives</li>
+			</ul>
+			<div>
+				<div kendo-grid k-options="detailGridOptions(dataItem)" k-rebind="mainGridOptions"  k-ng-delay="mainGridOptions" ></div>
+			</div>
+			<div> Some Narratives</div>
+		</kendo-tabstrip>
+	</div>
+	
+	<div style="width: 100%, text-align: left, heigth: 15px" class="detail-bottom">
+		<ul>
+			<li>
+				<kendo-button  ng-model="button" class="k-button">SAVE</kendo-button>
+			</li>
+			<li>
+				<select kendo-drop-down-list  style="width: 200px">
+					<option>CRU</option>
+					<option>FAU</option>
+					<option>FSU</option>  
+				</select>
+			</li>
+			<li>
+				<select kendo-drop-down-list  style="width: 200px">
+					<option>CRU</option>
+					<option>FAU</option>
+					<option>FSU</option>  
+				</select>
+			</li>
+		</ul>
+	</div>
+</script>
+
+ 

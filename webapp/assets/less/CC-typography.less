@@ -1,0 +1,129 @@
+
+.baseText(@font-color: @basetextcolordark) {
+	font-size: @basefontsize;
+	letter-spacing: 0.03em;
+    font-family: @basefont;
+    color: @font-color;
+	text-decoration:none;
+}
+
+
+.labelText {
+	.baseText;
+	font-size:1em;
+	color: @basefont;
+}
+
+.labelText-small{
+	.baseText;
+	font-size:.9em;
+	color: @basefont;
+}
+
+
+p {
+	.baseText;
+}
+
+.baseLinkText {
+	.baseText;
+	font-size:1em;
+	color: @basetexthover;
+}
+
+.errorMessage {
+	.baseText;
+	font-size:1.1em;
+	color: @errormessage;
+}
+
+.white-title(@font-size: 20){
+	display: block;
+	font-family: @basefont;
+	//font-family: 'amaranth';
+	vertical-align : middle;
+	@rem: (@font-size / 10);
+	font-size : @font-size * 1px;
+	font-size : ~"@{rem}rem"; 
+	padding: 5px 10px 5px 10px;
+}
+
+.errorMessage2 (@font-size: 20) {
+	font-family: 'antoniolight';
+	font-size:1.1em;
+	color: @errormessage;
+	font-size : @font-size * 1px;
+	font-size : ~"@{rem}rem"; 
+}
+
+.title-holder {
+	text-align:left;
+}
+
+.title {
+	font-family: 'antoniolight';
+	font-size:2.2em; 
+	padding: 5px 10px 5px 5px;
+	color: @mediumblue;
+}
+
+.coming-soon {
+	.title;
+	color: #a1a7ba;
+}
+
+.title-small {
+	.title;
+	font-family: @basefont;
+	font-size:1.2em;
+	color:@titlegray ; 
+	text-align: left;
+	
+}
+
+.inline-msg{
+	.title-small;
+	color: @mediumblue;
+	font-size:1.0em;
+	float: left;
+	padding: 0;
+}
+
+/* FONTS ///////////////////////////////////////*/
+
+@font-face {
+    font-family: 'antoniobold';
+    src: url('../fonts/antonio-bold-webfont.eot');
+    src: url('../fonts/antonio-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/antonio-bold-webfont.woff') format('woff'),
+         url('../fonts/antonio-bold-webfont.ttf') format('truetype'),
+         url('../fonts/antonio-bold-webfont.svg#antoniobold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'antoniolight';
+    src: url('../fonts/antonio-light-webfont.eot');
+    src: url('../fonts/antonio-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/antonio-light-webfont.woff') format('woff'),
+         url('../fonts/antonio-light-webfont.ttf') format('truetype'),
+         url('../fonts/antonio-light-webfont.svg#antoniolight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'passingnotes';
+    src: url('../fonts/passing_notes-webfont.eot');
+    src: url('../fonts/passing_notes-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/passing_notes-webfont.woff') format('woff'),
+         url('../fonts/passing_notes-webfont.ttf') format('truetype'),
+         url('../fonts/passing_notes-webfont.svg#passingnotes') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+

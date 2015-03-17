@@ -1,0 +1,20 @@
+
+<div role="mashead">
+    <div role="utilities">
+        <ul>
+            <li><a href="#/login" class="logout" id="textBtn" ng-click="logout()" >logout</a></li>
+            <li><span class="notification">{{numberNotification}}</span> notifications</li>
+            <li>welcome <a href="#" id="username">{{usernameScope}}</a></li>
+        </ul>
+    </div>
+    <div class="CC-title"></div>
+        <div id="quicksearchWrapper" role="quicksearch">
+		<form name="form" ng-submit="login(credentials)" role="form">
+     		<label for="username"  class="search-label">Quick search</label>
+			<input class="k-textbox" style="width: 200px" id="quicksearch" type="text" name="quicksearch" >
+            <span class="search-btn"><a href="" ></a></span>
+		</form>
+	</div>
+</div>
+<ul kendo-menu k-data-source="menuWithPermissions"  k-on-select="onSelect(kendoEvent)"></ul>
+

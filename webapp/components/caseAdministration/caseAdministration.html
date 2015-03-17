@@ -1,0 +1,72 @@
+
+<div authorized class="content-wrapper">
+	<div class="content-holder" ng-controller="MainCaseAdminCtrl">
+		<div class="title-holder">
+			<span class="title">Case Administration</span>
+		</div>
+        <!-- DATE RANGE /////////////////////////////////////////////////////////////////-->
+		<div class="filter-holder" role="query-filter">
+			<form name="dateRange-frm" ng-submit="changeDateRange()" role="form">
+        		<div class="filter-row-holder">
+        			<ul>
+        				<li class=" title-small" style="width: 320px">
+        					Select an other received date range:
+        				</li>
+        				<li style="padding-right: 0px">
+							<span class="labelText-small" >From:</span> 
+							<input kendo-date-picker k-on-change="enableSumbitBtn()" k-ng-model="startingDate" style="width: 180px"/> 
+						</li>
+						<li style="padding-right: 0px">
+							<span class="labelText-small" >to:</span> 
+							<input kendo-date-picker k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
+						</li>
+        			</ul>
+        		</div>
+				<div class="filter-row-holder">
+					<ul >
+						<li style="width: 200px">
+                			<span class="labelText-small" >RFS/Case:</span>
+        					<select kendo-multi-select k-options="RFSCase" k-ng-model="selectedRFSCase" style="width: 190px" ></select>
+                		</li>
+                		<li style="width: 22%">
+                			<span  class="labelText-small" >RFS/Case Source:</span>
+        					<select kendo-multi-select k-options="sourceType" k-ng-model="selectedSources" ></select>
+                		</li>
+
+        				<li style="width: 22%" >
+                			<span class="labelText-small">RFS/Case type:</span>
+        					<select  kendo-multi-select k-options="RCType"  k-ng-model="selectedType"></select>
+                		</li>
+                		<li style="width: 22%">
+                			<span class="labelText-small">RFS/Case Status:</span>
+        					<select kendo-multi-select k-options="RCStatus"  k-ng-model="selectedStatus" ></select>
+                		</li>
+                		<li  class="submit-btn" style="padding-top:20px">
+                			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
+                		</li>
+            		</ul>
+               	</div> 	
+			</form>
+		</div>
+		<!-- DATA GRIG /////////////////////////////////////////////////////////////////-->
+      	<div class="row-holder title-small" style="padding: 0px 0 0px 0px">
+			<span class="inline-msg">
+				{{warning}}
+			</span>
+
+			<ul>
+				<li class="linkButton toEmail"><a href=""  ng-click="" >Email</a></li>
+				<li class="linkButton toPrint"><a href=""  ng-click="" >Print</a></li>
+				<li class="linkButton toPDF"><a href=""  ng-click="">Export to PDF</a></li>
+			</ul>
+		</div>
+        
+		<div role="datagrid" class="grid-holder" >
+			<div>
+				<div kendo-grid="mainGrid" id="grid" k-options="mainGridOptions" k-rebind="mainGridOptions"  k-ng-delay="mainGridOptions" ></div>
+			</div>  
+		</div>
+	</div>
+</div>
+
+

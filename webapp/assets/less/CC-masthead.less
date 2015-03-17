@@ -1,0 +1,203 @@
+/* MASTHEAD  ////////////////////////////////////////////////////////////////////////////*/
+
+#MK-logo{
+	float: left;
+	width: 156px;
+	height: 96px;
+	background-image: url(../images/MK_logo-l.png);
+	background-repeat: no-repeat;
+	background-position: 5px 5px;
+}
+
+[role="mashead"] {	
+	height: 105px;
+}
+
+#deskHomeBtn{
+	width: 100%;
+	height: 17px;
+	display: block;
+	margin: 5px;
+	margin-left: 10px;
+	overflow: hidden;
+	margin-top: 10px;
+	background-image: url(../images/home-icn.png);
+	background-repeat:no-repeat;
+	background-size: 18px 34px;	
+}
+
+/* UTILITIES   ////////////////////////////////////////////////////////////////////////////*/
+
+[role="utilities"] {
+	display: block;
+	position:absolute;
+	float: right;
+	width: 100%;
+}
+[role="utilities"] ul li {
+	.baseText;
+	display: block;
+	float: right;
+	padding: 5px 5px 0 10px;
+}
+[role="utilities"] ul li a {
+	.baseLinkText;
+}
+[role="utilities"] a:hover {
+	color: @baselinktexthover;
+}
+[role="utilities"] .notification {
+	display: inline-block;
+	width: auto;
+	padding: 0 3px 1px 3px;
+	color: @white;
+	background-color:@regblue;	
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+[role="utilities"] .logout{
+	display: inline-block;
+	padding: 0 10px 0px 20px;
+	background-image:url(../images/logout-icn.png);	
+	background-size: 14px 34px;
+	background-repeat: no-repeat;	
+}
+[role="utilities"] .logout:hover{
+	background-position: 0px -17px; 
+}
+/* QUICK SEARCH   ////////////////////////////////////////////////////////////////////////////*/
+
+#quicksearchWrapper {
+	display: block;
+	float: right;
+	padding-top: 60px;
+}
+
+/*[role="quicksearch"] #quick-search {
+	float: right;
+	width: 40%;
+	height: 38px;
+    padding-top: 0.35em;
+}
+[role="quicksearch"] #quick-search span {
+	.baseText;
+	float: right;
+}
+[role="quicksearch"] #quick-search span:first-child {
+	width: 50%;
+	padding: 0 10px 0 10px;
+}
+[role="quicksearch"] #quick-search span:last-child {
+	width: 110px;
+	text-align:right;
+	padding-top:0.35em;
+	background-image:url(../images/CC-wingdings.png);
+	background-repeat:no-repeat;
+	background-size: 40px @wingdingsheight;
+	background-position: 0px -15px;
+}
+[role="quicksearch"] form {
+	width:100%;
+	float: right;
+	margin:0;
+}
+[role="quicksearch"] input[type="text"] {
+	width:80%;
+}
+*/
+
+/* MAIN NAVIGATION MENU   ////////////////////////////////////////////////////////////////////////////*/
+[role="navigation"] #deskHomeBtn:hover{
+	background-position: 0px -17px; 
+}
+[role="navigation"] ul {
+	height: 38px;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ecf2fa), to(#d4ddea));
+	background-image: -webkit-linear-gradient(top, #3b4ecf2faa57, #d4ddea);
+	background-color: #ecf2fa;
+	background-image: -moz-linear-gradient(top, #ecf2fa, #d4ddea);
+	background-image: -ms-linear-gradient(top, #ecf2fa, #d4ddea);
+	background-image: -o-linear-gradient(top, #ecf2fa, #d4ddea);
+	background-image: linear-gradient(top, #ecf2fa, #d4ddea);
+	background-repeat: repeat-x;
+	border:solid 1px @bordergray;	
+}
+[role="navigation"] ul li {	
+	display: block;
+	float: left;
+	padding-top: 0.6em;
+	height: 38px;
+	border-right: solid @bordergray 1px;	
+	border-left:solid #ffffff 1px;	
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+}
+[role="navigation"] ul li a {
+	.baseText;
+    text-align: center;
+}
+[role="navigation"] a:hover {
+    color: @basetexthover;
+}
+[role="navigation"] ul li:first-child{
+	padding-top: 0.0em;
+	padding-left: 0%;	
+ 	width: 9%;
+}
+[role="navigation"] ul li:nth-child(2){
+ 	width: 17%;
+	max-width: 220px;
+}
+[role="navigation"] ul li:nth-child(3){
+ 	width: 16%;
+	max-width: 200px;
+}
+[role="navigation"] ul li:nth-child(4){
+ 	width: 9%;
+}
+[role="navigation"] ul li:nth-child(5){
+ 	width: 8%;
+}
+
+
+/* FOOTER   ////////////////////////////////////////////////////////////////////////////*/
+
+.panel-footer {
+	.panel-header;
+	.vertical(@darkgradientendcolor,@darkgradientstartcolor );
+}
+
+
+[role="footer"] {
+		width: 100%;
+		height: 37px;
+		text-align:center;
+		border: solid 1px @bordergray;
+}
+
+[role="footer"] ul {
+		display: inline-block;
+		width: 310px;
+		list-style-type: none;
+
+}
+
+[role="footer"] ul li{
+		float:left;
+		padding: 7px 10px 0 10px;
+
+}
+
+[role="footer"] .footerLink a{
+		display: block;
+		float:left;
+		.baseText;
+		color: @lightblue !important;
+		text-decoration:none;
+}
+
+[role="footer"] a:hover{
+		color: @veryverylightblue !important;
+}
