@@ -1,22 +1,22 @@
-'use strict';
+ 'use strict';
 
 angular.module('ECMSapp.adminMain', [])
 
 .controller('MainCaseAdminCtrl', ['$scope', 'DataFtry',  function($scope, DataFtry){
 
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
-	var todayDate 		= new Date();
-	var dateOffset 		= (24*60*60*1000) * 1; //DEFAULT: 1 DAY 
-	var startingDate 	= new Date(todayDate.getTime() - dateOffset);
-	var endingDate 		= todayDate;
+	var todayDate		= new Date();
+	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 1 DAY 
+	var startingDate	= new Date(todayDate.getTime() - dateOffset);
+	var endingDate		= todayDate;
 	$scope.startingDate	= startingDate;
 	$scope.endingDate	= endingDate;
 		
 	$scope.urlBase =	//"http://cc-devapp1.ncmecad.net:8080/ecms-staging/rest/caseadmin/cases?startDate=" +
-								"/rest/caseadmin/cases?startDate=" +  
-								formatStartingDate() + 
+								"/rest/caseadmin/cases?startDate="+
+								formatStartingDate()+
 								//"2015-02-15" +
-								"&endDate=" + 
+								"&endDate="+
 								formatEndingDate();
 								//"2015-02-17";
 								
@@ -26,25 +26,25 @@ angular.module('ECMSapp.adminMain', [])
 	$scope.changeDateRange = function(){
 
 		$scope.urlBase =	//"http://cc-devapp1.ncmecad.net:8080/ecms-staging/rest/caseadmin/cases?startDate=" + 
-									"/rest/caseadmin/cases?startDate=" + 
-									formatStartingDate() + 
-									"&endDate=" + 
+									"/rest/caseadmin/cases?startDate="+
+									formatStartingDate()+
+									"&endDate="+
 									formatEndingDate();
 									
-	   //console.log("FROM CHANGE DATE RANGE: "  + $scope.urlBase);
-	   };
+		//console.log("FROM CHANGE DATE RANGE: "  + $scope.urlBase);
+		};
 
-	function formatStartingDate(){		
-		var stDate 	= $scope.startingDate.getDate() ;
+	function formatStartingDate(){
+		var stDate	= $scope.startingDate.getDate();
 		var stMonth = $scope.startingDate.getMonth() + 1;
-		var stYear 	= $scope.startingDate.getFullYear();
+		var stYear	= $scope.startingDate.getFullYear();
 		return stYear + "-" + stMonth  + "-" + stDate;
 	}
 
-	function formatEndingDate(){		
-		var enDate 	= $scope.endingDate.getDate() ;
+	function formatEndingDate(){
+		var enDate = $scope.endingDate.getDate();
 		var enMonth = $scope.endingDate.getMonth() + 1;
-		  var enYear 	= $scope.endingDate.getFullYear();
+		var enYear	= $scope.endingDate.getFullYear();
 		return enYear + "-" + enMonth  + "-" + enDate;
 	}
 
@@ -120,7 +120,7 @@ angular.module('ECMSapp.adminMain', [])
             { text: "Close", value: "3" }
             ]
         };
-    $scope.selectedStatus = [ 1, 3 ]
+    $scope.selectedStatus = [ 1, 3 ];
 	
 	// GRID ////////////////////////////////////////////////////////////////////
 	
@@ -148,7 +148,7 @@ angular.module('ECMSapp.adminMain', [])
 				//$scope.mainGrid.table.on("click", ".checkbox" , selectRow);
 				
 			}, 1000);
-		})
+		});
 	});
 	
 	$scope.enableSumbitBtn = function() {
@@ -181,13 +181,13 @@ angular.module('ECMSapp.adminMain', [])
 			schema: {
 					model: {
 						fields: {
-								caseNumber		: { type: "string" 	},
+								caseNumber		: { type: "string" },
 								dateReceived	: { type: "date"	},
 								incidentDate	: { type: "date"	},
 								source			: { type: "string"	},
-								caseTypeAbbr	: { type: "string" 	},
+								caseTypeAbbr	: { type: "string"	},
 								caseStatus		: { type: "string"	},
-								alerts			: { type: "string" 	},
+								alerts			: { type: "string"	},
 								state			: { type: "string"	},
 								caseManager		: { type: "string"	}
 								}
@@ -201,45 +201,45 @@ angular.module('ECMSapp.adminMain', [])
 		scrollable	: false,
 		filterable	: {
 					mode		: "menu",
-    				extra		: false,
+					extra		: false,
 					messages	: {
-      					info		: "Filter by:",
+					info		: "Filter by:",
 						selectValue	: "Select category",
 						isTrue		: "selected",
 						isFalse		: "not selected"
 							},
 					operators	: {
-      						string	: {
-        						eq			: "Equal to",
-        						//neq		: "Not equal to",
+						string	: {
+					eq			: "Equal to",
+					//neq		: "Not equal to",
 								contains	: "Contains",
 								startswith	: "Starts with",
 								endswith	: "Ends with"
-      							},
+								},
 							number	: {
 								eq			: "Equal to",
 								},
 							date	: {
 								gt			: "After",
-       					 		lt			: "Before"
+								lt			: "Before"
 								}
 							}
-  						},
+						},
 		pageable	: {
-                     	refresh: true,
-                      	pageSizes: true,
-                     	buttonCount: 5,
+						refresh: true,
+						pageSizes: true,
+						buttonCount: 5,
 						pageSize: 15
                         },
 						
 		/*columnMenu: {
-   			messages	: {
-      			columns			: "Choose columns",
-      			filter			: "Apply filter",
-      			sortAscending	: "Sort (asc)",
-      			sortDescending	: "Sort (desc)"
+			messages	: {
+				columns			: "Choose columns",
+				filter			: "Apply filter",
+				sortAscending	: "Sort (asc)",
+				sortDescending	: "Sort (desc)"
 							}
-    				},*/
+					},*/
 		columns		: [{
 						field	: "alerts",
 						title	: "Alerts",
@@ -247,7 +247,7 @@ angular.module('ECMSapp.adminMain', [])
 						},{
 						field	: "dateReceived",
 						title	: "Date Rcvd.",
-            			format	:"{0:MM/dd/yyyy}" ,
+						format	:"{0:MM/dd/yyyy}" ,
 						width	: "9%",
 						filterable: false,
 						},{
@@ -259,36 +259,36 @@ angular.module('ECMSapp.adminMain', [])
 						title	: "Source",
 						width	: "6%",
 						filterable: {
-                        	ui			: sourceFilter,
+							ui			: sourceFilter,
 							operators	: {
-      							string	: {
-        						eq		: "Equal to",
-      								}
-                         		}
+								string	: {
+								eq		: "Equal to",
+									}
+								}
 							}
 						},{
 						field	: "caseTypeAbbr",
 						title	: "Type",
 						width	: "9%",
 						filterable: {
-                        	ui			: typeFilter,
+							ui			: typeFilter,
 							operators	: {
-      							string	: {
-        						eq		: "Equal to",
-      								}
-                         		}
+								string	: {
+								eq		: "Equal to",
+									}
+								}
 							}
 						},{
 						field	: "caseStatus",
 						title	: "Status",
 						width	: "9%",
 						filterable: {
-                        	ui			: statusFilter,
+							ui			: statusFilter,
 							operators	: {
-      								string	: {
-        							eq		: "Equal to",
-      										}
-                         				}
+									string	: {
+									eq		: "Equal to",
+											}
+										}
 									}
 						},{
 						field	: "state",
@@ -296,10 +296,10 @@ angular.module('ECMSapp.adminMain', [])
 						width	: "5%",
 						filterable: {
 							operators	: {
-      								string	: {
-        							eq		: "Equal to",
-      										}
-                         				}
+									string	: {
+									eq		: "Equal to",
+											}
+										}
 									}
 						},{
 						field	: "incidentDate",
@@ -317,41 +317,41 @@ angular.module('ECMSapp.adminMain', [])
 						template: "<input type='checkbox' ng-model='dataItem.selected' />",
 						title: "<input type='checkbox' title='Select all' ng-click='toggleSelectAll($event)'/>",
 						attributes: {
-      						style: "text-align: center"
-    					}
-                	}]
+							style: "text-align: center"
+						}
+					}]
 				};
 	// MAKE THE CHECK BOX PERSISTING
- 	var checkedIds = {};
+	var checkedIds = {};
 	
 	function selectRow(){
 		var checked		= this.checked,
-        	row			= $(this).closest("tr"),
-        	grid		= $("#grid").data("kendoGrid"),
-        	dataItem	= grid.dataItem(row);
+			row			= $(this).closest("tr"),
+			grid		= $("#grid").data("kendoGrid"),
+			dataItem	= grid.dataItem(row);
 
-       	 checkedIds[dataItem.caseNumber] = checked;
-		 console.log(dataItem.caseNumber)	
-	};
+		checkedIds[dataItem.caseNumber] = checked;
+		// console.log(dataItem.caseNumber)
+	}
 
 	// ON DATABOUND EVENT (WHEN PAGING) RESTORE PREVIOUSLY SELECTED ROWS
     function onDataBound(e) {
 
-        var view = this.dataSource.view();
-        for(var i = 0; i < view.length;i++){
+		var view = this.dataSource.view();
+		for(var i = 0; i < view.length;i++){
             if(checkedIds[view[i].caseNumber]){
-                this.tbody.find("tr[data-uid='" + view[i].uid + "']")
+				this.tbody.find("tr[data-uid='" + view[i].uid + "']")
                 //.addClass("k-state-selected")
                 .find(".checkbox")
                 .attr("checked","checked");
             }
         }
-    };
+    }
 		
 	// FILTERING WITH DROPDOWN MENU 
-	var status 	= ["Active", "Recovered", "Closed"],
-		types 	= ["ERU", "FA", "NFA", "LIM", "5779", "UHR", "DECC", "RCST", "ATT", "UMR"],
-		sources = ["Call", "Email", "Internet", "WebService", "Online Sighting Form"];
+	var status	= ["Active", "Recovered", "Closed"],
+		types	= ["ERU", "FA", "NFA", "LIM", "5779", "UHR", "DECC", "RCST", "ATT", "UMR"],
+		sources	= ["Call", "Email", "Internet", "WebService", "Online Sighting Form"];
 			
 	function typeFilter(element) {
 		//element.kendoMultiSelect({
@@ -360,19 +360,19 @@ angular.module('ECMSapp.adminMain', [])
 			//multiple: "multiple",
 			optionLabel: "--Select Value--"
 		});
-	};
+	}
 		
 	function statusFilter(element) {
 		element.kendoDropDownList({
 			dataSource: status,
 			optionLabel: "--Select Value--"
 		});
-	};
+	}
 		
 	function sourceFilter(element) {
 		element.kendoDropDownList({
 			dataSource: sources,
 			optionLabel: "--Select Value--"
 		});
-	};
-}])
+	}
+}]);
