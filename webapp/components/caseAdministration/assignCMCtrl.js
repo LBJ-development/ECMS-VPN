@@ -2,7 +2,7 @@
 
 angular.module('ECMSapp.assignCM', [])
 
-.controller('AssignCMCtrl', ['$scope', 'DataFtry',  function($scope, DataFtry, $q){
+.controller('AssignCMCtrl', [ '$scope', 'DataFtry',  function( $scope, DataFtry, $q){
 	
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
 		var todayDate		= new Date();
@@ -20,7 +20,7 @@ angular.module('ECMSapp.assignCM', [])
 								formatEndingDate();
 								//"2015-02-17";
 								
-		console.log("FROM INITIAL DATE RANGE: "  + $scope.urlBase);
+		// console.log("FROM INITIAL DATE RANGE: "  + $scope.urlBase);
 		
 		// WHEN DATE RANGE CHANGES //////////////////////////////////////////////////
 		$scope.changeDateRange = function(){
@@ -212,38 +212,63 @@ angular.module('ECMSapp.assignCM', [])
 	function detailInit(e) {
 		var detailRow = e.detailRow;
 			kendo.bind(detailRow, e.data);
+			// console.log(grid.tbody.find("tr.k-master-row").first());
+			// console.log(e.data.caseNumber);
 
-	/*	var	row			= $(this).closest("tr"),
-			grid		= $("#grid").data("kendoGrid"),
-			dataItem	= grid.dataItem(row);
+		var caseNumber = e.data.caseNumber;
 
-			console.log(dataItem.caseNumber);*/
+		$scope.urlDetail = "/rest/caseadmin/incidentDetails?caseNumber=" + caseNumber;
 
-		$scope.urlDetail = "/rest/caseadmin/incidentDetails?caseNumber=1245289";
+		DataFtry.getData($scope.urlDetail).then(function(result){
 
-			DataFtry.getData($scope.urlDetail).then(function(result){
+			getNarrative(detailRow, caseNumber);
 
-				// detailRow.find("#detailGridOptions").dataSource.data = result.data.content;
-				detailRow.find(".testDetail").kendoGrid({
+			detailRow.find(".gridDetail").kendoGrid({
 
-					dataSource:{
-							data: result.data.content,
+				dataSource:{
+						data: result.data.content,
 							
-								},
-                    scrollable: false,
-                    sortable: false,
-                    pageable: false,
-					columns: [
-						{ field: "childAge", title:"Child age", width: "56px" },
-						{ field: "childFirstName", title:"Child first name", width: "110px" },
-						{ field: "childLastName", title:"Child last name" },
-						{ field: "childRecoveryStatus", title: "Recovery status", width: "190px" }
-						]
+							},
+				scrollable: false,
+				sortable: false,
+				pageable: false,
+				columns: [
+					{ field: "childRecoveryStatus", title: "Recovery Status", width: "12%" },
+					{ field: "incidentType", title: "Child Case Type", width: "17%" },
+					{ field: "incidentState", title: "Inc. State", width: "45px" },
+					{ field: "parentRelationship", title: "P/G Relationship", width: "15%" },
+					{ field: "foreignLanguage", title: "Foreign Language", width: "12%" },
+					{ field: "childFirstName", title:"Child First Name", width: "14%" },
+					{ field: "childLastName", title:"Child Last Name", width: "14%" },
+					{ field: "childAge", title:"Child Age", width: "45px" },
+					{ field: "criticalEndangerements", title: "Endangerments", width: "20%" }
+					]
 				});
 			});
 		}
+
+	function getNarrative(detailRow, caseNumber){
+
+		$scope.urlNarrative = "/rest/caseadmin/narratives?caseNumber=" + caseNumber;
+
+		DataFtry.getData($scope.urlNarrative).then(function(result){
+
+			//console.log($('#narrativeType').narrativeType);
+
+
+			var data = result.data.content;
+
+			// detailRow.detailGridOptions.narrativeType = data.narrativeType;
+		
+		});
+	}
 	
 	$scope.detailGridOptions = function($scope, dataItem) {
+
+
+			console.log("FROM DETAILGRIDOPTIONS");
+			console.log(dataItem);
+
 
 		// console.log("DETAIL GRID OPTION");
 		/*var data = {};
@@ -321,7 +346,7 @@ angular.module('ECMSapp.assignCM', [])
        
 				
 	// MAKE THE CHECK BOX PERSISTING
-	var checkedIds = {};
+/*	var checkedIds = {};
 	
 	function selectRow(){
 		var checked		= this.checked,
@@ -330,7 +355,7 @@ angular.module('ECMSapp.assignCM', [])
 			dataItem	= grid.dataItem(row);
 
 			checkedIds[dataItem.caseNumber] = checked;
-			//console.log(dataItem.caseNumber)	
+
 	}
 
 	// ON DATABOUND EVENT (WHEN PAGING) RESTORE PREVIOUSLY SELECTED ROWS
@@ -346,7 +371,7 @@ angular.module('ECMSapp.assignCM', [])
             }
         }
     }
-		
+		*/
 	// FILTERING WITH DROPDOWN MENU 
 	var status	= ["Active", "Recovered", "Closed"],
 		types	= ["ERU", "FA", "NFA", "LIM", "5779", "UHR", "DECC", "RCST", "ATT", "UMR"],
@@ -374,4 +399,5 @@ angular.module('ECMSapp.assignCM', [])
 			optionLabel: "--Select Value--"
 		});
 	}
-}]);
+}])
+

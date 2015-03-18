@@ -95,7 +95,7 @@ app.config(function ($httpProvider) {
 app.run( function($location, $window, ConfigService, StorageService){
     //ConfigService.setRestURI("http://localhost:8080/");
     ConfigService.initializeApp();
-    ConfigService.setRestURI("http://cc-devapp1.ncmecad.net:8080/ecms-staging");
+    ConfigService.setRestURI("http://cc-devapp1.ncmecad.net:8080/ecms-services.nightly");
     StorageService.setToken(null);
 
     var windowElement = angular.element($window);

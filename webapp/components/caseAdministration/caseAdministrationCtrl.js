@@ -1,4 +1,4 @@
- 'use strict';
+'use strict';
 
 angular.module('ECMSapp.adminMain', [])
 
@@ -140,14 +140,14 @@ angular.module('ECMSapp.adminMain', [])
 			
 			//console.log("FROM POS 1: " + $scope.mainGrid.table);
 	
-			setTimeout(function(){
+		/*	setTimeout(function(){
 				
 					//console.log("FROM POS 2: " + $scope.mainGrid.table);
 				
 				// DELAY THE INITIALIZATION FOR THE TABLE CLICK ENVENT (CHECK IF CHECKBOX IS CLICKED)
 				//$scope.mainGrid.table.on("click", ".checkbox" , selectRow);
 				
-			}, 1000);
+			}, 1000);*/
 		});
 	});
 	
@@ -195,7 +195,7 @@ angular.module('ECMSapp.adminMain', [])
 						}
 					},
 		//height		: 550,
-        dataBound	: onDataBound,
+        // dataBound	: onDataBound,
 		//toolbar		: ["create"],
 		sortable	: true,
 		scrollable	: false,
@@ -322,7 +322,7 @@ angular.module('ECMSapp.adminMain', [])
 					}]
 				};
 	// MAKE THE CHECK BOX PERSISTING
-	var checkedIds = {};
+	/*var checkedIds = {};
 	
 	function selectRow(){
 		var checked		= this.checked,
@@ -331,7 +331,7 @@ angular.module('ECMSapp.adminMain', [])
 			dataItem	= grid.dataItem(row);
 
 		checkedIds[dataItem.caseNumber] = checked;
-		// console.log(dataItem.caseNumber)
+		console.log("FROM SELECT ROW")
 	}
 
 	// ON DATABOUND EVENT (WHEN PAGING) RESTORE PREVIOUSLY SELECTED ROWS
@@ -346,7 +346,7 @@ angular.module('ECMSapp.adminMain', [])
                 .attr("checked","checked");
             }
         }
-    }
+    }*/
 		
 	// FILTERING WITH DROPDOWN MENU 
 	var status	= ["Active", "Recovered", "Closed"],

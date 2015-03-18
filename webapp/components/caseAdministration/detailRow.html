@@ -1,0 +1,30 @@
+<div class="row-holder title-small" style="padding: 0px 0 0px 0px">
+		<ul>
+			<li>Narrative Type: {{narrativeType}}</li>
+			<li>Author: {{narrativeAuthor}}</li>
+			<li>Narrative Date: {{narrativeDate}}</li>
+		</ul>
+    </div>
+    <div class="text-box">{{narrativeContent}}</div>
+	
+	<div style="width: 100%, text-align: left, heigth: 15px" class="detail-bottom">
+		<ul>
+			<li>
+				<kendo-button  ng-model="button" class="k-button">SAVE</kendo-button>
+			</li>
+			<li>
+				<select kendo-drop-down-list  style="width: 200px">
+					<option>CRU</option>
+					<option>FAU</option>
+					<option>FSU</option>  
+				</select>
+			</li>
+			<li>
+				<select kendo-drop-down-list  style="width: 200px">
+					<option>CRU</option>
+					<option>FAU</option>
+					<option>FSU</option>  
+				</select>
+			</li>
+		</ul>
+	</div>
