@@ -17,6 +17,10 @@ html, body {
 
 }
 
+.spacer{
+	display: block;
+}
+
 #wrapper {
 	display: block;
 	position: relative;
@@ -174,7 +178,7 @@ html, body {
 
 .detail-bottom {
 	display: inline-block;
-	width: 100%;
+	width: 99%;
 	text-align:rigth;
 	padding:15px 10px 15px 0;
 }
@@ -184,3 +188,44 @@ html, body {
 	float:right;
 	padding:0 15px 0 0 ;
 }
+
+.text-box  {
+	width: 100%;
+	.baseText;
+	line-height: 1.4em;
+	text-align: left;
+	overflow: hidden;
+	resize: none;
+	min-height:  80px;
+	max-height:  300px;
+	padding: 10px 0;
+	overflow-y: auto;
+	display: inline-block;
+	background-color: @white;
+	border:solid 1px @bordergray;	
+}
+
+.text-box span  {
+	display: inline-block;;
+	padding: 0 20px;
+}
+.row-detail-info {
+	direction: inline-block;
+	width: 100%;
+	padding:10px 10px 15px 25px;
+}
+
+.row-detail-info li {
+	display: inline-block;;
+	float: left;
+	font-family: @basefont;
+	font-size:1.0em;
+	padding-right:25px;
+}
+
+.row-detail-info li span {
+	color: @regblue;
+	
+}
+
+

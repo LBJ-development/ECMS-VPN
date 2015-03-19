@@ -131,8 +131,12 @@ angular.module('ECMSapp.assignCM', [])
 						buttonCount: 5,
 						pageSize: 15
                         },
-						
-		detailTemplate: kendo.template($("#detail-template").html()),
+                        	detailTemplate: kendo.template($("#detail-template").html()),
+		/*detailExpand: function(e) {
+			this.collapseRow(this.tbody.find(' > tr.k-master-row').not(e.masterRow));
+		},*/
+		detailExpand:detailIExpand,
+
 		detailInit: detailInit,
 			/*detailInit: function(e) {
 			// without this line, detail template bindings will not work
@@ -208,8 +212,19 @@ angular.module('ECMSapp.assignCM', [])
 				};
 			
 	// GRID DETAIL SETTINGS /////////////////////////////////////////////////////////////////////////////////////
+	function detailIExpand(e) {
 
+		// console.log("FROM EXPAND ");
+		// console.log(e);
+
+	}
 	function detailInit(e) {
+/*var grid = e.detailRow.find("[data-role=grid]").data("kendoGrid");
+		grid.dataSource.read();*/
+
+		// console.log("FROM INIT");
+		// console.log(e);
+
 		var detailRow = e.detailRow;
 			kendo.bind(detailRow, e.data);
 			// console.log(grid.tbody.find("tr.k-master-row").first());
@@ -221,7 +236,7 @@ angular.module('ECMSapp.assignCM', [])
 
 		DataFtry.getData($scope.urlDetail).then(function(result){
 
-			getNarrative(detailRow, caseNumber);
+			getNarrative(e, caseNumber);
 
 			detailRow.find(".gridDetail").kendoGrid({
 
@@ -252,22 +267,39 @@ angular.module('ECMSapp.assignCM', [])
 		$scope.urlNarrative = "/rest/caseadmin/narratives?caseNumber=" + caseNumber;
 
 		DataFtry.getData($scope.urlNarrative).then(function(result){
-
-			//console.log($('#narrativeType').narrativeType);
-
-
+	
 			var data = result.data.content;
 
-			// detailRow.detailGridOptions.narrativeType = data.narrativeType;
-		
+			var index =1;
+
+			$scope.narrativeType = data[index -1].narrativeType;
+			$scope.narrativeAuthor = data[index -1].narrativeAuthor;
+			$scope.narrativeDate = data[index -1].narrativeDate;
+			$scope.narrativeText = data[index -1].narrativeText;
+
+			getCaseManager();
 		});
+	}
+
+	function getCaseManager(){
+
+		$scope.urlCM = "/rest/casemanager/list/all";
+
+		DataFtry.getData($scope.urlCM).then(function(result){
+
+			$scope.dataOption = {
+
+				dataSource:  result.data.content
+			};
+		});
+
 	}
 	
 	$scope.detailGridOptions = function($scope, dataItem) {
 
 
-			console.log("FROM DETAILGRIDOPTIONS");
-			console.log(dataItem);
+			// console.log("FROM DETAILGRIDOPTIONS");
+			// console.log(dataItem);
 
 
 		// console.log("DETAIL GRID OPTION");
@@ -399,5 +431,20 @@ angular.module('ECMSapp.assignCM', [])
 			optionLabel: "--Select Value--"
 		});
 	}
+
+
+
 }])
+
+.directive ('detailRow', function () {
+	return {
+	restrict: 'E',
+	controller: 'AssignCMCtrl',
+	templateUrl: 'components/caseAdministration/detailRow.html',
+	link: function (scope, element, attrs){
+        }
+    };
+});
+
+
 

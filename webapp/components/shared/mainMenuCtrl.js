@@ -150,7 +150,7 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
                console.log (StorageService.getToken());
                 StorageService.setToken(null);
                 loginService.logout();
-            }
+            };
 
             // DISPLAY THE NAME OF THE PAGE THAT HAS BEEN CLICKED
             scope.onSelect = function(ev) {
@@ -158,7 +158,7 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
 
             };
         }
-    }
+    };
 })
     .directive('authorized', function($location, StorageService){
     return {
@@ -167,7 +167,7 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
             console.log('Token-hold-debug' + StorageService.getToken());
 
         }
-    }
+    };
     })
 
     .directive ('footer', function () {
@@ -177,7 +177,7 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
         link: function (scope, element, attrs){
 
         }
-    }
+    };
 });
 
 

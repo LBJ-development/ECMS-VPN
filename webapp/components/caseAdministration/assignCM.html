@@ -38,7 +38,7 @@
 		<div role="datagrid" class="grid-holder" >
 			<div>
 				<kendo-grid k-options="mainGridOptions" k-rebind="mainGridOptions" id="grid"  k-ng-delay="mainGridOptions">
-                </kendo-grid >
+				</kendo-grid >
 			</div>  
 		</div>
 	</div>
@@ -46,40 +46,10 @@
 
 <!--  GRID DETAIL /////////////////////////////////////////////////////////////////-->
 <script id="detail-template" type="text/x-kendo-template >
-	<div style="width: 100%, text-align: left, heigth: 15px" class="title-small"></div>
-	
-	<div class="gridDetail"></div>
 
-	<div class="row-holder title-small" style="padding: 0px 0 0px 0px">
-		<ul>
-			<li id="narrativeType">Narrative Type: {{narrativeType}}</li>
-			<li>Author: {{narrativeAuthor}}</li>
-			<li>Narrative Date: {{narrativeDate}}</li>
-		</ul>
-    </div>
-    <div class="text-box">{{narrativeContent}}</div>
+	<div class="spacer" style="height: 10px"><br></div>
+	<detail-row></detail-row>
 	
-	<div style="width: 100%, text-align: left, heigth: 15px" class="detail-bottom">
-		<ul>
-			<li>
-				<kendo-button  ng-model="button" class="k-button">SAVE</kendo-button>
-			</li>
-			<li>
-				<select kendo-drop-down-list  style="width: 200px">
-					<option>CRU</option>
-					<option>FAU</option>
-					<option>FSU</option>  
-				</select>
-			</li>
-			<li>
-				<select kendo-drop-down-list  style="width: 200px">
-					<option>CRU</option>
-					<option>FAU</option>
-					<option>FSU</option>  
-				</select>
-			</li>
-		</ul>
-	</div>
 </script>
 
  

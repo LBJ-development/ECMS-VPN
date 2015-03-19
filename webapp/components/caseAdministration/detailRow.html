@@ -1,11 +1,15 @@
-<div class="row-holder title-small" style="padding: 0px 0 0px 0px">
+
+	<div class="gridDetail" ></div>
+
+	<div class="row-detail-info">
 		<ul>
-			<li>Narrative Type: {{narrativeType}}</li>
-			<li>Author: {{narrativeAuthor}}</li>
-			<li>Narrative Date: {{narrativeDate}}</li>
+			<li >Narrative Type: <span> {{narrativeType}}</span></li>
+			<li  >Author:  <span>{{narrativeAuthor}}</span> </li>
+			<li >Narrative Date:  <span> {{narrativeDate}}</span></li>
 		</ul>
-    </div>
-    <div class="text-box">{{narrativeContent}}</div>
+	</div>
+
+    	<div class="text-box" readonly><span>{{narrativeText}}</span></div>
 	
 	<div style="width: 100%, text-align: left, heigth: 15px" class="detail-bottom">
 		<ul>
@@ -13,18 +17,23 @@
 				<kendo-button  ng-model="button" class="k-button">SAVE</kendo-button>
 			</li>
 			<li>
-				<select kendo-drop-down-list  style="width: 200px">
+				<select kendo-drop-down-list  style="width: 200px"   k-data-source="dataCaseGroup">
+					<option>ALL</option>
+					<option>CMS</option>
 					<option>CRU</option>
 					<option>FAU</option>
-					<option>FSU</option>  
+					<option>FSU</option>    
 				</select>
 			</li>
 			<li>
-				<select kendo-drop-down-list  style="width: 200px">
+				<select kendo-drop-down-list  style="width: 200px" k-options="dataOption">
+					<option>ALL</option>
+					<option>CMS</option>
 					<option>CRU</option>
 					<option>FAU</option>
 					<option>FSU</option>  
 				</select>
+
 			</li>
 		</ul>
-	</div>
+	</div> 
