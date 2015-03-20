@@ -131,12 +131,11 @@ angular.module('ECMSapp.assignCM', [])
 						buttonCount: 5,
 						pageSize: 15
                         },
-                        	detailTemplate: kendo.template($("#detail-template").html()),
+		detailTemplate: kendo.template($("#detail-template").html()),
 		/*detailExpand: function(e) {
 			this.collapseRow(this.tbody.find(' > tr.k-master-row').not(e.masterRow));
 		},*/
-		detailExpand:detailIExpand,
-
+		// detailExpand:detailIExpand,
 		detailInit: detailInit,
 			/*detailInit: function(e) {
 			// without this line, detail template bindings will not work
@@ -241,8 +240,7 @@ angular.module('ECMSapp.assignCM', [])
 			detailRow.find(".gridDetail").kendoGrid({
 
 				dataSource:{
-						data: result.data.content,
-							
+						data: result.data.content,	
 							},
 				scrollable: false,
 				sortable: false,
@@ -262,20 +260,58 @@ angular.module('ECMSapp.assignCM', [])
 			});
 		}
 
-	function getNarrative(detailRow, caseNumber){
+	function getNarrative(e, caseNumber){
+
+		// $Scope.dataItem = detailRow.data;
+
+		var detailRow = e.detailRow;
+			kendo.bind(detailRow, e.data);
 
 		$scope.urlNarrative = "/rest/caseadmin/narratives?caseNumber=" + caseNumber;
 
+		var grid = {};
+
 		DataFtry.getData($scope.urlNarrative).then(function(result){
-	
+
 			var data = result.data.content;
+
+			grid = detailRow.find(".gridNarrative").kendoGrid({
+
+				dataSource:{
+						data: data,
+						pageSize: 1
+						}, 
+				scrollable: true,
+				sortable: false,
+				pageable: true,
+				height	: 300,
+				dataBound: changeNarrative,
+				toolbar: kendo.template($("#toolbar-template").html()),
+				columns: [
+					{ field: "narrativeText", width: "100%" ,
+
+					headerAttributes: {
+						style: "display: none"
+						}
+						},
+					]
+				});
 
 			var index =1;
 
-			$scope.narrativeType = data[index -1].narrativeType;
-			$scope.narrativeAuthor = data[index -1].narrativeAuthor;
-			$scope.narrativeDate = data[index -1].narrativeDate;
-			$scope.narrativeText = data[index -1].narrativeText;
+			function changeNarrative(evt){
+
+				index = evt.sender.dataSource._page  -1;
+
+				$('#narrativeType').replaceWith("Narrative Type: " + data[ index  ].narrativeType);
+				$('#narrativeAuthor').replaceWith("Author: " + data[ index  ].narrativeAuthor);
+				$('#narrativeDate').replaceWith("Narrative Date: " + data[ index ].narrativeDate);
+			}
+
+			// $scope.narrativeType = data[index -1].narrativeType;
+			// $scope.narrativeAuthor = data[index -1].narrativeAuthor;
+			// $scope.narrativeDate = data[index -1].narrativeDate;
+			// $scope.narrativeText = data[index -1].narrativeText;
 
 			getCaseManager();
 		});
@@ -287,10 +323,47 @@ angular.module('ECMSapp.assignCM', [])
 
 		DataFtry.getData($scope.urlCM).then(function(result){
 
-			$scope.dataOption = {
+			console.log(result);
 
+			$("#caseManagers").kendoDropDownList({
+				dataTextField: "name",
+				dataValueField: "id",
+				dataSource: result.data.content
+			});
+
+			$("#caseGroups").kendoDropDownList({
+
+				select: function(e) {
+   					 var item = e.item;
+    					var text = item.text();
+    					console.log(text);
+    // Use the selected item or its text
+					  }
+				});
+
+			
+			// console.log (result.data.content);
+
+			/*$("#testDrop").kendoDropDownList({
+				dataTextField: "text",
+				dataValueField: "value",
+				dataSource: data,
+				index: 0
+			});*/
+/*
+			$scope.dataCaseGroup  = {
+				dataTextField: "name",
+				dataValueField: "id",
 				dataSource:  result.data.content
-			};
+			};*/
+
+			/*var caseGroups = $("#caseGroups").data("kendoDropDownList");
+
+			caseGroups.select(function(dataItem) {
+
+				console.log(dataItem);
+				return dataItem;
+			});*/
 		});
 
 	}

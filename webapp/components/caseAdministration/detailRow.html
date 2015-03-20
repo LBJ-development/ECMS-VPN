@@ -1,32 +1,33 @@
 
 	<div class="gridDetail" ></div>
 
-	<div class="row-detail-info">
+	<!-- <div class="row-detail-info">
 		<ul>
 			<li >Narrative Type: <span> {{narrativeType}}</span></li>
 			<li  >Author:  <span>{{narrativeAuthor}}</span> </li>
 			<li >Narrative Date:  <span> {{narrativeDate}}</span></li>
 		</ul>
-	</div>
+	</div> -->
 
-    	<div class="text-box" readonly><span>{{narrativeText}}</span></div>
+	<!-- NARRATIVE WIHT GRID -->
+	<div class="gridNarrative" ></div>
+
+	<!-- NARRATIVE WIHT TEXT  BOX -->
+    	<!-- <div class="text-box" readonly><span>{{narrativeText}}</span></div> -->
 	
 	<div style="width: 100%, text-align: left, heigth: 15px" class="detail-bottom">
 		<ul>
 			<li>
-				<kendo-button  ng-model="button" class="k-button">SAVE</kendo-button>
+				<kendo-button  ng-model="button" class="k-button">SUBMIT</kendo-button>
 			</li>
 			<li>
-				<select kendo-drop-down-list  style="width: 200px"   k-data-source="dataCaseGroup">
-					<option>ALL</option>
-					<option>CMS</option>
-					<option>CRU</option>
-					<option>FAU</option>
-					<option>FSU</option>    
-				</select>
+				<select id="caseManagers"></select>
 			</li>
+			<!-- <li>
+				<select kendo-drop-down-list  style="width: 200px"  id="dropTest" k-options="dataCaseGroup"></select>
+			</li> -->
 			<li>
-				<select kendo-drop-down-list  style="width: 200px" k-options="dataOption">
+				<select kendo-drop-down-list  style="width: 200px" k-options="dataOption" id="caseGroups">
 					<option>ALL</option>
 					<option>CMS</option>
 					<option>CRU</option>
