@@ -3,36 +3,49 @@
 angular.module('ECMSapp.assignCM', [])
 
 .controller('AssignCMCtrl', [ '$scope', 'DataFtry',  function( $scope, DataFtry, $q){
+
+
+	// DAILY ASSIGNMENT WORKSHEET WINDOW //////////////////////////////////////////////////
+
+	$scope.dwsaOptions = {
+		width: "80%",
+		visible: false,
+		maxWidth: 1200,
+		height: 800,
+		modal: true,
+		// title: "Daily Assignment Worksheet",
+		headerAttributes: {
+						style: "display: none"
+						}
+		// position: {
+		// top: 400,
+		// left: "center"
+		// },
+	};
+
+	$scope.todayDate = formatDate();
+
 	
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
-		var todayDate		= new Date();
-		var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 2 DAYS 
-		var startingDate	= new Date(todayDate.getTime() - dateOffset);
-		var endingDate		= todayDate;
-		$scope.startingDate	= startingDate;
-		$scope.endingDate	= endingDate;
+	var todayDate		= new Date();
+	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 2 DAYS 
+	var startingDate	= new Date(todayDate.getTime() - dateOffset);
+	var endingDate		= todayDate;
+	$scope.startingDate	= startingDate;
+	$scope.endingDate	= endingDate;
+	$scope.submitSearch = 0; //
 		
-		$scope.urlBase =	//"http://cc-devapp1.ncmecad.net:8080/ecms-staging/rest/caseadmin/cases?startDate=" +
-							"/rest/caseadmin/cases?startDate=" +
-								formatStartingDate() +
-								//"2015-02-15"+
-								"&endDate=" +
-								formatEndingDate();
-								//"2015-02-17";
-								
-		// console.log("FROM INITIAL DATE RANGE: "  + $scope.urlBase);
-		
-		// WHEN DATE RANGE CHANGES //////////////////////////////////////////////////
-		$scope.changeDateRange = function(){
-
-			$scope.urlBase =	//"http://cc-devapp1.ncmecad.net:8080/ecms-staging/rest/caseadmin/cases?startDate=" + 
-									"/rest/caseadmin/cases?startDate=" +
-									formatStartingDate() +
-									"&endDate=" +
-									formatEndingDate();
-									
-		//console.log("FROM CHANGE DATE RANGE: "  + $scope.urlBase);
+	// WHEN DATE RANGE CHANGES //////////////////////////////////////////////////
+	$scope.changeDateRange = function(){
+			$scope.submitSearch++;
 	};
+
+	function formatDate(){
+		var date	= new Date().getDate();
+		var month	= new Date().getMonth() + 1;
+		var year	= new Date().getFullYear();
+		return year + "/" + month  + "/" + date;
+	}
 	function formatStartingDate(){
 		var stDate	= $scope.startingDate.getDate();
 		var stMonth	= $scope.startingDate.getMonth() + 1;
@@ -48,30 +61,17 @@ angular.module('ECMSapp.assignCM', [])
 	}
 	
 	// GRID ////////////////////////////////////////////////////////////////////
-	
 	var result = {};
 
 	// WATCH FOR A DATE RANGE CHANGE
-	$scope.$watch('urlBase', function(newValue, oldValue) {
-		
-		//console.log("FROM WATCH: "  + $scope.urlBase);
-
-		DataFtry.getData($scope.urlBase).then(function(result){
-			
+	$scope.$watch('submitSearch', function(newValue, oldValue) {
+		console.log("Calling submitSearch:" + $scope.submitSearch);
+		DataFtry.getCasesForAssignment(formatStartingDate(), formatEndingDate()).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;
-			
-			//console.log("FROM POS 1: " + $scope.mainGrid.table);
-	
-			//setTimeout(function(){
-				
-				//console.log("FROM POS 2: " + $scope.mainGrid.table);
-				
-				// DELAY THE INITIALIZATION FOR THE TABLE CLICK ENVENT (CHECK IF CHECKBOX IS CLICKED)
-				//$scope.mainGrid.table.on("click", ".checkbox" , selectRow);
-				
-			//}, 1000);
 		});
+		
 	});
+	
 	// MAIN GRID SETTINGS //////////////////////////////////////////////////////////////////////////////////////
 	$scope.mainGridOptions =  {
 		 
@@ -221,8 +221,8 @@ angular.module('ECMSapp.assignCM', [])
 /*var grid = e.detailRow.find("[data-role=grid]").data("kendoGrid");
 		grid.dataSource.read();*/
 
-		// console.log("FROM INIT");
-		// console.log(e);
+		 console.log("FROM INIT");
+		 console.log(e);
 
 		var detailRow = e.detailRow;
 			kendo.bind(detailRow, e.data);
@@ -286,7 +286,7 @@ angular.module('ECMSapp.assignCM', [])
 				pageable: true,
 				height	: 300,
 				dataBound: changeNarrative,
-				toolbar: kendo.template($("#toolbar-template").html()),
+				// toolbar: kendo.template($("#toolbar-template").html()),
 				columns: [
 					{ field: "narrativeText", width: "100%" ,
 
@@ -303,14 +303,14 @@ angular.module('ECMSapp.assignCM', [])
 
 				index = evt.sender.dataSource._page  -1;
 
-				$('#narrativeType').replaceWith("Narrative Type: " + data[ index  ].narrativeType);
-				$('#narrativeAuthor').replaceWith("Author: " + data[ index  ].narrativeAuthor);
-				$('#narrativeDate').replaceWith("Narrative Date: " + data[ index ].narrativeDate);
+				// $('#narrativeType').replaceWith("Narrative Type: " + data[ index  ].narrativeType);
+				// $('#narrativeAuthor').replaceWith("Author: " + data[ index  ].narrativeAuthor);
+				// $('#narrativeDate').replaceWith("Narrative Date: " + data[ index ].narrativeDate);
 			}
 
-			// $scope.narrativeType = data[index -1].narrativeType;
-			// $scope.narrativeAuthor = data[index -1].narrativeAuthor;
-			// $scope.narrativeDate = data[index -1].narrativeDate;
+			$scope.narrativeType = data[index -1].narrativeType;
+			$scope.narrativeAuthor = data[index -1].narrativeAuthor;
+			$scope.narrativeDate = data[index -1].narrativeDate;
 			// $scope.narrativeText = data[index -1].narrativeText;
 
 			getCaseManager();
@@ -512,6 +512,7 @@ angular.module('ECMSapp.assignCM', [])
 .directive ('detailRow', function () {
 	return {
 	restrict: 'E',
+	// scope :{},
 	controller: 'AssignCMCtrl',
 	templateUrl: 'components/caseAdministration/detailRow.html',
 	link: function (scope, element, attrs){

@@ -6,7 +6,7 @@
 		</div>
         <!-- DATE RANGE /////////////////////////////////////////////////////////////////-->
 		<div class="filter-holder" role="query-filter">
-			<form name="dateRange-frm" ng-submit="changeDateRange()" role="form">
+			<form name="dateRange-frm" ng-submit="submitSearch()" role="form">
         		<div class="filter-row-holder">
         			<ul>
         				<li class=" title-small" style="width: 320px">
@@ -14,10 +14,11 @@
         				</li>
         				<li style="padding-right: 0px">
 							<span class="labelText-small" >From:</span> 
+							<input kendo-date-picker k-on-change="enableSumbitBtn()" k-ng-model="startDate" style="width: 180px"/> 
 						</li>
 						<li style="padding-right: 0px">
 							<span class="labelText-small" >to:</span> 
-							<input kendo-date-picker k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
+							<input kendo-date-picker k-on-change="enableSumbitBtn()"  k-ng-model="endDate"  style="width: 180px"/>
 						</li>
         			</ul>
         		</div>
@@ -25,20 +26,16 @@
 					<ul >
 						<li style="width: 200px">
                 			<span class="labelText-small" >RFS/Case:</span>
-        					<select kendo-multi-select k-options="RFSCase" k-ng-model="selectedRFSCase" style="width: 190px" ></select>
-                		</li>
+        					<select  style="width: 190px" kendo-multi-select k-ng-delay="rcTypeDataSource" ng-model="casesearch.rcType" k-placeholder="'Select Type'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcTypeDataSource" k-on-change="enableSumbitBtn()"></select>
+                		</li> 
                 		<li style="width: 22%">
                 			<span  class="labelText-small" >RFS/Case Source:</span>
-        					<select kendo-multi-select k-options="sourceType" k-ng-model="selectedSources" ></select>
+        					<select kendo-multi-select k-ng-delay="rcSourceDataSource" ng-model="casesearch.rcSource" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcSourceDataSource" k-on-change="enableSumbitBtn()"></select>
                 		</li>
 
-        				<li style="width: 22%" >
-                			<span class="labelText-small">RFS/Case type:</span>
-        					<select  kendo-multi-select k-options="RCType"  k-ng-model="selectedType"></select>
-                		</li>
                 		<li style="width: 22%">
-                			<span class="labelText-small">RFS/Case Status:</span>
-        					<select kendo-multi-select k-options="RCStatus"  k-ng-model="selectedStatus" ></select>
+							<span class="labelText-small">RFS/Case Status:</span>
+        					<select kendo-multi-select k-ng-delay="rcStatusDataSource" ng-model="casesearch.rcStatus" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcStatusDataSource" k-on-change="enableSumbitBtn()"></select>
                 		</li>
                 		<li  class="submit-btn" style="padding-top:20px">
                 			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
