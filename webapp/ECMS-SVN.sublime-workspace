@@ -370,7 +370,7 @@
 							"syntax": "Packages/AngularJS/AngularJS.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 789.0,
+						"translation.y": 709.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -387,8 +387,8 @@
 						"selection":
 						[
 							[
-								1084,
-								1084
+								70,
+								70
 							]
 						],
 						"settings":
@@ -486,7 +486,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 60.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -509,8 +509,8 @@
 						"selection":
 						[
 							[
-								9225,
-								9225
+								7749,
+								7749
 							]
 						],
 						"settings":
@@ -608,7 +608,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 6474.0,
+						"translation.y": 5334.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
