@@ -4,8 +4,12 @@
 <file name="caseAdministrationCtrl.js" server="Z:/UIDesigns/ECMS/" local="130687431559988000" remote="130687431550000000" Dst="1" />
 <file name="caseAdministration.html" server="Z:/UIDesigns/ECMS/app/" local="130703785708304676" remote="130703785700000000" Dst="2" />
 <file name="caseAdministrationCtrl.js" server="Z:/UIDesigns/ECMS/app/" local="130705600275283578" remote="130705600270000000" Dst="2" />
-<file name="caseAdministration.html" server="Z:/ECMS/app/" local="130701521278062124" remote="130701521270000000" Dst="1" />
-<file name="caseAdministrationCtrl.js" server="Z:/ECMS/app/" local="130704646567434666" remote="130704646560000000" Dst="2" />
+<file name="caseAdministration.html" server="Z:/ECMS/app/" local="130717003261477485" remote="130717003260000000" Dst="2" />
+<file name="caseAdministrationCtrl.js" server="Z:/ECMS/app/" local="130716727752057682" remote="130716727750000000" Dst="2" />
 <file name="assignCM.html" server="Z:/UIDesigns/ECMS/app/" local="130707278809398280" remote="130707278800000000" Dst="2" />
 <file name="assignCMCtrl.js" server="Z:/UIDesigns/ECMS/app/" local="130706588410000000" remote="130706588410000000" Dst="2" />
+<file name="assignCM.html" server="Z:/ECMS/app/" local="130717003136494988" remote="130717003130000000" Dst="2" />
+<file name="assignCMCtrl.js" server="Z:/ECMS/app/" local="130717003737825115" remote="130717003730000000" Dst="2" />
+<file name="detailRow.html" server="Z:/ECMS/app/" local="130716727752138210" remote="130716727750000000" Dst="2" />
+<file name="services.js" server="Z:/ECMS/app/" local="130716727752460322" remote="130716727750000000" Dst="2" />
 </dwsync>

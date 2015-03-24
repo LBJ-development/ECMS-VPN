@@ -2,8 +2,8 @@
 .baseText(@font-color: @basetextcolordark) {
 	font-size: @basefontsize;
 	letter-spacing: 0.03em;
-    font-family: @basefont;
-    color: @font-color;
+	font-family: @basefont;
+	color: @font-color;
 	text-decoration:none;
 }
 
@@ -67,6 +67,11 @@ p {
 	color: @mediumblue;
 }
 
+.title-reduced {
+	.title;
+	font-size:2em; 
+}
+
 .coming-soon {
 	.title;
 	color: #a1a7ba;
@@ -91,10 +96,12 @@ p {
 
 .date-title-large {
 	.title;
-	font-family: @basefont;
-	font-size:1.5em;
-	color:@mediumblue;
+	// font-family: @basefont;
+	font-family: 'antoniolight';
+	font-size:2em;
+	color: @regblue;
 	text-align: left;
+	padding: 0;
 	
 }
 

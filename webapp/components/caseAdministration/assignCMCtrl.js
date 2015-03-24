@@ -7,16 +7,14 @@ angular.module('ECMSapp.assignCM', [])
 
 	// DAILY ASSIGNMENT WORKSHEET WINDOW //////////////////////////////////////////////////
 
-	$scope.dwsaOptions = {
+	$scope.dawsOptions = {
 		width: "80%",
 		visible: false,
 		maxWidth: 1200,
-		height: 800,
+		height: "80%",
 		modal: true,
 		// title: "Daily Assignment Worksheet",
-		headerAttributes: {
-						style: "display: none"
-						}
+		open: getDAWSdata
 		// position: {
 		// top: 400,
 		// left: "center"
@@ -25,7 +23,102 @@ angular.module('ECMSapp.assignCM', [])
 
 	$scope.todayDate = formatDate();
 
-	
+	function getDAWSdata(){
+
+		var url = "/rest/casemanager/worksheet/current";
+
+		DataFtry.getData(url).then(function(result){
+
+			$scope.dawsGridOptions.dataSource.data = result.data.content;
+		});
+	};
+
+	$scope.dawsGridOptions =  { 
+		dataSource: {
+			data: result,
+				schema: {
+					model: {
+						fields: {
+								name		: { type: "string" , editable: false},
+								location	: { type: "string",  editable: false},
+								cmGroup	: { type: "string" , editable: false},
+								otherGroup	: { type: "string",  editable: false },
+								faRegion	: { type: "string",  editable: false },
+								foreignLang	: { type: "string",  editable: false },
+								ooo		: { type: "string" },
+								onCall		: { type: "string" },
+								shift		: { type: "string" },
+								telecommute	: { type: "string" }
+								},
+							}
+						},
+					},
+		sortable	: true,
+		scrollable	: true,
+		height 		: "83%",
+		editable	: true,
+		columns		: [{
+						field	: "name",
+						title	: "Name",
+						width	: "15%",
+					},{
+						field	: "location",
+						title	: "Loc.",
+						width	: "6%"
+					},{	
+						field	: "cmGroup",
+						title	: "CM Grp.",
+						width	: "7%"
+					},{
+						field	: "otherGroup",
+						title	: "Other",
+						width	: "6%"
+					},{
+						field	: "faRegion",
+						title	: "FA Region",
+						width	: "10%"
+					},{
+						field	: "foreignLang",
+						title	: "Language(s)",
+						width	: "10%"
+					},{
+						field	: "ooo",
+						title	: "OOO",
+						width	: "6%",
+						editor: categoryDropDownEditor,
+					},{
+						field	: "onCall",
+						title	: "On-call",
+						width	: "6%",
+						editor: categoryDropDownEditor,
+					},{
+						field	: "shift",
+						title	: "Shift hrs",
+						width	: "17%"
+					},{
+						field	: "telecommute",
+						title	:"Telecom.",
+						width	: "7%",
+						editor: categoryDropDownEditor,
+					
+
+					} ]
+				};
+
+	function categoryDropDownEditor(container, options) {
+		 $('<input required data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '"/>')
+		.appendTo(container)
+		.kendoDropDownList({
+			autoBind: false,
+			dataSource: {
+				data :  [
+					{ text: "Yes", value: "Yes" },
+					{ text: "No", value: "No" }
+					],
+				}
+			});
+		}
+
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
 	var todayDate		= new Date();
 	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 2 DAYS 
@@ -44,7 +137,7 @@ angular.module('ECMSapp.assignCM', [])
 		var date	= new Date().getDate();
 		var month	= new Date().getMonth() + 1;
 		var year	= new Date().getFullYear();
-		return year + "/" + month  + "/" + date;
+		return   month  + "/" + date + "/" +  year ;
 	}
 	function formatStartingDate(){
 		var stDate	= $scope.startingDate.getDate();
@@ -68,6 +161,7 @@ angular.module('ECMSapp.assignCM', [])
 		console.log("Calling submitSearch:" + $scope.submitSearch);
 		DataFtry.getCasesForAssignment(formatStartingDate(), formatEndingDate()).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;
+			$scope.warning = result.data.messages.CASES_LIST;
 		});
 		
 	});

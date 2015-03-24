@@ -15,10 +15,10 @@
 <file name="loginCtrl.js" server="Z:/ECMS/" local="130675402810000000" remote="130675402810000000" Dst="1" />
 <file name="testUser.php" server="Z:/ECMS/" local="130673771962563578" remote="130673771960000000" Dst="1" />
 <file name="testUser.php" server="D:/xampp/htdocs/ECMS/" local="130681431642750936" remote="130681431640000000" Dst="1" />
-<file name="login.html" server="Z:/ECMS/app/" local="130701388301925558" remote="130701388300000000" Dst="1" />
-<file name="loginCtrl.js" server="Z:/ECMS/app/" local="130701390151770524" remote="130701390150000000" Dst="1" />
-<file name="loginService.js" server="Z:/ECMS/app/" local="130701379607568140" remote="130701379600000000" Dst="1" />
-<file name="testUser.php" server="Z:/ECMS/app/" local="130686537513631384" remote="130686537510000000" Dst="1" />
+<file name="login.html" server="Z:/ECMS/app/" local="130711982049575963" remote="130711982040000000" Dst="2" />
+<file name="loginCtrl.js" server="Z:/ECMS/app/" local="130711982049605965" remote="130711982040000000" Dst="2" />
+<file name="loginService.js" server="Z:/ECMS/app/" local="130711982049645967" remote="130711982040000000" Dst="2" />
+<file name="testUser.php" server="Z:/ECMS/app/" local="130716727752631444" remote="130716727750000000" Dst="2" />
 <file name="login.html" server="Z:/UIDesigns/ECMS/app/" local="130703785708544676" remote="130703785700000000" Dst="2" />
 <file name="loginCtrl.js" server="Z:/UIDesigns/ECMS/app/" local="130703785708624676" remote="130703785700000000" Dst="2" />
 <file name="loginService.js" server="Z:/UIDesigns/ECMS/app/" local="130703785708674676" remote="130703785700000000" Dst="2" />

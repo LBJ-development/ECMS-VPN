@@ -5,15 +5,15 @@
 			<span class="title">Assign Case Manager</span>
 		</div>
 
-        <!-- DATE RANGE ///////////////////////////////////////////////////////////////////////////////-->
+	<!-- DATE RANGE ///////////////////////////////////////////////////////////////////////////////-->
 		<div class="filter-holder" role="query-filter">
 			<form name="dateRange-frm" ng-submit="changeDateRange()" role="form">
-        		<div class="filter-row-holder">
-        			<ul>
-        				<li class=" title-small" style="width: 320px">
-        					Select an other received date range:
-        				</li>
-        				<li style="padding-right: 0px">
+				<div class="filter-row-holder">
+					<ul>
+						<li class=" title-small" style="width: 320px">
+							Select an other received date range:
+						</li>
+						<li style="padding-right: 0px">
 							<span class="labelText-small" >From:</span> 
 							<input kendo-date-picker k-on-change="enableSumbitBtn()" k-ng-model="startingDate" style="width: 180px"/> 
 						</li>
@@ -22,30 +22,53 @@
 							<input kendo-date-picker k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
 						</li>
 						<li  class="submit-btn">
-                			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
-                		</li>
-        			</ul>
-        		</div>
-        	</form>
-        </div>
-		<!-- DAILY ASSIGNMENT WORKSHEET /////////////////////////////////////////////////////////////////-->
-      	<div class="row-holder title-small" style="padding: 0px 0 0px 0px">
+                						<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
+						</li>
+        					</ul>
+				</div>
+        			</form>
+		</div>
+
+	<!-- DAILY ASSIGNMENT WORKSHEET /////////////////////////////////////////////////////////////////-->
+		<div class="row-holder title-small" style="padding: 0px 0 0px 0px">
+			<span class="inline-msg"> {{warning}} </span>
 			<ul>
-				<li class="linkButton toPDF"><a href="" ng-click="dwsa.center().open()">Daily assignment worksheet</a></li>
+				<li class="linkButton daws"><a href="" ng-click="daws.center().open()">Daily assignment worksheet</a>
+				</li>
 			</ul>
 		</div>
 
-		 <div kendo-window="dwsa" k-options="dwsaOptions" style="text-align: center">
-			<span class="title-large">Daily Assignment Worksheet for:</span>
-			<span class="date-title-large">{{todayDate}}</span>
+		 <div kendo-window="daws" k-options="dawsOptions" style="text-align: center">
+		 	<div class="large-window-title ">
+				<span class="title-reduced" >Daily Assignment Worksheet for:</span>
+				<span class="date-title-large">{{todayDate}}</span>
+			</div>
+			
+			<kendo-grid k-options="dawsGridOptions" k-rebind="dawsGridOptions" id="grid"  k-ng-delay="dawsGridOptions"> </kendo-grid >
+
+			<div class="bottom-window">
+					<ul>
+						<li  class="submit-btn">
+                						<kendo-button class="k-button" ng-click="daws.close()">SAVE & CLOSE</kendo-button>
+						</li>
+						
+						<li  class="submit-btn">
+                						<kendo-button class="k-button">SAVE</kendo-button>
+						</li>
+
+						<li  class="submit-btn">
+                						<kendo-button  class="k-button"  ng-click="daws.close()">CANCEL</kendo-button>
+						</li>
+						
+        					</ul>
+				</div>
+			
 		</div>
 
         <!-- DATA GRID /////////////////////////////////////////////////////////////////-->
 		<div role="datagrid" class="grid-holder" >
-			<div>
-				<kendo-grid k-options="mainGridOptions" k-rebind="mainGridOptions" id="grid"  k-ng-delay="mainGridOptions">
-				</kendo-grid >
-			</div>  
+			<kendo-grid k-options="mainGridOptions" k-rebind="mainGridOptions" id="grid"  k-ng-delay="mainGridOptions">
+			</kendo-grid >
 		</div>
 	</div>
 </div>
