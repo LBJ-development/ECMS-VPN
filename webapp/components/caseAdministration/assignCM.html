@@ -4,6 +4,7 @@
 		<div class="title-holder">
 			<span class="title">Assign Case Manager</span>
 		</div>
+
         <!-- DATE RANGE ///////////////////////////////////////////////////////////////////////////////-->
 		<div class="filter-holder" role="query-filter">
 			<form name="dateRange-frm" ng-submit="changeDateRange()" role="form">
@@ -30,10 +31,15 @@
 		<!-- DAILY ASSIGNMENT WORKSHEET /////////////////////////////////////////////////////////////////-->
       	<div class="row-holder title-small" style="padding: 0px 0 0px 0px">
 			<ul>
-				<li class="linkButton toPDF"><a href=""  ng-click="">Daily assignment worksheet</a></li>
+				<li class="linkButton toPDF"><a href="" ng-click="dwsa.center().open()">Daily assignment worksheet</a></li>
 			</ul>
 		</div>
-        
+
+		 <div kendo-window="dwsa" k-options="dwsaOptions" style="text-align: center">
+			<span class="title-large">Daily Assignment Worksheet for:</span>
+			<span class="date-title-large">{{todayDate}}</span>
+		</div>
+
         <!-- DATA GRID /////////////////////////////////////////////////////////////////-->
 		<div role="datagrid" class="grid-holder" >
 			<div>
@@ -59,6 +65,5 @@
 			<span id="narrativeAuthor"></span> 
 			<span>  --  </span>
 			<span id="narrativeDate"></span>
-		
 	</div>
 </script>

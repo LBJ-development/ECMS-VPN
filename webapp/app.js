@@ -46,6 +46,8 @@ app.factory("ConfigService", function($window, $rootScope) {
 app.factory('httpRequestInterceptor', function (StorageService, ConfigService) {
     return {
         request: function (config) {
+        	//console.log("Inside interceptor:" )
+        	//console.log(config);
             config.headers['X-Auth-Token'] = StorageService.getToken();
             if (config.url.indexOf('.html') === -1){
                 config.url = ConfigService.getRestURI() + config.url ;
@@ -95,7 +97,8 @@ app.config(function ($httpProvider) {
 app.run( function($location, $window, ConfigService, StorageService){
     //ConfigService.setRestURI("http://localhost:8080/");
     ConfigService.initializeApp();
-    ConfigService.setRestURI("http://cc-devapp1.ncmecad.net:8080/ecms-services.nightly");
+    //ConfigService.setRestURI("http://cc-devapp1.ncmecad.net:8080/ecms-staging");
+	ConfigService.setRestURI("http://cc-devapp1.ncmecad.net:8080/ecms-services.nightly");
     StorageService.setToken(null);
 
     var windowElement = angular.element($window);
@@ -104,7 +107,7 @@ app.run( function($location, $window, ConfigService, StorageService){
         
         // the following line of code will prevent reload or navigating away.
         if (StorageService.getToken() === 'null' && $location.path() !== "/login" ) {
-			console.log( " Browser prevented from refreshing/accessing directly a partial page: " + $location.path() );
+			//console.log( " Browser prevented from refreshing/accessing directly a partial page: " + $location.path() );
             event.preventDefault();
         }
     })
