@@ -315,9 +315,6 @@ angular.module('ECMSapp.assignCM', [])
 /*var grid = e.detailRow.find("[data-role=grid]").data("kendoGrid");
 		grid.dataSource.read();*/
 
-		 console.log("FROM INIT");
-		 console.log(e);
-
 		var detailRow = e.detailRow;
 			kendo.bind(detailRow, e.data);
 			// console.log(grid.tbody.find("tr.k-master-row").first());
@@ -402,6 +399,14 @@ angular.module('ECMSapp.assignCM', [])
 				// $('#narrativeDate').replaceWith("Narrative Date: " + data[ index ].narrativeDate);
 			}
 
+		/*	var div			= $('#detailRowTest');
+			var narrativeText	= data[ index  -1 ].narrativeText;
+			var narrativeType	= data[ index  -1 ].narrativeType;
+			var author		= data[ index  -1 ].narrativeAuthor;
+			var narrativeDate	= data[ index  -1 ].narrativeDate;
+
+			new  acmDetailRow( div, narrativeText, narrativeType, author, narrativeDate)*/
+
 			$scope.narrativeType = data[index -1].narrativeType;
 			$scope.narrativeAuthor = data[index -1].narrativeAuthor;
 			$scope.narrativeDate = data[index -1].narrativeDate;
@@ -416,8 +421,6 @@ angular.module('ECMSapp.assignCM', [])
 		$scope.urlCM = "/rest/casemanager/list/all";
 
 		DataFtry.getData($scope.urlCM).then(function(result){
-
-			console.log(result);
 
 			$("#caseManagers").kendoDropDownList({
 				dataTextField: "name",
