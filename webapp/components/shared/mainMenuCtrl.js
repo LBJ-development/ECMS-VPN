@@ -21,6 +21,7 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
 		
 		 $routeProvider.when('/caseadministration/assigncm', {
             templateUrl: 'components/caseAdministration/assignCM.html'
+            // templateUrl: 'components/caseAdministration/assignCM-test.html'
         });
 
         $routeProvider.when('/comingsoon', {

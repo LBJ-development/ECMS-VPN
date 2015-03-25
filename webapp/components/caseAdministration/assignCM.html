@@ -68,9 +68,6 @@
         <!-- DATA GRID /////////////////////////////////////////////////////////////////-->
 		<div role="datagrid" class="grid-holder" >
 			<kendo-grid k-options="mainGridOptions" k-rebind="mainGridOptions" id="grid"  k-ng-delay="mainGridOptions">
-
-			
-
 			</kendo-grid >
 		</div>
 	</div>
@@ -81,3 +78,36 @@
 	<div class="spacer" style="height: 10px"><br></div>
 	<detail-row></detail-row>
 </script>
+
+<script id="row-template" type="text/x-kendo-template >
+
+	<div id="detailRowTest">
+		<ul data-uid="#: uid #" class="row-detail-info" >
+			<li class="name" >Narrative Type: <span>#: narrativeType#</span></li>
+			<li >Author:  <span>#: narrativeAuthor#</span> </li>
+			<li >Narrative Date:  <span>#: narrativeDate#</span></li>
+		</ul>
+	</div>
+
+	<div class="narrative-text-box" readonly><span>#: narrativeText#</span></div>
+
+</script>
+
+ <style>
+         
+
+                .employeeID,
+                .country {
+                    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+                    font-size: 50px;
+                    font-weight: bold;
+                    color: #898989;
+                }
+                td.photo, .employeeID {
+                    text-align: center;
+                }
+                .k-grid-header .k-header {
+                    padding: 10px 20px;
+     
+            </style>
+

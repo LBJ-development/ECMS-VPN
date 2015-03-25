@@ -1,0 +1,44 @@
+
+<div class="content-wrapper">
+	<div class="content-holder" ng-controller="AssignCMCtrl">
+
+
+        <!-- DATA GRID /////////////////////////////////////////////////////////////////-->
+		<div role="datagrid" class="grid-holder" >
+			<kendo-grid k-options="mainGridOptions" k-rebind="mainGridOptions" id="grid"  k-ng-delay="mainGridOptions">
+
+			<div k-detail-template >  
+          
+                <div>
+                    <ul>
+                        <li >Narrative Type: <span> {{narrativeType}}</span></li>
+						<li >Author:  <span>{{narrativeAuthor}}</span> </li>
+						<li >Narrative Date:  <span> {{narrativeDate}}</span></li>
+                    </ul>
+                </div>
+             
+          </div>
+
+			
+
+			</kendo-grid >
+		</div>
+	</div>
+</div>
+
+<!--  GRID DETAIL /////////////////////////////////////////////////////////////////-->
+<script id="detail-template" type="text/x-kendo-template >
+	<div class="spacer" style="height: 10px"><br></div>
+		<div class="gridDetail" ></div>
+
+	<div id="detailRowTest" class="row-detail-info">
+		<ul>
+			<li >Narrative Type: <span> {{narrativeType}}</span></li>
+			<li >Author:  <span>{{narrativeAuthor}}</span> </li>
+			<li >Narrative Date:  <span> {{narrativeDate}}</span></li>
+		</ul>
+	</div>
+
+	<!-- NARRATIVE WIHT GRID -->
+	<div class="gridNarrative" ></div>
+</script>
