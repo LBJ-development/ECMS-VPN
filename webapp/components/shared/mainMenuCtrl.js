@@ -21,7 +21,6 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
 		
 		 $routeProvider.when('/caseadministration/assigncm', {
             templateUrl: 'components/caseAdministration/assignCM.html'
-            // templateUrl: 'components/caseAdministration/assignCM-test.html'
         });
 
         $routeProvider.when('/comingsoon', {
@@ -156,6 +155,20 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
             // DISPLAY THE NAME OF THE PAGE THAT HAS BEEN CLICKED
             scope.onSelect = function(ev) {
                 $rootScope.pageToBuild = $(ev.item.firstChild).text();
+
+                console.log($("#mainMenu")[0].firstChild);
+                console.log(ev.item);
+
+                if(ev.item == $("#mainMenu")[0].firstChild){
+                    $(ev.item).find(".home-menu-btn").addClass("home-menu-sel-btn").removeClass("home-menu-btn");
+                } else {
+                    // $("#mainMenu")[0].firstChild.find(".home-menu-sel-btn").addClass("home-menu-btn").removeClass("home-menu-sel-btn")
+                }
+
+
+                $("#mainMenu").find(".k-state-selected").removeClass("k-state-selected");
+                $(ev.item).addClass("k-state-selected");
+                  // console.log(ev.item.attributes.c);
 
             };
         }

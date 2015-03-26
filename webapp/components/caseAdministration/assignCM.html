@@ -22,16 +22,17 @@
 							<input kendo-date-picker k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
 						</li>
 						<li  class="submit-btn">
-                						<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
+                			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT
+                			</kendo-button>
 						</li>
-        					</ul>
+					</ul>
 				</div>
-        			</form>
+			</form>
 		</div>
 
 	<!-- DAILY ASSIGNMENT WORKSHEET /////////////////////////////////////////////////////////////////-->
 		<div class="row-holder title-small" style="padding: 0px 0 0px 0px">
-			<span class="inline-msg"> {{warning}} </span>
+			<span ng-class="warningClass"> {{warning}} </span>
 			<ul>
 				<li class="linkButton daws"><a href="" ng-click="daws.center().open()">Daily assignment worksheet</a>
 				</li>
@@ -44,25 +45,25 @@
 				<span class="date-title-large">{{todayDate}}</span>
 			</div>
 			
-			<kendo-grid k-options="dawsGridOptions" k-rebind="dawsGridOptions" id="grid"  k-ng-delay="dawsGridOptions"> </kendo-grid >
+			<kendo-grid k-options="dawsGridOptions" k-rebind="dawsGridOptions" id="grid"  k-ng-delay="dawsGridOptions">
+			</kendo-grid >
 
 			<div class="bottom-window">
-					<ul>
-						<li  class="submit-btn">
-                						<kendo-button class="k-button" ng-click="daws.close()">SAVE & CLOSE</kendo-button>
-						</li>
+				<ul>
+					<li  class="submit-btn">
+                		<kendo-button class="k-button" ng-click="daws.close()">SAVE & CLOSE</kendo-button>
+					</li>
 						
-						<li  class="submit-btn">
-                						<kendo-button class="k-button">SAVE</kendo-button>
-						</li>
+					<li  class="submit-btn">
+                		<kendo-button class="k-button">SAVE</kendo-button>
+					</li>
 
-						<li  class="submit-btn">
-                						<kendo-button  class="k-button"  ng-click="daws.close()">CANCEL</kendo-button>
-						</li>
+					<li  class="submit-btn">
+                		<kendo-button  class="k-button"  ng-click="daws.close()">CANCEL</kendo-button>
+					</li>
 						
-        					</ul>
-				</div>
-			
+        		</ul>
+			</div>	
 		</div>
 
         <!-- DATA GRID /////////////////////////////////////////////////////////////////-->
@@ -73,14 +74,14 @@
 	</div>
 </div>
 
-<!--  GRID DETAIL /////////////////////////////////////////////////////////////////-->
-<script id="detail-template" type="text/x-kendo-template >
+<!--  GRID DETAIL TEMPLATE /////////////////////////////////////////////////////////////////-->
+<script id="detail-template" type="text/x-kendo-template" >
 	<div class="spacer" style="height: 10px"><br></div>
 	<detail-row></detail-row>
 </script>
 
-<script id="row-template" type="text/x-kendo-template >
-
+<!--  NARRATIVE ROW TEMPLATE /////////////////////////////////////////////////////////////////-->
+<script id="row-template" type="text/x-kendo-template" >
 	<div id="detailRowTest">
 		<ul data-uid="#: uid #" class="row-detail-info" >
 			<li class="name" >Narrative Type: <span>#: narrativeType#</span></li>
@@ -88,26 +89,5 @@
 			<li >Narrative Date:  <span>#: narrativeDate#</span></li>
 		</ul>
 	</div>
-
 	<div class="narrative-text-box" readonly><span>#: narrativeText#</span></div>
-
 </script>
-
- <style>
-         
-
-                .employeeID,
-                .country {
-                    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-                    font-size: 50px;
-                    font-weight: bold;
-                    color: #898989;
-                }
-                td.photo, .employeeID {
-                    text-align: center;
-                }
-                .k-grid-header .k-header {
-                    padding: 10px 20px;
-     
-            </style>
-

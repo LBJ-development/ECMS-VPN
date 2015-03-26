@@ -4,7 +4,6 @@ angular.module('ECMSapp.assignCM', [])
 
 .controller('AssignCMCtrl', [ '$scope', 'DataFtry',  function( $scope, DataFtry, $q){
 
-
 	// DAILY ASSIGNMENT WORKSHEET WINDOW //////////////////////////////////////////////////
 
 	$scope.dawsOptions = {
@@ -100,8 +99,6 @@ angular.module('ECMSapp.assignCM', [])
 						title	:"Telecom.",
 						width	: "7%",
 						editor: categoryDropDownEditor,
-					
-
 					} ]
 				};
 
@@ -158,12 +155,16 @@ angular.module('ECMSapp.assignCM', [])
 
 	// WATCH FOR A DATE RANGE CHANGE
 	$scope.$watch('submitSearch', function(newValue, oldValue) {
-		console.log("Calling submitSearch:" + $scope.submitSearch);
+		// console.log("Calling submitSearch:" + $scope.submitSearch);
 		DataFtry.getCasesForAssignment(formatStartingDate(), formatEndingDate()).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;
+			if(result.data.messages.CASES_LIST == "More than 500 results found, returning first 500, please adjust the date range"){
+				$scope.warningClass = "inline-err";
+			} else {
+				$scope.warningClass = "inline-msg";
+			}
 			$scope.warning = result.data.messages.CASES_LIST;
 		});
-		
 	});
 	
 	// MAIN GRID SETTINGS //////////////////////////////////////////////////////////////////////////////////////
@@ -432,122 +433,13 @@ angular.module('ECMSapp.assignCM', [])
 			$("#caseGroups").kendoDropDownList({
 
 				select: function(e) {
-   					 var item = e.item;
-    					var text = item.text();
-    					console.log(text);
-    // Use the selected item or its text
-					  }
-				});
-
-			
-			// console.log (result.data.content);
-
-			/*$("#testDrop").kendoDropDownList({
-				dataTextField: "text",
-				dataValueField: "value",
-				dataSource: data,
-				index: 0
-			});*/
-/*
-			$scope.dataCaseGroup  = {
-				dataTextField: "name",
-				dataValueField: "id",
-				dataSource:  result.data.content
-			};*/
-
-			/*var caseGroups = $("#caseGroups").data("kendoDropDownList");
-
-			caseGroups.select(function(dataItem) {
-
-				console.log(dataItem);
-				return dataItem;
-			});*/
+					var item = e.item;
+					var text = item.text();
+				}
+			});
 		});
-
 	}
-	
-	$scope.detailGridOptions = function($scope, dataItem) {
-
-
-			// console.log("FROM DETAILGRIDOPTIONS");
-			// console.log(dataItem);
-
-
-		// console.log("DETAIL GRID OPTION");
-		/*var data = {};
-
-				return  {
-
-					dataSource:{
-						data: data,
-						schema:{
-								model: {
-									fields:{
-										childAge			: { type: "string"	},
-										childFirstName		: { type: "string"	},
-										childLastName		: { type: "string"	},
-										childRecoveryStatus	: { type: "string"	}
-										}
-									}
-								}
-							},
-                    scrollable: false,
-                    sortable: false,
-                    pageable: false,
-					columns: [
-						{ field: "childAge", title:"Child age", width: "56px" },
-						{ field: "childFirstName", title:"Child first name", width: "110px" },
-						{ field: "childLastName", title:"Child last name" },
-						{ field: "childRecoveryStatus", title: "Recovery status", width: "190px" }
-						]
-					};*/
-			};
-	
-	/*var detailData = {};*/
-	 
-/*	$scope.detailGridOptions =  {
-
-					//dataSource: result,
-
-                    scrollable: false,
-                    sortable: false,
-                    pageable: false,
-					columns: [
-                    { field: "childAge", title:"Child age", width: "56px" },
-                    { field: "childFirstName", title:"Child first name", width: "110px" },
-                    { field: "childLastName", title:"Child last name" },
-                    { field: "childRecoveryStatus", title: "Recovery status", width: "190px" }
-                    ]
-		
-		
-	};*/
 			
-// PREVIOUS GRID DETAIL ///////////////////////////////////////////////////////////			
-/*	$scope.detailGridOptions = function($scope, dataItem) {
-		return {
-			dataSource: {
-                        type: "odata",
-                        transport: {
-                            read: "http://demos.telerik.com/kendo-ui/service/Northwind.svc/Orders"
-                        },
-                        serverPaging: true,
-                        serverSorting: true,
-                        serverFiltering: true,
-                        pageSize: 5
-                    },
-                    scrollable: false,
-                    sortable: false,
-                    pageable: true,
-                    columns: [
-                    { field: "OrderID", title:"ID", width: "56px" },
-                    { field: "ShipCountry", title:"Ship Country", width: "110px" },
-                    { field: "ShipAddress", title:"Ship Address" },
-                    { field: "ShipName", title: "Ship Name", width: "190px" }
-                    ]
-                };	
-            };*/
-       
-				
 	// MAKE THE CHECK BOX PERSISTING
 /*	var checkedIds = {};
 	
@@ -602,9 +494,6 @@ angular.module('ECMSapp.assignCM', [])
 			optionLabel: "--Select Value--"
 		});
 	}
-
-
-
 }])
 
 .directive ('detailRow', function () {

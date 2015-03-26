@@ -5,6 +5,44 @@
 @import "mixins.less";
 @import "CC-mixins.less";
 
+// MAIN MENU ////////////////////////////////////////////////////
+ #mainMenu .k-state-selected{
+	color: @veryverylightblue;
+	.vertical(@darkgradientstartcolor, @darkgradientendcolor);
+}
+
+ #mainMenu .k-state-hover >.k-link{
+	color: @veryverylightblue;
+	.vertical(#375d94, #2e74d7);
+}
+
+.home-menu-btn{
+	
+	background-image: url(../images/new-home-icn.png);
+	background-repeat:no-repeat;
+	background-position: 0px 0px;
+	background-size: 15px 35px;	
+}
+
+.home-menu-sel-btn{
+	
+	background-image: url(../images/new-home-icn.png);
+	background-repeat:no-repeat;
+	background-position: 0px -21px;
+	background-size: 15px 35px;	
+}
+
+
+.sub-menu {
+	text-align:left;	
+	background-color: @dirtywhite;
+	border-bottom: solid 1px  @bordergray !important;
+	border-top: solid 1px  @white !important;
+}
+
+
+
+
 .k-button {
 	background-color:rgb(255,255,255);
 	.vertical(@white, @lightgradientendcolor);
@@ -115,20 +153,6 @@
 
 .k-menu.k-header, .k-menu .k-item, .k-textbox, .k-autocomplete.k-header, .k-dropdown-wrap.k-state-active, .k-picker-wrap.k-state-active, .k-numeric-wrap.k-state-active, .k-block, .k-widget, .k-input, .k-textbox, .k-group, .k-content, .k-header, .k-filter-row > th, .k-editable-area, .k-separator, .k-colorpicker .k-i-arrow-s, .k-textbox > input, .k-autocomplete, .k-dropdown-wrap, .k-toolbar, .k-group-footer td, .k-grid-footer, .k-footer-template td, .k-state-default, .k-state-default .k-select, .k-state-disabled, .k-grid-header, .k-grid-header-wrap, .k-grid-header-locked, .k-grid-footer-locked, .k-grid-content-locked, .k-grid td, .k-grid td.k-state-selected, .k-grid-footer-wrap, .k-pager-wrap, .k-pager-wrap .k-link, .k-pager-refresh, .k-grouping-header, .k-grouping-header .k-group-indicator, .k-panelbar > .k-item > .k-link, .k-panel > .k-item > .k-link, .k-panelbar .k-panel, .k-panelbar .k-content, .k-treemap-tile, .k-calendar th, .k-slider-track, .k-splitbar, .k-dropzone-active, .k-tiles, .k-toolbar, .k-tooltip, .k-button-group .k-tool, .k-upload-files  {
     border-color:  @bordergray;
-}
-
-.home-menu-btn{
-	
-	background-image: url(../images/new-home-icn.png);
-	background-repeat:no-repeat;
-	background-position: 0px 0px;
-	background-size: 15px 14px;	
-}
-.sub-menu {
-	text-align:left;	
-	background-color: @dirtywhite;
-	border-bottom: solid 1px  @bordergray !important;
-	border-top: solid 1px  @white !important;
 }
 
 [role="gridcell"]  {
