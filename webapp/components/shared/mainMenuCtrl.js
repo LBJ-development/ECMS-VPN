@@ -35,7 +35,8 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
 
         $scope.menuSource =    [{
             text: "Home",
-            spriteCssClass: "home-menu-btn", // Item image sprite CSS class, optional.
+            spriteCssClass: "home-menu-sel-btn", // Item image sprite CSS class, optional.
+            cssClass: "k-state-selected",
             url: "#/home" ,
             permission: "menu:home"
 
@@ -43,10 +44,10 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
             text: "Call Management",
             url: "#/callmanagement",
             permission: "menu:callmanagement"
-        },
-            {
-                text: "Case Administration",
+        }, {
+                 text: "Case Administration",
                 url: "#/caseadministration",
+                cssClass: "head-menu", // EMPTY CLASS ONLY FOR SELECTION PURPOSES
                 permission: "menu:caseadministration",
                 items: [ {
                     text: "Assign CM",
@@ -156,20 +157,28 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
             scope.onSelect = function(ev) {
                 $rootScope.pageToBuild = $(ev.item.firstChild).text();
 
-                console.log($("#mainMenu")[0].firstChild);
-                console.log(ev.item);
-
+                // console.log($("#mainMenu")[0].firstChild);
+              
+                // CHANGE THE HOME ICON IMAGE 
                 if(ev.item == $("#mainMenu")[0].firstChild){
                     $(ev.item).find(".home-menu-btn").addClass("home-menu-sel-btn").removeClass("home-menu-btn");
                 } else {
-                    // $("#mainMenu")[0].firstChild.find(".home-menu-sel-btn").addClass("home-menu-btn").removeClass("home-menu-sel-btn")
+                    $("#mainMenu").find(".home-menu-sel-btn").addClass("home-menu-btn").removeClass("home-menu-sel-btn");
                 }
 
-
+                // CHANGE THE ITEM MENU CLASS
                 $("#mainMenu").find(".k-state-selected").removeClass("k-state-selected");
                 $(ev.item).addClass("k-state-selected");
-                  // console.log(ev.item.attributes.c);
 
+                // HIGHTLIGHT THE HEAD MENU WHEN A SUBMENU IS SELECTED
+              if($(ev.item).hasClass("sub-menu")) {
+                   $("#mainMenu").find(".head-menu").addClass("k-state-selected").removeClass("k-state-border-down");;
+                }
+                // CLOSES THE SUBMENU WHEN THE MUNU IS CLICKED
+                 if($(ev.item).hasClass("head-menu")) {
+                      var menu = $("#mainMenu").data("kendoMenu");
+                       menu.close();
+                  }
             };
         }
     };

@@ -175,16 +175,16 @@ angular.module('ECMSapp.assignCM', [])
 				schema: {
 					model: {
 						fields: {
-								caseNumber		: { type: "string"	},
-								dateReceived	: { type: "date"	},
-								incidentDate	: { type: "date"	},
-								source			: { type: "string"	},
-								caseTypeAbbr	: { type: "string"	},
-								childCount		: { type: "number"	},
-								alerts			: { type: "string"	},
-								state			: { type: "string"	},
-								caseManager		: { type: "string"	},
-								selectedID		: {editable: false, nullable: true	}
+								caseNumber		: { type: "string" },
+								dateReceived		: { type: "date"	},
+								incidentDate		: { type: "date"	},
+								source			: { type: "string" },
+								caseTypeAbbr		: { type: "string" },
+								childCount		: { type: "number" },
+								alerts			: { type: "string" },
+								state			: { type: "string" },
+								caseManager		: { type: "string" },
+								selectedID		: {editable: false, nullable: true }
 								},
 							}
 						},
@@ -260,7 +260,7 @@ angular.module('ECMSapp.assignCM', [])
 						},{
 							
 						field	: "caseNumber",
-						title	: "RFS/Case",
+						title	: "Case",
 						width	: "15%"
 						},{
 						field	: "dateReceived",
@@ -342,9 +342,8 @@ angular.module('ECMSapp.assignCM', [])
 					{ field: "incidentType", title: "Child Case Type", width: "17%" },
 					{ field: "incidentState", title: "Inc. State", width: "45px" },
 					{ field: "parentRelationship", title: "P/G Relationship", width: "15%" },
-					{ field: "foreignLanguage", title: "Foreign Language", width: "12%" },
-					{ field: "childFirstName", title:"Child First Name", width: "14%" },
-					{ field: "childLastName", title:"Child Last Name", width: "14%" },
+					{ field: "foreignLanguage", title: "Foreign Lang.", width: "10%" },
+					{ field: "childName", title:"Child Name", width: "20%" },
 					{ field: "childAge", title:"Child Age", width: "45px" },
 					{ field: "criticalEndangerements", title: "Endangerments", width: "20%" }
 					]
