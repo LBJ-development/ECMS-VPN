@@ -1,38 +1,33 @@
 'use strict';
 
-angular.module('ECMSapp.assignCM', [])
+angular.module('ECMSapp.intakeDistribution', [])
 
-.controller('AssignCMCtrl', [ '$scope', 'DataFtry',  function( $scope, DataFtry, $q){
+.controller('IntakeDistributionCtrl', [ '$scope', 'DataFtry',  function( $scope, DataFtry, $q){
 
 	// DAILY ASSIGNMENT WORKSHEET WINDOW //////////////////////////////////////////////////
 
-	$scope.dawsOptions = {
-		width: "80%",
+	$scope.confirmMessageOptions = {
+		width: 380,
 		visible: false,
-		maxWidth: 1200,
-		height: "80%",
+		height: 160,
 		modal: true,
-		// title: "Daily Assignment Worksheet",
-		open: getDAWSdata
-		// position: {
-		// top: 400,
-		// left: "center"
-		// },
+		scrollable : false,
+		// open: confirmMessage
 	};
+ 	$scope.confirmTest = function() {
 
-	$scope.todayDate = formatDate();
+ 		console.log("FROM CONFIRM TEST")
 
-	function getDAWSdata(){
 
-		var url = "/rest/casemanager/worksheet/current";
+		/*$scope.numCases = "5" + " cases";
+		$scope.recipient = "to " + "Clearinghouse";
 
-		DataFtry.getData(url).then(function(result){
+		$scope.confirmMessage.center().open();*/
 
-			$scope.dawsGridOptions.dataSource.data = result.data.content;
-		});
-	};
 
-	$scope.dawsGridOptions =  { 
+	}
+
+	$scope.dawsGridOptions = {
 		dataSource: {
 			data: result,
 				schema: {
@@ -54,7 +49,7 @@ angular.module('ECMSapp.assignCM', [])
 					},
 		sortable	: true,
 		scrollable	: true,
-		height 		: "83%",
+		height		: "83%",
 		editable	: true,
 		columns		: [{
 						field	: "name",
@@ -64,7 +59,7 @@ angular.module('ECMSapp.assignCM', [])
 						field	: "location",
 						title	: "Loc.",
 						width	: "6%"
-					},{	
+					},{
 						field	: "cmGroup",
 						title	: "CM Grp.",
 						width	: "7%"
@@ -103,7 +98,7 @@ angular.module('ECMSapp.assignCM', [])
 				};
 
 	function categoryDropDownEditor(container, options) {
-		 $('<input required data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '"/>')
+	$('<input required data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '"/>')
 		.appendTo(container)
 		.kendoDropDownList({
 			autoBind: false,

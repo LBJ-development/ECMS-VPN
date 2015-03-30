@@ -1,14 +1,7 @@
 
 	<div class="gridDetail" ></div>
 
-<!-- 	<div id="detailRowTest" class="row-detail-info">
-		<ul>
-			<li >Narrative Type: <span> {{narrativeType}}</span></li>
-			<li >Author:  <span>{{narrativeAuthor}}</span> </li>
-			<li >Narrative Date:  <span> {{narrativeDate}}</span></li>
-		</ul>
-	</div>
- -->
+
 	<!-- NARRATIVE WIHT GRID -->
 	<div class="gridNarrative" ></div>
 
@@ -16,25 +9,22 @@
     	<!-- <div class="text-box" readonly><span>{{narrativeText}}</span></div> -->
 	
 	<div style="width: 100%, text-align: left, heigth: 15px" class="detail-bottom">
+		<form id="assignform" >
+	   
 		<ul>
 			<li>
-				<kendo-button  ng-model="button" class="k-button">SUBMIT</kendo-button>
+				<kendo-button  ng-model="button" class="k-button" ng-click="assignCM()" id="submitButton">SUBMIT</kendo-button>
 			</li>
 			<li>
-				<select id="caseManagers"></select>
+				<select ng-model="assignCM.caseManager" id="caseManagers"></select>
 			</li>
-			<!-- <li>
-				<select kendo-drop-down-list  style="width: 200px"  id="dropTest" k-options="dataCaseGroup"></select>
-			</li> -->
+
 			<li>
-				<select kendo-drop-down-list  style="width: 200px" k-options="dataOption" id="caseGroups">
-					<option>ALL</option>
-					<option>CMS</option>
-					<option>CRU</option>
-					<option>FAU</option>
-					<option>FSU</option>  
+				<select kendo-drop-down-list  style="width: 200px"  id="caseGroups">
 				</select>
 
 			</li>
 		</ul>
+		
+		</form>
 	</div> 

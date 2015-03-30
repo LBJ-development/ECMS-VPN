@@ -10,6 +10,7 @@ var app = angular.module('ECMSapp', [
     'ECMSapp.services',
 	'ECMSapp.adminMain',
 	'ECMSapp.assignCM',
+    'ECMSapp.intakeDistribution',
 	'kendo.directives'
 	])
 

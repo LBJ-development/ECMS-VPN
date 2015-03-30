@@ -19,14 +19,18 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
             templateUrl: 'components/caseAdministration/caseAdministration.html'
         });
 		
-		 $routeProvider.when('/caseadministration/assigncm', {
+		$routeProvider.when('/caseadministration/assigncm', {
             templateUrl: 'components/caseAdministration/assignCM.html'
+        });
+
+        $routeProvider.when('/caseadministration/intakedistribution', {
+            templateUrl: 'components/caseAdministration/intakeDistribution.html'
         });
 
         $routeProvider.when('/comingsoon', {
             templateUrl: 'components/shared/comingSoon.html'
         });
- 		$routeProvider.otherwise({redirectTo: '/comingsoon'});
+        $routeProvider.otherwise({redirectTo: '/comingsoon'});
         //$routeProvider.otherwise({redirectTo: '/login'});
 
     }])
@@ -56,10 +60,10 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
                     permission: "menu:caseadministration:assigncm"
                 },
                     {
-                        text: "Report Distribution",
+                        text: "Intake Distribution",
                         cssClass: "sub-menu",
-                        url: "#/caseadministration/reportdistribution",
-                        permission: "menu:caseadministration:reportdistribution"
+                        url: "#/caseadministration/intakedistribution",
+                        permission: "menu:caseadministration:intakedistribution"
                     },
                     {
                         text: "Manage Recoveries",

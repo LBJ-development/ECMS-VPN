@@ -4,7 +4,18 @@ angular.module('ECMSapp.services', [])
 
 .factory('DataFtry', function($http, $q) {
 	
+	Object.toparams = function ObjecttoParams(obj) {
+                var p = [];
+                for (var key in obj) {
+                    p.push(key + '=' + encodeURIComponent(obj[key]));
+                }
+                return p.join('&');
+            };
+			
+			
+	
 	var getData = function(url){
+		console.log("inside getData:" + url)
 		 var $promise =  $http({
                 method: 'GET',
                 url: url,
@@ -14,6 +25,7 @@ angular.module('ECMSapp.services', [])
 		var deferred = $q.defer();
 		
 		$promise.then(function(result){
+			console.log(result);
 			
 			if(result.data.status == 'SUCCESS'){
 				deferred.resolve(result);
@@ -25,17 +37,40 @@ angular.module('ECMSapp.services', [])
 		return deferred.promise;
 	}
 	
+	var assignCaseManager = function(caseid, managerid) {	
+
+            var $promise =  $http({
+                method: 'POST',
+                url: "/rest/case/assignmanager/",
+                data: Object.toparams({
+                        caseId: caseid,
+                        managerId: managerid
+                    }),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            });
+        		
+		var deferred = $q.defer();
+		
+		$promise.then(function(result){
+			
+			if(result.data.status == 'SUCCESS'){
+				deferred.resolve(result);
+				
+			} else {
+				
+				alert("Something better is coming!");
+			}
+		})
+		return deferred.promise;
+	}
+	
+
+			
 	var getCases = function(casesearch) {	
 	
 	//console.log("FROM GET DATA: "  + URL);
 
-		Object.toparams = function ObjecttoParams(obj) {
-                var p = [];
-                for (var key in obj) {
-                    p.push(key + '=' + encodeURIComponent(obj[key]));
-                }
-                return p.join('&');
-            };
+		
 
             var restservice = "/rest/caseadmin/casesPlus";
             var data = Object.toparams(casesearch);
@@ -90,6 +125,7 @@ angular.module('ECMSapp.services', [])
     return {
 		getData: getData,
 		getCases: getCases,
-		getCasesForAssignment: getCasesForAssignment
+		getCasesForAssignment: getCasesForAssignment,
+		assignCaseManager: assignCaseManager
     };
 })
