@@ -11,7 +11,7 @@
 				<div class="filter-row-holder">
 					<ul>
 						<li class="title-small" style="width: 320px">
-							Select an other received date range:
+							Select an other intake date range:
 						</li>
 						<li style="padding-right: 0px">
 							<span class="labelText-small" >From:</span> 
@@ -22,31 +22,41 @@
 							<input kendo-date-picker k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
 						</li>
 					</ul>
-        		</div>
+        				</div>
+
+        				<!--  SEARCH OPTIONS ///////////////////////////////////////////////////////////////////////////////-->
 				<div class="filter-row-holder">
 					<ul >
-						<li style="width: 200px">
-                			<span class="labelText-small" >Police Report:</span>
-        					<select  style="width: 190px" kendo-multi-select k-ng-delay="rcTypeDataSource" ng-model="casesearch.rcType" k-placeholder="'Select Type'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcTypeDataSource" k-on-change="enableSumbitBtn()"></select>
-                		</li> 
-                		<li  class="submit-btn" style="padding-top:20px">
-                			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
-                		</li>
-            		</ul>
-               	</div> 	
+						<li style="width: 250px">
+							<span class="labelText-small" >Police Report:</span>
+							<select  style="width: 190px" kendo-multi-select k-ng-delay="rcTypeDataSource" ng-model="casesearch.rcType" k-placeholder="'Select Type'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcTypeDataSource" k-on-change="enableSumbitBtn()"></select>
+						</li> 
+						<li style="width: 150px">
+                						<span  class="labelText-small" >Distribution Status:</span>
+        							<select kendo-multi-select k-ng-delay="rcSourceDataSource" ng-model="casesearch.rcSource" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcSourceDataSource" k-on-change="enableSumbitBtn()"></select>
+						</li>
+                					<li style="width: 200px>
+							<span class="labelText-small">Recipient:</span>
+        							<select kendo-multi-select k-ng-delay="rcStatusDataSource" ng-model="casesearch.rcStatus" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcStatusDataSource" k-on-change="enableSumbitBtn()"></select>
+                					</li>
+                					<li  class="submit-btn" style="padding-top:20px">
+                						<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
+                					</li>
+            					</ul>
+               			</div> 	
 			</form>
 		</div>
 
-	<!-- DAILY ASSIGNMENT WORKSHEET /////////////////////////////////////////////////////////////////-->
+	<!-- DISTRIBUTE INTAKES  /////////////////////////////////////////////////////////////////-->
 		<div class="row-holder title-small" style="padding: 0px 0 0px 0px">
 			<span ng-class="warningClass"> {{warning}} </span>
 			<ul>
 				<li class="linkButton toPrint" style="opacity: 0.5"><a>Print Labels</a></li>
 				<li class="linkButton"><img src="assets/images/darkPipe.png" ></li>
-				<li class="linkButton toEmail"><a href=""  ng-click="" >Email</a></li>
-				<li class="linkButton teamHope"><a href=""  ng-click="" >Team Hope</a></li>
-				<li class="linkButton clearinghouse"><a href="" id="clearinghouse" ng-click="confirmMessage.center().open()">Clearinghouses</a></li>
-				<li class="linkButton">Distribute Intakes:</li>
+				<li class="linkButton toEmail"><a href=""  ng-click="" >Custom Email</a></li>
+				<li class="linkButton teamHope"><a href=""  ng-click="confirmTeamHope()">Team Hope</a></li>
+				<li class="linkButton clearinghouse"><a href="" id="clearinghouse" ng-click="confirmClearinghouse()">Clearinghouses</a></li>
+				<li class="linkButton">Mass Distribution Target:</li>
 			</ul>
 		</div>
 
@@ -55,18 +65,15 @@
 				<span class="title-small" >Please confirm you want to distribute</span>
 				<span class="title-small" >{{numCases}} {{recipient}}</span>
 			</div>
-			
-
 			<div class="bottom-window">
 				<ul>
 					<li  class="submit-btn">
-                		<kendo-button class="k-button" ng-click="confirmMessage.close()">SEND</kendo-button>
+                					<kendo-button class="k-button" ng-click="confirmMessage.close()">SEND</kendo-button>
 					</li>
 					<li  class="submit-btn">
-                		<kendo-button  class="k-button"  ng-click="confirmMessage.close()">CANCEL</kendo-button>
-					</li>
-						
-        		</ul>
+                					<kendo-button  class="k-button"  ng-click="confirmMessage.close()">CANCEL</kendo-button>
+					</li>	
+        				</ul>
 			</div>	
 		</div>
 
@@ -79,19 +86,10 @@
 </div>
 
 <!--  GRID DETAIL TEMPLATE /////////////////////////////////////////////////////////////////-->
-<script id="detail-template" type="text/x-kendo-template" >
-	<div class="spacer" style="height: 10px"><br></div>
-	<detail-row></detail-row>
+<script id="detail-template-Int-Dist" type="text/x-kendo-template" >
+	
+	<div class="gridDetail-wrapper">
+		<div class="gridDetail-center"></div>
+	</div>
 </script>
 
-<!--  NARRATIVE ROW TEMPLATE /////////////////////////////////////////////////////////////////-->
-<script id="row-template" type="text/x-kendo-template" >
-	<div id="detailRowTest">
-		<ul data-uid="#: uid #" class="row-detail-info" >
-			<li class="name" >Narrative Type: <span>#: narrativeType#</span></li>
-			<li >Author:  <span>#: narrativeAuthor#</span> </li>
-			<li >Narrative Date:  <span>#: narrativeDate#</span></li>
-		</ul>
-	</div>
-	<div class="narrative-text-box" readonly><span>#: narrativeText#</span></div>
-</script>

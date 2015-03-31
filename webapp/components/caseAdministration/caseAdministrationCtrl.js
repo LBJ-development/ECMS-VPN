@@ -268,6 +268,7 @@ angular.module('ECMSapp.adminMain', [])
 						format	:"{0:MM/dd/yyyy}" ,
 						width	: "9%"
 						},{
+							
 						field	: "caseManager",
 						title	: "Assignee",
 						width	: "14%"
@@ -279,8 +280,8 @@ angular.module('ECMSapp.adminMain', [])
 						title: "<input type='checkbox' title='Select all' ng-click='toggleSelectAll($event)'/>",
 						attributes: {
       						style: "text-align: center"
-    					}
-                	}]
+    						}
+                				}]
 				};
 	// MAKE THE CHECK BOX PERSISTING
  	var checkedIds = {};

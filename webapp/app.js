@@ -7,10 +7,10 @@ var app = angular.module('ECMSapp', [
 	'ECMSapp.login',
 	'ECMSapp.home',
 	'ECMSapp.mainMenu',
-    'ECMSapp.services',
+             'ECMSapp.services',
 	'ECMSapp.adminMain',
 	'ECMSapp.assignCM',
-    'ECMSapp.intakeDistribution',
+            'ECMSapp.intakeDistribution',
 	'kendo.directives'
 	])
 

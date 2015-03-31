@@ -4,7 +4,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 
 .controller('IntakeDistributionCtrl', [ '$scope', 'DataFtry',  function( $scope, DataFtry, $q){
 
-	// DAILY ASSIGNMENT WORKSHEET WINDOW //////////////////////////////////////////////////
+	// DISTRIBUTE INTAKESMESSAGES //////////////////////////////////////////////////
 
 	$scope.confirmMessageOptions = {
 		width: 380,
@@ -14,102 +14,18 @@ angular.module('ECMSapp.intakeDistribution', [])
 		scrollable : false,
 		// open: confirmMessage
 	};
- 	$scope.confirmTest = function() {
 
- 		console.log("FROM CONFIRM TEST")
-
-
-		/*$scope.numCases = "5" + " cases";
-		$scope.recipient = "to " + "Clearinghouse";
-
-		$scope.confirmMessage.center().open();*/
-
-
+ 	$scope.confirmClearinghouse = function(e) {
+		$scope.numCases = "5" + " cases";
+		$scope.recipient = "to Clearinghouse.";
+		$scope.confirmMessage.center().open();
 	}
 
-	$scope.dawsGridOptions = {
-		dataSource: {
-			data: result,
-				schema: {
-					model: {
-						fields: {
-								name		: { type: "string" , editable: false},
-								location	: { type: "string",  editable: false},
-								cmGroup	: { type: "string" , editable: false},
-								otherGroup	: { type: "string",  editable: false },
-								faRegion	: { type: "string",  editable: false },
-								foreignLang	: { type: "string",  editable: false },
-								ooo		: { type: "string" },
-								onCall		: { type: "string" },
-								shift		: { type: "string" },
-								telecommute	: { type: "string" }
-								},
-							}
-						},
-					},
-		sortable	: true,
-		scrollable	: true,
-		height		: "83%",
-		editable	: true,
-		columns		: [{
-						field	: "name",
-						title	: "Name",
-						width	: "15%",
-					},{
-						field	: "location",
-						title	: "Loc.",
-						width	: "6%"
-					},{
-						field	: "cmGroup",
-						title	: "CM Grp.",
-						width	: "7%"
-					},{
-						field	: "otherGroup",
-						title	: "Other",
-						width	: "6%"
-					},{
-						field	: "faRegion",
-						title	: "FA Region",
-						width	: "10%"
-					},{
-						field	: "foreignLang",
-						title	: "Language(s)",
-						width	: "10%"
-					},{
-						field	: "ooo",
-						title	: "OOO",
-						width	: "6%",
-						editor: categoryDropDownEditor,
-					},{
-						field	: "onCall",
-						title	: "On-call",
-						width	: "6%",
-						editor: categoryDropDownEditor,
-					},{
-						field	: "shift",
-						title	: "Shift hrs",
-						width	: "17%"
-					},{
-						field	: "telecommute",
-						title	:"Telecom.",
-						width	: "7%",
-						editor: categoryDropDownEditor,
-					} ]
-				};
-
-	function categoryDropDownEditor(container, options) {
-	$('<input required data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '"/>')
-		.appendTo(container)
-		.kendoDropDownList({
-			autoBind: false,
-			dataSource: {
-				data :  [
-					{ text: "Yes", value: "Yes" },
-					{ text: "No", value: "No" }
-					],
-				}
-			});
-		}
+	 $scope.confirmTeamHope = function(e) {
+		$scope.numCases = "5" + " cases";
+		$scope.recipient = "to Team Hope.";
+		$scope.confirmMessage.center().open();
+	}
 
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
 	var todayDate		= new Date();
@@ -171,15 +87,17 @@ angular.module('ECMSapp.intakeDistribution', [])
 					model: {
 						fields: {
 								caseNumber		: { type: "string" },
-								dateReceived		: { type: "date"	},
-								incidentDate		: { type: "date"	},
+								intakeDateTime	: { type: "date"	},
 								source			: { type: "string" },
 								caseTypeAbbr		: { type: "string" },
+								caseStatus		: { type: "string" },
 								childCount		: { type: "number" },
-								alerts			: { type: "string" },
 								state			: { type: "string" },
-								caseManager		: { type: "string" },
-								selectedID		: {editable: false, nullable: true }
+								PoliceReport		: { type: "string" },
+								IntlRisk		: { type: "string" },
+								CMAssignedDT	: { type: "string" },
+								RecipDateSentMeth	: { type: "date" }
+
 								},
 							}
 						},
@@ -221,7 +139,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 						buttonCount: 5,
 						pageSize: 15
                         },
-		detailTemplate: kendo.template($("#detail-template").html()),
+		detailTemplate: kendo.template($("#detail-template-Int-Dist").html()),
 		/*detailExpand: function(e) {
 			this.collapseRow(this.tbody.find(' > tr.k-master-row').not(e.masterRow));
 		},*/
@@ -237,46 +155,33 @@ angular.module('ECMSapp.intakeDistribution', [])
                         //},
 
 		columns		: [{
-						field	: "alerts",
-						title	: "Alerts",
+						field	: "caseNumber",
+						title	: "Case #",
 						width	: "10%"
 						},{
-						field	: "source",
-						title	: "Source",
+
+						field	: "intakeDateTime",
+						title	: "Intake D/T",
+						format	:"{0:MM/dd/yyyy}",
 						width	: "15%",
-						filterable: {
-							ui			: sourceFilter,
-							operators	: {
-								string	: {
-								eq		: "Equal to",
-									}
-								}
-							}
 						},{
 							
-						field	: "caseNumber",
-						title	: "Case",
-						width	: "15%"
+						field	: "source",
+						title	: "Source",
+						width	: "5%"
 						},{
-						field	: "dateReceived",
-						title	: "Date Rcvd.",
-						format	:"{0:MM/dd/yyyy}" ,
-						width	: "15%",
+
+						field	: "caseTypeAbbr",
+						title	: "Case Type",
+						width	: "5%",
 						filterable: false,
 						},{
 						
-						field	: "caseTypeAbbr",
-						title	: "Type",
-						width	: "5%",
-						filterable: {
-							ui			: typeFilter,
-							operators	: {
-								string	: {
-								eq		: "Equal to",
-									}
-								}
-							}
+						field	: "caseStatus",
+						title	: "Case Status",
+						width	: "5%"
 						},{
+
 						field	: "childCount",
 						title	: "# of Vict.",
 						width	: "5%",
@@ -289,16 +194,61 @@ angular.module('ECMSapp.intakeDistribution', [])
 								}
 							}
 						},{
-						field	: "incidentDate",
-						title	: "Incid. Date",
-						format	:"{0:MM/dd/yyyy}" ,
-						width	: "15%"
+
+						field	: "state",
+						title	: "Inci. St",
+						width	: "5%"
 						},{
-						field	: "caseManager",
-						title	: "Assignee",
-						width	: "20%"
+
+						field	: "PoliceReport",
+						title	: "Police Report",
+						width	: "5%"
+						},{
+
+						field	: "IntlRisk",
+						title	: "Intl. Risk",
+						width	: "5%"
+						},{
+
+						field	: "CMAssignedDT",
+						title	: "CM Assigned Date/Time",
+						width	: "10%"
+						},{
+
+						field	: "RecipDateSentMeth",
+						title	: "Recip/Date Sent/Method",
+						width	: "25%"
+						},{
+
+						field	: "View",
+						title	: "Intake Report",
+						template: "<span><a href=''   class='baseLinkText'>View</a></span>",
+						width	: "5%"
+						},{
+
+						width	: "5%",
+						filterable: false,
+						sortable: false,
+						template: "<input type='checkbox' ng-model='dataItem.selected' />",
+						title: "<input type='checkbox' title='Select all' ng-click='toggleSelectAll($event)'/>",
+						attributes: {
+						style: "text-align: center"
+							}
 						}]
-				};
+					};
+
+	// GRID FUNCTIONALITIES /////////////////////////////////////////////////////////////////////////////////////
+	$scope.enableSumbitBtn = function() {
+		$scope.disabled = false;
+	};
+
+	$scope.toggleSelectAll = function(ev) {
+                    var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+                    var items = grid.dataSource.data();
+                    items.forEach(function(item){
+                        item.selected = ev.target.checked;
+                    });
+                };
 			
 	// GRID DETAIL SETTINGS /////////////////////////////////////////////////////////////////////////////////////
 	function detailIExpand(e) {
@@ -322,171 +272,27 @@ angular.module('ECMSapp.intakeDistribution', [])
 
 		DataFtry.getData($scope.urlDetail).then(function(result){
 
-			getNarrative(e, caseNumber);
-
-			detailRow.find(".gridDetail").kendoGrid({
+			detailRow.find(".gridDetail-center").kendoGrid({
 
 				dataSource:{
-						data: result.data.content,	
+						data: result.data.content,
 							},
 				scrollable: false,
 				sortable: false,
 				pageable: false,
 				columns: [
 					{ field: "childRecoveryStatus", title: "Recovery Status", width: "12%" },
-					{ field: "incidentType", title: "Child Case Type", width: "17%" },
-					{ field: "incidentState", title: "Inc. State", width: "45px" },
-					{ field: "parentRelationship", title: "P/G Relationship", width: "15%" },
-					{ field: "foreignLanguage", title: "Foreign Lang.", width: "10%" },
+					{ field: "incidenType", title:"Child Case Type", width: "20%" },
 					{ field: "childName", title:"Child Name", width: "20%" },
 					{ field: "childAge", title:"Child Age", width: "45px" },
-					{ field: "criticalEndangerements", title: "Endangerments", width: "20%" }
+					{ field: "id", title: "Person ID", width: "20%" }
 					]
 				});
 			});
 		}
 
-	function getNarrative(e, caseNumber){
-
-		// $Scope.dataItem = detailRow.data;
-
-		var detailRow = e.detailRow;
-			kendo.bind(detailRow, e.data);
-
-		$scope.urlNarrative = "/rest/caseadmin/narratives?caseNumber=" + caseNumber;
-
-		var grid = {};
-
-		DataFtry.getData($scope.urlNarrative).then(function(result){
-
-			var data = result.data.content;
-
-			grid = detailRow.find(".gridNarrative").kendoGrid({
-
-				dataSource:{
-						data: data,
-						pageSize: 1
-						}, 
-				scrollable: true,
-				sortable: false,
-				pageable: true,
-				height	: 300,
-				rowTemplate: kendo.template($("#row-template").html()),
-				dataBound: changeNarrative,
-				// toolbar: kendo.template($("#toolbar-template").html()),
-				columns: [
-					{ field: "", width: "100%" ,
-
-					headerAttributes: {
-						style: "display: none"
-							}
-						},
-					]
-				});
-
-			var index =1;
-
-			function changeNarrative(evt){
-
-				// index = evt.sender.dataSource._page  -1;
-
-				// $('#narrativeType').replaceWith("Narrative Type: " + data[ index  ].narrativeType);
-				// $('#narrativeAuthor').replaceWith("Author: " + data[ index  ].narrativeAuthor);
-				// $('#narrativeDate').replaceWith("Narrative Date: " + data[ index ].narrativeDate);
-			}
-
-		/*	var div			= $('#detailRowTest');
-			var narrativeText	= data[ index  -1 ].narrativeText;
-			var narrativeType	= data[ index  -1 ].narrativeType;
-			var author		= data[ index  -1 ].narrativeAuthor;
-			var narrativeDate	= data[ index  -1 ].narrativeDate;
-
-			new  acmDetailRow( div, narrativeText, narrativeType, author, narrativeDate)*/
-
-			// $scope.narrativeType = data[index -1].narrativeType;
-			// $scope.narrativeAuthor = data[index -1].narrativeAuthor;
-			// $scope.narrativeDate = data[index -1].narrativeDate;
-			// $scope.narrativeText = data[index -1].narrativeText;
-
-			getCaseManager();
-		});
-	}
-
-	function getCaseManager(){
-		$scope.urlMgrGroups = "/rest/casemanager/groups/list/all";
-		$scope.urlAllCMs = "/rest/casemanager/list/all";
-		$scope.urlCMsForGroup = "/rest/casemanager/list/group/";
-
-		DataFtry.getData($scope.urlAllCMs).then(function(result){
-			$("#caseManagers").kendoDropDownList({
-				dataTextField: "name",
-				dataValueField: "id",
-				dataSource: result.data.content 
-			});
-		});
-
-		DataFtry.getData($scope.urlMgrGroups).then(function(result){
-			var casegrps = $("#caseGroups").kendoDropDownList({
-				dataTextField: "cm_group",
-				dataValueField: "cm_group",
-				dataSource: result.data.content,
-				select: function(e) {
-					var selectValue = e.item.text();
-					console.log("Selected item" + selectValue);
-						
-					DataFtry.getData($scope.urlCMsForGroup + selectValue).then(function(result){
-						console.log("Refreshing the case managers");
-						console.log(result.data.content);
-						
-						var mgrList = $("#caseManagers").data("kendoDropDownList");
-						mgrList.dataSource.data(result.data.content);
-						mgrList.dataSource.query();
-						// Use the selected item or its text
-					});
-				}
-			}).data('kendoDropDownList');
-			
-			//casegrps.select(1);
-			//casegrps.trigger("select");
-		});
-	}
-
-	$scope.assignCM = function(){
-		var assignURL = "case:" + $scope.dataItem.caseNumber + "manager:"+ $scope.assignCM.caseManager;
-
-		DataFtry.assignCaseManager($scope.dataItem.caseNumber, $scope.assignCM.caseManager).then(function(result){
-			console.log("assigned manager successfully:" + assignURL);	
-		});
-	}	
 	
-			
-	// MAKE THE CHECK BOX PERSISTING
-/*	var checkedIds = {};
-	
-	function selectRow(){
-		var checked		= this.checked,
-			row			= $(this).closest("tr"),
-			grid		= $("#grid").data("kendoGrid"),
-			dataItem	= grid.dataItem(row);
 
-			checkedIds[dataItem.caseNumber] = checked;
-
-	}
-
-	// ON DATABOUND EVENT (WHEN PAGING) RESTORE PREVIOUSLY SELECTED ROWS
-    function onDataBound(e) {
-
-		var view = this.dataSource.view();
-			for(var i = 0; i < view.length;i++){
-				if(checkedIds[view[i].caseNumber]){
-					this.tbody.find("tr[data-uid='" + view[i].uid + "']")
-					//.addClass("k-state-selected")
-					.find(".checkbox")
-					.attr("checked","checked");
-            }
-        }
-    }
-		*/
 	// FILTERING WITH DROPDOWN MENU 
 	var status	= ["Active", "Recovered", "Closed"],
 		types	= ["ERU", "FA", "NFA", "LIM", "5779", "UHR", "DECC", "RCST", "ATT", "UMR"],
@@ -515,22 +321,5 @@ angular.module('ECMSapp.intakeDistribution', [])
 		});
 	}
 
-
-
-}])
-
-
-.directive ('detailRow', function () {
-	return {
-	restrict: 'E',
-	// scope :{},
-	controller: 'AssignCMCtrl',
-	templateUrl: 'components/caseAdministration/detailRow.html',
-	link: function (scope, element, attrs){
-        }
-    };
-});
-
-
-
+}]);
 
