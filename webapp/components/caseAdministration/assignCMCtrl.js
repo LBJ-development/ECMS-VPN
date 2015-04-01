@@ -158,12 +158,13 @@ angular.module('ECMSapp.assignCM', [])
 		// console.log("Calling submitSearch:" + $scope.submitSearch);
 		DataFtry.getCasesForAssignment(formatStartingDate(), formatEndingDate()).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;
-			if(result.data.messages.CASES_LIST == "More than 500 results found, returning first 500, please adjust the date range"){
+			if(result.data.content.length >= 500){
 				$scope.warningClass = "inline-err";
 			} else {
 				$scope.warningClass = "inline-msg";
 			}
 			$scope.warning = result.data.messages.CASES_LIST;
+			$scope.disabled = true;
 		});
 	});
 	
@@ -304,6 +305,10 @@ angular.module('ECMSapp.assignCM', [])
 						width	: "20%"
 						}]
 				};
+
+	$scope.enableSumbitBtn = function() {
+		$scope.disabled = false;
+	};
 			
 	// GRID DETAIL SETTINGS /////////////////////////////////////////////////////////////////////////////////////
 	function detailIExpand(e) {

@@ -2,30 +2,43 @@
 
 angular.module('ECMSapp.intakeDistribution', [])
 
-.controller('IntakeDistributionCtrl', [ '$scope', 'DataFtry',  function( $scope, DataFtry, $q){
+.controller('IntakeDistributionCtrl', [ '$scope', 'DataFtry', '$http', 'ConfigService',  function( $scope, DataFtry, $http, ConfigService){
 
-	// DISTRIBUTE INTAKESMESSAGES //////////////////////////////////////////////////
-
-	$scope.confirmMessageOptions = {
-		width: 380,
-		visible: false,
-		height: 160,
-		modal: true,
-		scrollable : false,
-		// open: confirmMessage
+	$scope.casesearch = {
+		startDate: null,
+		endDate: null,
+		rcPolice: "-1", //set default value to ALL for drop-down list
+		rcDistribution: "-1", //set default value to ALL for drop-down list
+		rcRecipient: "-1" //set default value to ALL for drop-down list
 	};
 
- 	$scope.confirmClearinghouse = function(e) {
-		$scope.numCases = "5" + " cases";
-		$scope.recipient = "to Clearinghouse.";
-		$scope.confirmMessage.center().open();
-	}
-
-	 $scope.confirmTeamHope = function(e) {
-		$scope.numCases = "5" + " cases";
-		$scope.recipient = "to Team Hope.";
-		$scope.confirmMessage.center().open();
-	}
+	$scope.submitSearch = function(){
+		// data massaging
+		// format dates
+		$scope.casesearch.startDate = formatstartDate();
+		$scope.casesearch.endDate = formatendDate();
+		
+		//handle null and  convert to string array into comma-separated string
+		if ($scope.casesearch.rcPolice === null){
+			console.log('assigning -1');
+			$scope.casesearch.rcPolice = "-1";
+		}
+		
+		if ($scope.casesearch.rcDistribution === null){
+			console.log('assigning -1');
+			$scope.casesearch.rcDistribution = "-1";
+		}
+		
+		if ($scope.casesearch.rcRecipient === null){
+			console.log('assigning -1');
+			$scope.casesearch.rcRecipient = "-1";
+		}
+		$scope.casesearch.rcPolice = $scope.casesearch.rcPolice.toString();
+		$scope.casesearch.rcDistribution = $scope.casesearch.rcDistribution.toString();
+		$scope.casesearch.rcRecipient = $scope.casesearch.rcRecipient.toString(); 
+		
+		$scope.submissionCount ++;
+	};
 
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
 	var todayDate		= new Date();
@@ -60,6 +73,21 @@ angular.module('ECMSapp.intakeDistribution', [])
 		var enYear	= $scope.endingDate.getFullYear();
 		return enYear + "-" + enMonth  + "-" + enDate;
 	}
+
+	$http.get("/rest/caseadmin/lookup?lookupName=lt_policereport")
+		.success( function(result) {
+			$scope.rcPoliceDataSource = result.content;
+		});
+		 
+	$http.get("/rest/caseadmin/lookup?lookupName=lt_distribution")
+		.success( function(result) {
+			$scope.rcDistributionDataSource = result.content;
+	});
+	
+	$http.get("/rest/caseadmin/lookup?lookupName=lt_sent")
+		.success( function(result) {
+			$scope.rcSentDataSource = result.content;
+	});
 	
 	// GRID ////////////////////////////////////////////////////////////////////
 	var result = {};
@@ -69,12 +97,16 @@ angular.module('ECMSapp.intakeDistribution', [])
 		// console.log("Calling submitSearch:" + $scope.submitSearch);
 		DataFtry.getCasesForAssignment(formatStartingDate(), formatEndingDate()).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;
-			if(result.data.messages.CASES_LIST == "More than 500 results found, returning first 500, please adjust the date range"){
+
+			console.log(result.data.content.length)
+			if(result.data.content.length >= 500){
 				$scope.warningClass = "inline-err";
 			} else {
 				$scope.warningClass = "inline-msg";
 			}
 			$scope.warning = result.data.messages.CASES_LIST;
+			$scope.disabled = true;
+			$scope.caseNum = 0; // KEEP TRACK OF THE NUMBER OF SELECTED CASES
 		});
 	});
 	
@@ -156,7 +188,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 
 		columns		: [{
 						field	: "caseNumber",
-						title	: "Case #",
+						title	: "Case",
 						width	: "10%"
 						},{
 
@@ -172,18 +204,17 @@ angular.module('ECMSapp.intakeDistribution', [])
 						},{
 
 						field	: "caseTypeAbbr",
-						title	: "Case Type",
-						width	: "5%",
-						filterable: false,
+						title	: "Type",
+						width	: "5%"
 						},{
 						
 						field	: "caseStatus",
-						title	: "Case Status",
+						title	: "Status",
 						width	: "5%"
 						},{
 
 						field	: "childCount",
-						title	: "# of Vict.",
+						title	: "# of Vict",
 						width	: "5%",
 						filterable: {
 							ui			: statusFilter,
@@ -196,12 +227,12 @@ angular.module('ECMSapp.intakeDistribution', [])
 						},{
 
 						field	: "state",
-						title	: "Inci. St",
+						title	: "State",
 						width	: "5%"
 						},{
 
 						field	: "PoliceReport",
-						title	: "Police Report",
+						title	: "Pol. Rep.",
 						width	: "5%"
 						},{
 
@@ -211,17 +242,19 @@ angular.module('ECMSapp.intakeDistribution', [])
 						},{
 
 						field	: "CMAssignedDT",
-						title	: "CM Assigned Date/Time",
+						title	: "CM Assigned D/T",
 						width	: "10%"
 						},{
 
 						field	: "RecipDateSentMeth",
-						title	: "Recip/Date Sent/Method",
+						title	: "Recip/D Sent/Method",
 						width	: "25%"
 						},{
 
 						field	: "View",
-						title	: "Intake Report",
+						title	: "Int. Rep.",
+						filterable: false,
+						sortable: false,
 						template: "<span><a href=''   class='baseLinkText'>View</a></span>",
 						width	: "5%"
 						},{
@@ -229,7 +262,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 						width	: "5%",
 						filterable: false,
 						sortable: false,
-						template: "<input type='checkbox' ng-model='dataItem.selected' />",
+						template: "<input type='checkbox' ng-model='dataItem.selected' ng-click='caseSelected($event)' />",
 						title: "<input type='checkbox' title='Select all' ng-click='toggleSelectAll($event)'/>",
 						attributes: {
 						style: "text-align: center"
@@ -243,13 +276,82 @@ angular.module('ECMSapp.intakeDistribution', [])
 	};
 
 	$scope.toggleSelectAll = function(ev) {
-                    var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
-                    var items = grid.dataSource.data();
-                    items.forEach(function(item){
-                        item.selected = ev.target.checked;
-                    });
-                };
-			
+
+		var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+		var items = grid.dataSource.data();
+		items.forEach(function(item){
+		item.selected = ev.target.checked;
+		});
+
+		ev.currentTarget.checked ? $scope.caseNum = grid.dataSource.total() : $scope.caseNum = 0; 
+	};
+
+	$scope.caseSelected = function(ev){
+
+		!ev.currentTarget.checked ?  $scope.caseNum -- :$scope.caseNum ++; 
+	}
+
+	// DISTRIBUTE INTAKES MESSAGES //////////////////////////////////////////////////
+
+	$scope.confirmMessageOptions = {
+		width: 380,
+		visible: false,
+		height: 160,
+		modal: true,
+		scrollable : false,
+		// open: confirmMessage
+	};
+
+	$scope.confirmClearinghouse = function(e) {
+		$scope.numCases = $scope.caseNum + " cases";
+		$scope.recipient = "to Clearinghouses.";
+		$scope.confirmMessage.center().open();
+	};
+
+	$scope.confirmTeamHope = function(e) {
+		$scope.numCases = $scope.caseNum + " cases";
+		$scope.recipient = "to Team Hope.";
+		$scope.confirmMessage.center().open();
+	};
+
+	$scope.confirmEmail = function(e) {
+		$scope.numCases = $scope.caseNum + " cases";
+		$scope.recipient = "to Custom Email.";
+		$scope.confirmMessage.center().open();
+	};
+
+	// PDF WIDOW //////////////////////////////////////////////////
+
+	
+/*	$scope.caseSel = []; // KEEP TRACK OF THE CASES SELECTED
+	$scope.caseSelected = function(evt){
+
+		var	row			= evt.currentTarget.closest("tr"),
+			grid		= $("#grid").data("kendoGrid"),
+			dataItem	= grid.dataItem(row);
+
+
+		if(!evt.currentTarget.checked) {
+
+			for(var i=0; i < $scope.caseSel.length; i++) {
+
+				if($scope.caseSel[i] === dataItem.caseNumber){
+
+					$scope.caseSel.splice(i , 1);
+
+					$scope.caseNum --;
+				}
+			}
+		} else {
+
+			$scope.caseSel.push(dataItem.caseNumber);
+
+			$scope.caseNum ++;
+		}
+
+		console.log($scope.caseSel);
+	};*/
+
 	// GRID DETAIL SETTINGS /////////////////////////////////////////////////////////////////////////////////////
 	function detailIExpand(e) {
 

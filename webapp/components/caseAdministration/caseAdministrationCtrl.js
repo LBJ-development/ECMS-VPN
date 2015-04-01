@@ -96,7 +96,7 @@ angular.module('ECMSapp.adminMain', [])
 
 		DataFtry.getCases($scope.casesearch).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;
-			if(result.data.messages.CASES_LIST == "More than 500 results found, returning first 500, please adjust the date range"){
+			if(result.data.content.length >= 500){
 				$scope.warningClass = "inline-err";
 			} else {
 				$scope.warningClass = "inline-msg";

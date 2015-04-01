@@ -29,21 +29,21 @@
 					<ul >
 						<li style="width: 250px">
 							<span class="labelText-small" >Police Report:</span>
-							<select  style="width: 190px" kendo-multi-select k-ng-delay="rcTypeDataSource" ng-model="casesearch.rcType" k-placeholder="'Select Type'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcTypeDataSource" k-on-change="enableSumbitBtn()"></select>
+							<select  style="width: 250px" kendo-multi-select k-ng-delay="rcPoliceDataSource" ng-model="casesearch.rcPolice" k-placeholder="'Select Police Report'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcPoliceDataSource" k-on-change="enableSumbitBtn()"></select>
 						</li> 
 						<li style="width: 150px">
-                						<span  class="labelText-small" >Distribution Status:</span>
-        							<select kendo-multi-select k-ng-delay="rcSourceDataSource" ng-model="casesearch.rcSource" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcSourceDataSource" k-on-change="enableSumbitBtn()"></select>
+                			<span  class="labelText-small" >Distribution Status:</span>
+        					<select kendo-multi-select k-ng-delay="rcDistributionDataSource" ng-model="casesearch.rcDistribution" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcDistributionDataSource" k-on-change="enableSumbitBtn()"></select>
 						</li>
-                					<li style="width: 200px>
+                		<li style="width: 200px">
 							<span class="labelText-small">Recipient:</span>
-        							<select kendo-multi-select k-ng-delay="rcStatusDataSource" ng-model="casesearch.rcStatus" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcStatusDataSource" k-on-change="enableSumbitBtn()"></select>
-                					</li>
-                					<li  class="submit-btn" style="padding-top:20px">
-                						<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
-                					</li>
-            					</ul>
-               			</div> 	
+        					<select kendo-multi-select k-ng-delay="rcSentDataSource" ng-model="casesearch.rcRecipient" k-placeholder="'Select Recipient'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcSentDataSource" k-on-change="enableSumbitBtn()"></select>
+                		</li>
+                		<li  class="submit-btn" style="padding-top:20px">
+                			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
+                		</li>
+            		</ul>
+               	</div> 	
 			</form>
 		</div>
 
@@ -53,7 +53,7 @@
 			<ul>
 				<li class="linkButton toPrint" style="opacity: 0.5"><a>Print Labels</a></li>
 				<li class="linkButton"><img src="assets/images/darkPipe.png" ></li>
-				<li class="linkButton toEmail"><a href=""  ng-click="" >Custom Email</a></li>
+				<li class="linkButton toEmail"><a href=""  ng-click="confirmEmail()" >Custom Email</a></li>
 				<li class="linkButton teamHope"><a href=""  ng-click="confirmTeamHope()">Team Hope</a></li>
 				<li class="linkButton clearinghouse"><a href="" id="clearinghouse" ng-click="confirmClearinghouse()">Clearinghouses</a></li>
 				<li class="linkButton">Mass Distribution Target:</li>
@@ -63,17 +63,17 @@
 		 <div kendo-window="confirmMessage" k-options="confirmMessageOptions" style="text-align: center">
 		 	<div class="large-window-title ">
 				<span class="title-small" >Please confirm you want to distribute</span>
-				<span class="title-small" >{{numCases}} {{recipient}}</span>
+				<span class="title-small" style="color: #0473df" >{{numCases}}</span><span class="title-small" >{{recipient}}</span>
 			</div>
 			<div class="bottom-window">
 				<ul>
 					<li  class="submit-btn">
-                					<kendo-button class="k-button" ng-click="confirmMessage.close()">SEND</kendo-button>
+                		<kendo-button class="k-button" ng-click="confirmMessage.close()">SEND</kendo-button>
 					</li>
 					<li  class="submit-btn">
-                					<kendo-button  class="k-button"  ng-click="confirmMessage.close()">CANCEL</kendo-button>
+                		<kendo-button  class="k-button"  ng-click="confirmMessage.close()">CANCEL</kendo-button>
 					</li>	
-        				</ul>
+        		</ul>
 			</div>	
 		</div>
 
