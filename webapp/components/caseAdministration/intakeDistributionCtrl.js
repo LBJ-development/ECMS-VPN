@@ -322,6 +322,20 @@ angular.module('ECMSapp.intakeDistribution', [])
 
 	// PDF WIDOW //////////////////////////////////////////////////
 
+	$scope.PDFPreview = {
+		width: "80%",
+		visible: false,
+		maxWidth: 1200,
+		height: "80%",
+		modal: true,
+		// title: "Daily Assignment Worksheet",
+		open: getDAWSdata
+		// position: {
+		// top: 400,
+		// left: "center"
+		// },
+	};
+
 	
 /*	$scope.caseSel = []; // KEEP TRACK OF THE CASES SELECTED
 	$scope.caseSelected = function(evt){
