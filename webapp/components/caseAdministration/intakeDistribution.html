@@ -7,7 +7,7 @@
 
 	<!-- DATE RANGE ///////////////////////////////////////////////////////////////////////////////-->
 		<div class="filter-holder" role="query-filter">
-			<form name="dateRange-frm" ng-submit="changeDateRange()" role="form">
+			<form name="dateRange-frm" ng-submit="submitSearch()" role="form">
 				<div class="filter-row-holder">
 					<ul>
 						<li class="title-small" style="width: 320px">
@@ -15,11 +15,11 @@
 						</li>
 						<li style="padding-right: 0px">
 							<span class="labelText-small" >From:</span> 
-							<input kendo-date-picker k-on-change="enableSumbitBtn()" k-ng-model="startingDate" style="width: 180px"/> 
+							<input kendo-date-picker k-on-change="enableSumbitBtn()" k-ng-model="startDate" style="width: 180px"/> 
 						</li>
 						<li style="padding-right: 0px">
 							<span class="labelText-small" >to:</span> 
-							<input kendo-date-picker k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
+							<input kendo-date-picker k-on-change="enableSumbitBtn()"  k-ng-model="endDate"  style="width: 180px"/>
 						</li>
 					</ul>
         				</div>
@@ -59,7 +59,7 @@
 				<li class="linkButton">Mass Distribution Target:</li>
 			</ul>
 		</div>
-
+		<!-- CONFIRM MESSAGES  /////////////////////////////////////////////////////////////////-->
 		 <div kendo-window="confirmMessage" k-options="confirmMessageOptions" style="text-align: center">
 		 	<div class="large-window-title ">
 				<span class="title-small" >Please confirm you want to distribute</span>
@@ -75,6 +75,12 @@
 					</li>	
         		</ul>
 			</div>	
+		</div>
+
+		<!-- PDF PREVIEW  /////////////////////////////////////////////////////////////////-->
+		 <div kendo-window="PDFPreview" k-options="PDFPreviewOptions" style="text-align: center">
+		 	
+			<embed src="http://www.jablonski.info/pdfSample.pdf" width="100%" height="100%" type='application/pdf'></embed>
 		</div>
 
         <!-- DATA GRID /////////////////////////////////////////////////////////////////-->

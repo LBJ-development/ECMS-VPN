@@ -40,19 +40,6 @@ angular.module('ECMSapp.intakeDistribution', [])
 		$scope.submissionCount ++;
 	};
 
-	// INITIAL DATE RANGE //////////////////////////////////////////////////
-	var todayDate		= new Date();
-	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 2 DAYS 
-	var startingDate	= new Date(todayDate.getTime() - dateOffset);
-	var endingDate		= todayDate;
-	$scope.startingDate	= startingDate;
-	$scope.endingDate	= endingDate;
-	$scope.submitSearch = 0; //
-		
-	// WHEN DATE RANGE CHANGES //////////////////////////////////////////////////
-	$scope.changeDateRange = function(){
-			$scope.submitSearch++;
-	};
 
 	function formatDate(){
 		var date	= new Date().getDate();
@@ -60,17 +47,18 @@ angular.module('ECMSapp.intakeDistribution', [])
 		var year	= new Date().getFullYear();
 		return   month  + "/" + date + "/" +  year ;
 	}
-	function formatStartingDate(){
-		var stDate	= $scope.startingDate.getDate();
-		var stMonth	= $scope.startingDate.getMonth() + 1;
-		var stYear	= $scope.startingDate.getFullYear();
+
+	function formatstartDate(){
+		var stDate	= $scope.startDate.getDate();
+		var stMonth = $scope.startDate.getMonth() + 1;
+		var stYear	= $scope.startDate.getFullYear();
 		return stYear + "-" + stMonth  + "-" + stDate;
 	}
 
-	function formatEndingDate(){
-		var enDate	= $scope.endingDate.getDate();
-		var enMonth	= $scope.endingDate.getMonth() + 1;
-		var enYear	= $scope.endingDate.getFullYear();
+	function formatendDate(){
+		var enDate	= $scope.endDate.getDate();
+		var enMonth = $scope.endDate.getMonth() + 1;
+		var enYear	= $scope.endDate.getFullYear();
 		return enYear + "-" + enMonth  + "-" + enDate;
 	}
 
@@ -88,17 +76,33 @@ angular.module('ECMSapp.intakeDistribution', [])
 		.success( function(result) {
 			$scope.rcSentDataSource = result.content;
 	});
+
+	// INITIAL DATE RANGE //////////////////////////////////////////////////
+	var todayDate		= new Date();
+	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 2 DAYS 
+	var startDate		= new Date(todayDate.getTime() - dateOffset);
+	var endDate			= todayDate;
+	$scope.startDate	= startDate;
+	$scope.endDate		= endDate;
+	$scope.submissionCount = 0; //	
+
+	$scope.submitSearch();
 	
 	// GRID ////////////////////////////////////////////////////////////////////
 	var result = {};
 
 	// WATCH FOR A DATE RANGE CHANGE
-	$scope.$watch('submitSearch', function(newValue, oldValue) {
-		// console.log("Calling submitSearch:" + $scope.submitSearch);
-		DataFtry.getCasesForAssignment(formatStartingDate(), formatEndingDate()).then(function(result){
+	$scope.$watch('submissionCount', function(newValue, oldValue) {
+		// console.log("Calling submissionCount:" + $scope.submissionCount);
+
+		if (newValue === 0){
+			return;
+		}
+		// DataFtry.getCasesForIntakeDist(formatstartDate(), formatendDate()).then(function(result){
+		DataFtry.getCasesForAssignment(formatstartDate(), formatendDate()).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;
 
-			console.log(result.data.content.length)
+			// console.log(result.data.content.length)
 			if(result.data.content.length >= 500){
 				$scope.warningClass = "inline-err";
 			} else {
@@ -200,24 +204,48 @@ angular.module('ECMSapp.intakeDistribution', [])
 							
 						field	: "source",
 						title	: "Source",
-						width	: "5%"
+						width	: "5%",
+						filterable: {
+							ui			: sourceFilter,
+							operators	: {
+								string	: {
+								eq		: "Equal to",
+									}
+								}
+							}
 						},{
 
 						field	: "caseTypeAbbr",
 						title	: "Type",
-						width	: "5%"
+						width	: "5%",
+						filterable: {
+							ui			: typeFilter,
+							operators	: {
+								string	: {
+								eq		: "Equal to",
+									}
+								}
+							}
 						},{
 						
 						field	: "caseStatus",
 						title	: "Status",
-						width	: "5%"
+						width	: "5%",
+						filterable: {
+							ui			: statusFilter,
+							operators	: {
+								string	: {
+								eq		: "Equal to",
+									}
+								}
+							}
 						},{
 
 						field	: "childCount",
 						title	: "# of Vict",
 						width	: "5%",
 						filterable: {
-							ui			: statusFilter,
+							ui			: victimFilter,
 							operators	: {
 								string	: {
 								eq		: "Equal to",
@@ -255,7 +283,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 						title	: "Int. Rep.",
 						filterable: false,
 						sortable: false,
-						template: "<span><a href=''   class='baseLinkText'>View</a></span>",
+						template: "<span><a href='' ng-click='getPDF($event)' class='baseLinkText'>View</a></span>",
 						width	: "5%"
 						},{
 
@@ -289,7 +317,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 	$scope.caseSelected = function(ev){
 
 		!ev.currentTarget.checked ?  $scope.caseNum -- :$scope.caseNum ++; 
-	}
+	};
 
 	// DISTRIBUTE INTAKES MESSAGES //////////////////////////////////////////////////
 
@@ -322,19 +350,34 @@ angular.module('ECMSapp.intakeDistribution', [])
 
 	// PDF WIDOW //////////////////////////////////////////////////
 
-	$scope.PDFPreview = {
+	$scope.PDFPreviewOptions = {
 		width: "80%",
 		visible: false,
 		maxWidth: 1200,
 		height: "80%",
 		modal: true,
 		// title: "Daily Assignment Worksheet",
-		open: getDAWSdata
+		// open: getPDF
 		// position: {
 		// top: 400,
 		// left: "center"
 		// },
 	};
+
+	$scope.getPDF = function(e){
+
+
+		$scope.PDFPreview.center().open();
+	};
+
+/*
+	$scope.getPDF = function(e){
+
+		console.log("FROM GET PDF");
+
+		$scope.PDFPreview.center().open();
+	};
+*/
 
 	
 /*	$scope.caseSel = []; // KEEP TRACK OF THE CASES SELECTED
@@ -410,7 +453,8 @@ angular.module('ECMSapp.intakeDistribution', [])
 	
 
 	// FILTERING WITH DROPDOWN MENU 
-	var status	= ["Active", "Recovered", "Closed"],
+	var victim	= ["1", "2", "3", "4", "5", "6"],
+		status	= ["Active", "Recovered", "Closed"],
 		types	= ["ERU", "FA", "NFA", "LIM", "5779", "UHR", "DECC", "RCST", "ATT", "UMR"],
 		sources	= ["Call", "Email", "Internet", "WebService", "Online Sighting Form"];
 			
@@ -436,6 +480,14 @@ angular.module('ECMSapp.intakeDistribution', [])
 			optionLabel: "--Select Value--"
 		});
 	}
+
+		function victimFilter(element) {
+		element.kendoDropDownList({
+			dataSource: victim,
+			optionLabel: "--Select Value--"
+		});
+	}
+		
 
 }]);
 

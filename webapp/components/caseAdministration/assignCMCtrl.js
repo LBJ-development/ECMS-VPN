@@ -287,7 +287,7 @@ angular.module('ECMSapp.assignCM', [])
 						title	: "# of Vict.",
 						width	: "5%",
 						filterable: {
-							ui			: statusFilter,
+							ui			: victimFilter,
 							operators	: {
 								string	: {
 								eq		: "Equal to",
@@ -498,9 +498,9 @@ angular.module('ECMSapp.assignCM', [])
     }
 		*/
 	// FILTERING WITH DROPDOWN MENU 
-	var status	= ["Active", "Recovered", "Closed"],
-		types	= ["ERU", "FA", "NFA", "LIM", "5779", "UHR", "DECC", "RCST", "ATT", "UMR"],
-		sources	= ["Call", "Email", "Internet", "WebService", "Online Sighting Form"];
+	var victim	= ["1", "2", "3", "4", "5", "6"],
+		types		= ["ERU", "FA", "NFA", "LIM", "5779", "UHR", "DECC", "RCST", "ATT", "UMR"],
+		sources		= ["Call", "Email", "Internet", "WebService", "Online Sighting Form"];
 			
 	function typeFilter(element) {
 		//element.kendoMultiSelect({
@@ -511,9 +511,9 @@ angular.module('ECMSapp.assignCM', [])
 		});
 	}
 		
-	function statusFilter(element) {
+	function victimFilter(element) {
 		element.kendoDropDownList({
-			dataSource: status,
+			dataSource: victim,
 			optionLabel: "--Select Value--"
 		});
 	}
