@@ -148,6 +148,29 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
                     }
                 }
             }
+/*
+        var headMenu =   $('#mainMenu').find(".head-menu");
+
+        headMenu.mouseleave(function(event) {
+            console.log("MOUSE LEAVE");
+        });
+
+
+        console.log("FROM");
+        console.log(headMenu);
+    
+
+
+          $('#mainMenu').mouseenter(function(event) {
+
+           
+            var headMenu =  $("#mainMenu").find(".head-menu");
+
+              if($(event.item).hasClass("sub-menu")) {
+
+                console.log("FROM ROLLOVER MENU");
+                
+            });*/
 
             // HIDE THE MENU WHEN LOGIN OUT
             scope.logout = function() {
@@ -175,10 +198,10 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
                 $(ev.item).addClass("k-state-selected");
 
                 // HIGHTLIGHT THE HEAD MENU WHEN A SUBMENU IS SELECTED
-              if($(ev.item).hasClass("sub-menu")) {
+                if($(ev.item).hasClass("sub-menu")) {
                    $("#mainMenu").find(".head-menu").addClass("k-state-selected").removeClass("k-state-border-down");;
                 }
-                // CLOSES THE SUBMENU WHEN THE MUNU IS CLICKED
+                // CLOSES THE SUBMENU WHEN THE MENU IS CLICKED
                  if($(ev.item).hasClass("head-menu")) {
                       var menu = $("#mainMenu").data("kendoMenu");
                        menu.close();

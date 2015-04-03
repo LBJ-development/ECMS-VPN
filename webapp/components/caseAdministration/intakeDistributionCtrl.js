@@ -20,17 +20,17 @@ angular.module('ECMSapp.intakeDistribution', [])
 		
 		//handle null and  convert to string array into comma-separated string
 		if ($scope.casesearch.rcPolice === null){
-			console.log('assigning -1');
+			// console.log('assigning -1');
 			$scope.casesearch.rcPolice = "-1";
 		}
 		
 		if ($scope.casesearch.rcDistribution === null){
-			console.log('assigning -1');
+			// console.log('assigning -1');
 			$scope.casesearch.rcDistribution = "-1";
 		}
 		
 		if ($scope.casesearch.rcRecipient === null){
-			console.log('assigning -1');
+			// console.log('assigning -1');
 			$scope.casesearch.rcRecipient = "-1";
 		}
 		$scope.casesearch.rcPolice = $scope.casesearch.rcPolice.toString();
@@ -98,8 +98,8 @@ angular.module('ECMSapp.intakeDistribution', [])
 		if (newValue === 0){
 			return;
 		}
-		// DataFtry.getCasesForIntakeDist(formatstartDate(), formatendDate()).then(function(result){
-		DataFtry.getCasesForAssignment(formatstartDate(), formatendDate()).then(function(result){
+		DataFtry.getCasesForIntakeDist($scope.casesearch).then(function(result){
+		// DataFtry.getCasesForAssignment(formatstartDate(), formatendDate()).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;
 
 			// console.log(result.data.content.length)
@@ -231,14 +231,8 @@ angular.module('ECMSapp.intakeDistribution', [])
 						field	: "caseStatus",
 						title	: "Status",
 						width	: "5%",
-						filterable: {
-							ui			: statusFilter,
-							operators	: {
-								string	: {
-								eq		: "Equal to",
-									}
-								}
-							}
+						filterable: false,
+						sortable: false,
 						},{
 
 						field	: "childCount",
@@ -247,7 +241,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 						filterable: {
 							ui			: victimFilter,
 							operators	: {
-								string	: {
+								number	: {
 								eq		: "Equal to",
 									}
 								}
@@ -301,6 +295,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 	// GRID FUNCTIONALITIES /////////////////////////////////////////////////////////////////////////////////////
 	$scope.enableSumbitBtn = function() {
 		$scope.disabled = false;
+
 	};
 
 	$scope.toggleSelectAll = function(ev) {

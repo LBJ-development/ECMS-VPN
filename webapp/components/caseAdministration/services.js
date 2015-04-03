@@ -66,8 +66,8 @@ angular.module('ECMSapp.services', [])
 
 		var restservice = "/rest/caseadmin/casesPlus";
 		var data = Object.toparams(casesearch);
-		console.log("data:" + data);
-		console.log(casesearch);
+		// console.log("data:" + data);
+		// console.log(casesearch);
 
 		var $promise =  $http({
 			method: 'POST',
@@ -96,30 +96,33 @@ angular.module('ECMSapp.services', [])
 				startDate: starDate,
 				endDate: endDate,
 				rcType: "5117", //CASES ONLY
-				rcSource: "5119", //ACTIVE
+				// rcSource: "5119", //ACTIVE
+				rcSource: "-1", //ALL
 				rcStatus: "-1" //set default value to ALL for drop-down list
 			};
 		return getCases(casesearch);
 	};
 
-	var getCasesForIntakeDist = function (starDate, endDate){
+	var getCasesForIntakeDist = function (casesearch){
+		
+		var data = Object.toparams(casesearch);
+		console.log("FROM GETCASESFORINTAKEDIST" +  data);
 
-		console.log("FROM INTAKEDIST")
-
-		/*var intakeOpt = {
-				startDate: starDate,
-				endDate: endDate,
+		var intakeOpt = {
+				startDate: casesearch.startDate,
+				endDate: casesearch.endDate,
 				rcType: "5117", //CASES ONLY
-				rcSource: "5119", //ACTIVE
-				rcStatus: "-1" //set default value to ALL for drop-down list
+				rcSource: "-1", //ALL
+				rcStatus: "5136" //ACTIVE ONLY
 			};
-		return getCases(intakeOpt);*/
+		return getCases(intakeOpt);
 	};
 
 	return {
 		getData: getData,
 		getCases: getCases,
 		getCasesForAssignment: getCasesForAssignment,
+		getCasesForIntakeDist: getCasesForIntakeDist,
 		assignCaseManager: assignCaseManager
 		};
 	});

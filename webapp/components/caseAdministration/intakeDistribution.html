@@ -27,18 +27,20 @@
         				<!--  SEARCH OPTIONS ///////////////////////////////////////////////////////////////////////////////-->
 				<div class="filter-row-holder">
 					<ul >
-						<li style="width: 250px">
+						<li style="width: 200px">
 							<span class="labelText-small" >Police Report:</span>
-							<select  style="width: 250px" kendo-multi-select k-ng-delay="rcPoliceDataSource" ng-model="casesearch.rcPolice" k-placeholder="'Select Police Report'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcPoliceDataSource" k-on-change="enableSumbitBtn()"></select>
+							<select kendo-drop-down-list style="width: 200px"  k-ng-delay="rcPoliceDataSource" ng-model="casesearch.rcPolice" k-placeholder="'Select Police Report'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcPoliceDataSource" k-on-change="enableSumbitBtn()"></select>
 						</li> 
-						<li style="width: 150px">
+                		<li style="width: 150px">
                 			<span  class="labelText-small" >Distribution Status:</span>
-        					<select kendo-multi-select k-ng-delay="rcDistributionDataSource" ng-model="casesearch.rcDistribution" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcDistributionDataSource" k-on-change="enableSumbitBtn()"></select>
+        					<select kendo-drop-down-list style="width: 150px" k-ng-delay="rcSentDataSource" ng-model="casesearch.rcDistribution" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcSentDataSource" k-on-change="enableSumbitBtn()"></select>
 						</li>
-                		<li style="width: 200px">
+                		<li style="width: 300px">
 							<span class="labelText-small">Recipient:</span>
-        					<select kendo-multi-select k-ng-delay="rcSentDataSource" ng-model="casesearch.rcRecipient" k-placeholder="'Select Recipient'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcSentDataSource" k-on-change="enableSumbitBtn()"></select>
+        					<select kendo-multi-select style="width: 300px" k-ng-delay="rcDistributionDataSource" ng-model="casesearch.rcRecipient" k-placeholder="'Select Recipient'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcDistributionDataSource" k-on-change="enableSumbitBtn()"> </select>
                 		</li>
+
+
                 		<li  class="submit-btn" style="padding-top:20px">
                 			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
                 		</li>

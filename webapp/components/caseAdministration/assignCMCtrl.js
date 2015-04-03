@@ -289,7 +289,7 @@ angular.module('ECMSapp.assignCM', [])
 						filterable: {
 							ui			: victimFilter,
 							operators	: {
-								string	: {
+								number	: {
 								eq		: "Equal to",
 									}
 								}

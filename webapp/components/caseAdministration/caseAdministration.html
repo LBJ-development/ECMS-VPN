@@ -24,19 +24,21 @@
         		</div>
 				<div class="filter-row-holder">
 					<ul >
-						<li style="width: 200px">
+						<li style="width: 170px">
                 			<span class="labelText-small" >RFS/Case:</span>
-        					<select  style="width: 190px" kendo-multi-select k-ng-delay="rcTypeDataSource" ng-model="casesearch.rcType" k-placeholder="'Select Type'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcTypeDataSource" k-on-change="enableSumbitBtn()"></select>
+        					<select kendo-drop-down-list style="width: 160px" k-ng-delay="rcTypeDataSource" ng-model="casesearch.rcType" k-placeholder="'Select Type'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcTypeDataSource" k-on-change="enableSumbitBtn()"></select>
                 		</li> 
-                		<li style="width: 22%">
-                			<span  class="labelText-small" >RFS/Case Source:</span>
-        					<select kendo-multi-select k-ng-delay="rcSourceDataSource" ng-model="casesearch.rcSource" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcSourceDataSource" k-on-change="enableSumbitBtn()"></select>
+
+                		<li style="width: 170px">
+							<span class="labelText-small">RFS/Case Status:</span>
+        					<select kendo-drop-down-list style="width: 160px" k-ng-delay="rcStatusDataSource" ng-model="casesearch.rcStatus" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcStatusDataSource" k-on-change="enableSumbitBtn()"></select>
                 		</li>
 
-                		<li style="width: 22%">
-							<span class="labelText-small">RFS/Case Status:</span>
-        					<select kendo-multi-select k-ng-delay="rcStatusDataSource" ng-model="casesearch.rcStatus" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcStatusDataSource" k-on-change="enableSumbitBtn()"></select>
+                		<li style="width: 310px">
+                			<span  class="labelText-small" >RFS/Case Source:</span>
+        					<select kendo-multi-select style="width: 310px" k-ng-delay="rcSourceDataSource" ng-model="casesearch.rcSource" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcSourceDataSource" k-on-change="enableSumbitBtn()" ></select>
                 		</li>
+
                 		<li  class="submit-btn" style="padding-top:20px">
                 			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
                 		</li>
