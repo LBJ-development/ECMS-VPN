@@ -149,6 +149,13 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
                 }
             }
 /*
+            $('#mainMenu').mouseenter(function(event) {
+
+                    console.log(event.currentTarget);
+            });*/
+
+   
+/*
         var headMenu =   $('#mainMenu').find(".head-menu");
 
         headMenu.mouseleave(function(event) {
@@ -161,7 +168,7 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
     
 
 
-          $('#mainMenu').mouseenter(function(event) {
+          $('.mainMenu').mouseenter(function(event) {
 
            
             var headMenu =  $("#mainMenu").find(".head-menu");
@@ -171,6 +178,25 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
                 console.log("FROM ROLLOVER MENU");
                 
             });*/
+
+            var CASelected = false;
+
+            scope.onOpen = function(ev) {
+               console.log(CASelected);
+               $("#mainMenu").find(".head-menu").removeClass("k-state-selected");
+            };
+
+            scope.onClose = function(ev) {
+                console.log(CASelected);
+
+               if(CASelected){
+                     console.log(CASelected);
+                      $("#mainMenu").find(".head-menu").addClass("k-state-selected");
+
+               } 
+               
+            };
+
 
             // HIDE THE MENU WHEN LOGIN OUT
             scope.logout = function() {
@@ -199,12 +225,23 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
 
                 // HIGHTLIGHT THE HEAD MENU WHEN A SUBMENU IS SELECTED
                 if($(ev.item).hasClass("sub-menu")) {
-                   $("#mainMenu").find(".head-menu").addClass("k-state-selected").removeClass("k-state-border-down");;
-                }
+                   $("#mainMenu").find(".head-menu").addClass("k-state-selected").removeClass("k-state-border-down");
+                } 
+
                 // CLOSES THE SUBMENU WHEN THE MENU IS CLICKED
                  if($(ev.item).hasClass("head-menu")) {
                       var menu = $("#mainMenu").data("kendoMenu");
                        menu.close();
+                  }
+
+                // CHECK IF THE IF THE MENU ITEM CLICKED BELONG TO THE SUB-MENU 
+                  if($(ev.item).hasClass("head-menu") || $(ev.item).hasClass("sub-menu")){
+                        
+                        CASelected = true;
+
+                  } else {
+
+                        CASelected = false;
                   }
             };
         }
