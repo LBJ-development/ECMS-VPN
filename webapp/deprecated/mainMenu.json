@@ -1,0 +1,38 @@
+// JavaScript Document{
+ 
+[
+	
+	{
+		"text": "Home",
+		"url": "/"
+	},
+	{
+		"text": "Call Management",
+		"url": "/callmanagement"
+	},
+	{
+		"text": "Case Administration",
+		"url": "/caseadministration"
+	},
+	{
+		"text": "Case Management",
+		"url": "/casemanagement"
+	},
+	{
+		"text": "Case Analysis",
+		"url": "/caseanalysis"
+	},
+	{
+		"text": "Person Management",
+		"url": "/personmanagement"
+	},
+	{
+		"text": "Reports",
+		"url": "/reports"
+	},
+	{
+		"text": "Supervisor",
+		"url": "/supervisor"
+	}
+	]
+

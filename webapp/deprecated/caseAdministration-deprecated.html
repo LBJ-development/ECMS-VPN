@@ -1,0 +1,51 @@
+
+<div class="content-wrapper">
+	<div class="content-holder">
+		<div class="title-holder">
+			<span class="title">Case Administration</span>
+		</div>
+        <!-- FILTER GRIG ---------------------------------------------------------------------->
+		<div class="filter-holder">
+        
+        <div class="row-holder title-small">Filters</div>
+
+		
+            
+            	<div class="row-holder" ng-controller="DatePickerCtrl">
+                
+					<input kendo-date-picker/>
+					
+            	</div>
+            
+            	<div class="row-holder" ng-controller="AdminMainFilterCtrl">
+					<ul class="multi-select">
+                		<li >
+                			<span>RFS Source Type:</span>
+        					<select kendo-multi-select k-options="RFSSourceType"></select>
+                		</li>
+        				<li >
+                			<span>RFS Type:</span>
+        					<select  kendo-multi-select k-options="RFSType"></select>
+                		</li>
+                		<li>
+                			<span>Case Type:</span>
+        				<select kendo-multi-select k-options="caseType"></select>
+                		</li>
+                    	<li>
+                			<span>Media Status:</span>
+        					<select kendo-multi-select k-options="mediaStatus"></select>
+                		</li>
+            		</ul>
+                </div>
+   			
+         </div>
+		<!-- DATA GRIG ---------------------------------------------------------------------->
+		<div role="datagrid" class="grid-holder" >
+			<div ng-controller="AdminMainResultCtrl">
+				<kendo-grid options="mainGridOptions"> </kendo-grid>
+			</div>  
+		</div>
+	</div>
+</div>
+
+

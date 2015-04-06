@@ -13,10 +13,10 @@
 	   
 		<ul>
 			<li>
-				<kendo-button  ng-model="button" class="k-button" ng-click="assignCM()" id="submitButton">SUBMIT</kendo-button>
+				<kendo-button  ng-model="button" ng-disabled="disableCaseMgrBtnFlag" class="k-button" ng-click="assignCM()" id="submitButton">SUBMIT</kendo-button>
 			</li>
 			<li>
-				<select ng-model="assignCM.caseManager" id="caseManagers"></select>
+				<select ng-model="assignCM.caseManagerId" id="caseManagers"></select>
 			</li>
 
 			<li>

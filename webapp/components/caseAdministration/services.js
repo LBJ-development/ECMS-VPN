@@ -60,19 +60,11 @@ angular.module('ECMSapp.services', [])
 		return deferred.promise;
 	};
 		
-	var getCases = function(casesearch) {
-	
-		//console.log("FROM GET DATA: "  + URL);
-
-		var restservice = "/rest/caseadmin/casesPlus";
-		var data = Object.toparams(casesearch);
-		// console.log("data:" + data);
-		// console.log(casesearch);
-
+	function executeHttpJSONPost(restservice, dataobject) {	
 		var $promise =  $http({
 			method: 'POST',
 			url: restservice,
-			data: casesearch,
+                data: dataobject,
 			headers: {'Content-Type': 'application/json'}
 		});
 		var deferred = $q.defer();
@@ -80,9 +72,8 @@ angular.module('ECMSapp.services', [])
 		$promise.then(function(result){
 			
 			if(result.data.status == 'SUCCESS'){
-
+				//console.log(result.data.status);
 				deferred.resolve(result);
-				
 			} else {
 				alert("Something better is coming!");
 			}
@@ -90,6 +81,14 @@ angular.module('ECMSapp.services', [])
 		return deferred.promise;
 	};
 
+	var submitUpdatedSchedules = function(updatedSchedules) {
+        return executeHttpJSONPost("/rest/casemanager/worksheet/edit", updatedSchedules);
+	};		
+		
+	var getCases = function(casesearch) {
+        return executeHttpJSONPost("/rest/caseadmin/casesPlus", casesearch);
+	};
+	
 	var getCasesForAssignment = function (starDate, endDate){
 		
 		var casesearch = {
@@ -101,8 +100,8 @@ angular.module('ECMSapp.services', [])
 				rcStatus: "-1" //set default value to ALL for drop-down list
 			};
 		return getCases(casesearch);
-	};
-
+	}
+	
 	var getCasesForIntakeDist = function (casesearch){
 		
 		var data = Object.toparams(casesearch);
@@ -123,6 +122,9 @@ angular.module('ECMSapp.services', [])
 		getCases: getCases,
 		getCasesForAssignment: getCasesForAssignment,
 		getCasesForIntakeDist: getCasesForIntakeDist,
-		assignCaseManager: assignCaseManager
+		assignCaseManager: assignCaseManager,
+		submitUpdatedSchedules: submitUpdatedSchedules
 		};
-	});
+	}
+	
+	);

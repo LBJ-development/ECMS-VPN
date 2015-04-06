@@ -16,5 +16,5 @@
 		</form>
 	</div>
 </div>
-<ul kendo-menu id="mainMenu" k-data-source="menuWithPermissions"  k-on-select="onSelect(kendoEvent)"></ul>
+<ul kendo-menu id="mainMenu" k-data-source="menuWithPermissions" k-on-open="onOpen(kendoEvent)"  k-on-select="onSelect(kendoEvent)" k-on-close="onClose(kendEvent)"></ul>
 
