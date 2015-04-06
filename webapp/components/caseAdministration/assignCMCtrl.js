@@ -38,7 +38,8 @@ angular.module('ECMSapp.assignCM', [])
 				schema: {
 					model: {
 						fields: {
-								name		: { type: "string" , editable: false},
+								id			: { type: "integer", editable: false},
+								name		: { type: "string", editable: false},
 								location	: { type: "string",  editable: false},
 								cmGroup	: { type: "string" , editable: false},
 								otherGroup	: { type: "string",  editable: false },
@@ -57,6 +58,10 @@ angular.module('ECMSapp.assignCM', [])
 		height 		: "83%",
 		editable	: true,
 		columns		: [{
+						field	: "id",
+						title	: "Id",
+						width	: "5%",
+					},{
 						field	: "name",
 						title	: "Name",
 						width	: "15%",
@@ -115,6 +120,55 @@ angular.module('ECMSapp.assignCM', [])
 				}
 			});
 		}
+	
+	$scope.modifiedSchedules = {};
+	$scope.trackChanges = function(e) {
+        //console.log("inside save");
+		//console.log("values string:" + JSON.stringify(e.values) +" model string:" + JSON.stringify(e.model));
+		
+		//Find if row is modified already for another field
+		var schedule = $scope.modifiedSchedules[e.model.id] ? $scope.modifiedSchedules[e.model.id] : {'id': e.model.id};
+		
+		// push the user changed field and value into the map
+		if (e.values.ooo) {
+			console.log("ooo modified:"+ e.values.ooo);
+			schedule['ooo'] = (e.values.ooo === 'Yes'?1:0);
+        }
+		
+		if (e.values.onCall) {
+			schedule['onCall'] = (e.values.onCall === 'Yes'?1:0);
+        }
+		
+		if (e.values.telecommute) {
+			schedule['telecommute'] = (e.values.telecommute === 'Yes'?1:0);
+        }
+
+		if (e.values.shift) {
+			schedule['shift'] = e.values.shift;
+        }
+		$scope.modifiedSchedules[e.model.id] = schedule;
+		
+		//console.log("modified schedules:" + JSON.stringify($scope.modifiedSchedules) );
+                                
+    };
+	
+	$scope.saveScheduleUpdates = function() {
+		var scheduleUpdatesAsArray = new Array();
+		for (var id in $scope.modifiedSchedules) {
+			console.log("id:" + id);
+			console.log(JSON.stringify($scope.modifiedSchedules[id]));
+			scheduleUpdatesAsArray.push($scope.modifiedSchedules[id]);
+		}
+		console.log("schedules input for URL:" + JSON.stringify(scheduleUpdatesAsArray) );
+		DataFtry.submitUpdatedSchedules(scheduleUpdatesAsArray);
+	}
+	
+	$scope.saveAndCloseScheduleUpdates = function() {
+		$scope.saveScheduleUpdates();
+		console.log("saveAndCloseScheduleUpdates");
+		$("#dawsid").data("kendoWindow").close();
+		console.log("saveAndCloseScheduleUpdates done");
+	}
 
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
 	var todayDate		= new Date();
@@ -125,8 +179,25 @@ angular.module('ECMSapp.assignCM', [])
 	$scope.endingDate	= endingDate;
 	$scope.submitSearch = 0; //
 		
+		
+	$scope.assignCM = function(){
+		var assignURL = "case:" + $scope.dataItem.caseNumber + "manager:"+ $scope.assignCM.caseManagerId;
+
+		DataFtry.assignCaseManager($scope.dataItem.caseNumber, $scope.assignCM.caseManagerId).then(function(result){
+			console.log("assigned manager successfully:" + assignURL);
+			$scope.dataItem.caseManager = $scope.caseManagerName; //"12312";			
+			//console.log($scope.dataItem);
+			//$scope.reloadData(); //triggering main grid refresh
+		});
+	}	
+	
+	$scope.enableSumbitBtn = function() {
+		$scope.disabled = false;
+	};
+	
 	// WHEN DATE RANGE CHANGES //////////////////////////////////////////////////
-	$scope.changeDateRange = function(){
+	$scope.reloadData = function(){
+		    console.log("reloadData");
 			$scope.submitSearch++;
 	};
 
@@ -155,7 +226,8 @@ angular.module('ECMSapp.assignCM', [])
 
 	// WATCH FOR A DATE RANGE CHANGE
 	$scope.$watch('submitSearch', function(newValue, oldValue) {
-		// console.log("Calling submitSearch:" + $scope.submitSearch);
+		console.log("Calling submitSearch:" + $scope.submitSearch);
+		$scope.mainGridOptions.dataSource.data = [];
 		DataFtry.getCasesForAssignment(formatStartingDate(), formatEndingDate()).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;
 			if(result.data.content.length >= 500){
@@ -166,6 +238,8 @@ angular.module('ECMSapp.assignCM', [])
 			$scope.warning = result.data.messages.CASES_LIST;
 			$scope.disabled = true;
 		});
+		
+		//var divgrid = angular.element('#datagrid').data("kendo-grid").dataSource.read(); 
 	});
 	
 	// MAIN GRID SETTINGS //////////////////////////////////////////////////////////////////////////////////////
@@ -305,10 +379,6 @@ angular.module('ECMSapp.assignCM', [])
 						width	: "20%"
 						}]
 				};
-
-	$scope.enableSumbitBtn = function() {
-		$scope.disabled = false;
-	};
 			
 	// GRID DETAIL SETTINGS /////////////////////////////////////////////////////////////////////////////////////
 	function detailIExpand(e) {
@@ -324,15 +394,15 @@ angular.module('ECMSapp.assignCM', [])
 		var detailRow = e.detailRow;
 			kendo.bind(detailRow, e.data);
 			// console.log(grid.tbody.find("tr.k-master-row").first());
-			// console.log(e.data.caseNumber);
+		 console.log(e.data.caseManager);
 
 		var caseNumber = e.data.caseNumber;
+		var caseManager = e.data.caseManager;
 
 		$scope.urlDetail = "/rest/caseadmin/incidentDetails?caseNumber=" + caseNumber;
-
 		DataFtry.getData($scope.urlDetail).then(function(result){
 
-			getNarrative(e, caseNumber);
+			getNarrative(e, caseNumber, caseManager);
 
 			detailRow.find(".gridDetail").kendoGrid({
 
@@ -356,17 +426,15 @@ angular.module('ECMSapp.assignCM', [])
 			});
 		}
 
-	function getNarrative(e, caseNumber){
+	function getNarrative(e, caseNumber, caseManager){
 
 		// $Scope.dataItem = detailRow.data;
 
 		var detailRow = e.detailRow;
-			kendo.bind(detailRow, e.data);
-
-		$scope.urlNarrative = "/rest/caseadmin/narratives?caseNumber=" + caseNumber;
+		kendo.bind(detailRow, e.data);
 
 		var grid = {};
-
+		$scope.urlNarrative = "/rest/caseadmin/narratives?caseNumber=" + caseNumber;
 		DataFtry.getData($scope.urlNarrative).then(function(result){
 
 			var data = result.data.content;
@@ -382,7 +450,7 @@ angular.module('ECMSapp.assignCM', [])
 				pageable: true,
 				height	: 300,
 				rowTemplate: kendo.template($("#row-template").html()),
-				dataBound: changeNarrative,
+				//dataBound: changeNarrative,
 				// toolbar: kendo.template($("#toolbar-template").html()),
 				columns: [
 					{ field: "", width: "100%" ,
@@ -393,56 +461,59 @@ angular.module('ECMSapp.assignCM', [])
 						},
 					]
 				});
-
-			var index =1;
-
-			function changeNarrative(evt){
-
-				// index = evt.sender.dataSource._page  -1;
-
-				// $('#narrativeType').replaceWith("Narrative Type: " + data[ index  ].narrativeType);
-				// $('#narrativeAuthor').replaceWith("Author: " + data[ index  ].narrativeAuthor);
-				// $('#narrativeDate').replaceWith("Narrative Date: " + data[ index ].narrativeDate);
-			}
-
-		/*	var div			= $('#detailRowTest');
-			var narrativeText	= data[ index  -1 ].narrativeText;
-			var narrativeType	= data[ index  -1 ].narrativeType;
-			var author		= data[ index  -1 ].narrativeAuthor;
-			var narrativeDate	= data[ index  -1 ].narrativeDate;
-
-			new  acmDetailRow( div, narrativeText, narrativeType, author, narrativeDate)*/
-
-			// $scope.narrativeType = data[index -1].narrativeType;
-			// $scope.narrativeAuthor = data[index -1].narrativeAuthor;
-			// $scope.narrativeDate = data[index -1].narrativeDate;
-			// $scope.narrativeText = data[index -1].narrativeText;
-
-			getCaseManager();
+			//function changeNarrative(evt){}
+			
+			getCaseManagers(caseManager);
 		});
 	}
 
-	function getCaseManager(){
+	function getCaseManagers(caseManager){
 		$scope.urlMgrGroups = "/rest/casemanager/groups/list/all";
 		$scope.urlAllCMs = "/rest/casemanager/list/all";
 		$scope.urlCMsForGroup = "/rest/casemanager/list/group/";
 
 		DataFtry.getData($scope.urlAllCMs).then(function(result){
-			$("#caseManagers").kendoDropDownList({
+			var mgrList = $("#caseManagers").kendoDropDownList({
 				dataTextField: "name",
 				dataValueField: "id",
-				dataSource: result.data.content 
-			});
+				valueTemplate: $("#managerDropDownTemplate").html(),
+				template: $("#managerDropDownTemplate").html(),
+				optionLabel: {
+					name: "Select Manager...",
+					id: "-1"
+				},
+				dataSource: result.data.content,
+				select: function(e){
+					//console.log(e);
+					var dataItem = this.dataItem(e.item.index());
+					$scope.disableCaseMgrBtnFlag = false;
+					$scope.caseManagerName = dataItem.name;
+    				//console.log("Selected mgr" + $scope.assignCM.caseManagerName);
+					//console.log("assigning disableCaseMgrBtnFlag:" + $scope.disableCaseMgrBtnFlag );
+				}
+			}).data("kendoDropDownList");;
+			
+			console.log("Current Case Manager:" + caseManager);
+			//mgrList.search(caseManager);
+			mgrList.dataSource.read();
+			mgrList.select(function (dataItem) {
+				console.log("Current dataitem name:" +dataItem.name);
+				console.log("Current Case Manager:" + caseManager);
+				console.log("Equals Case Manager:" + (dataItem.name.indexOf(caseManager) >=0 ));
+				return dataItem.name.indexOf(caseManager) >=0;
+			})
+			
 		});
 
 		DataFtry.getData($scope.urlMgrGroups).then(function(result){
 			var casegrps = $("#caseGroups").kendoDropDownList({
 				dataTextField: "cm_group",
 				dataValueField: "cm_group",
+				optionLabel: "Select Mgr Group...",
 				dataSource: result.data.content,
 				select: function(e) {
 					var selectValue = e.item.text();
-					console.log("Selected item" + selectValue);
+    				//console.log("Selected item" + selectValue);
 						
 					DataFtry.getData($scope.urlCMsForGroup + selectValue).then(function(result){
 						console.log("Refreshing the case managers");
@@ -450,7 +521,9 @@ angular.module('ECMSapp.assignCM', [])
 						
 						var mgrList = $("#caseManagers").data("kendoDropDownList");
 						mgrList.dataSource.data(result.data.content);
-						mgrList.dataSource.query();
+						$scope.disableCaseMgrBtnFlag = true;
+						//console.log("assigning disableCaseMgrBtnFlag:" + $scope.disableCaseMgrBtnFlag );
+						//mgrList.trigger("select");
 						// Use the selected item or its text
 					});
 				}
@@ -460,15 +533,6 @@ angular.module('ECMSapp.assignCM', [])
 			//casegrps.trigger("select");
 		});
 	}
-
-	$scope.assignCM = function(){
-		var assignURL = "case:" + $scope.dataItem.caseNumber + "manager:"+ $scope.assignCM.caseManager;
-
-		DataFtry.assignCaseManager($scope.dataItem.caseNumber, $scope.assignCM.caseManager).then(function(result){
-			console.log("assigned manager successfully:" + assignURL);	
-		});
-	}	
-	
 			
 	// MAKE THE CHECK BOX PERSISTING
 /*	var checkedIds = {};
@@ -524,8 +588,6 @@ angular.module('ECMSapp.assignCM', [])
 			optionLabel: "--Select Value--"
 		});
 	}
-
-
 
 }])
 

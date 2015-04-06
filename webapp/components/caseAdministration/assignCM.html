@@ -7,7 +7,7 @@
 
 	<!-- DATE RANGE ///////////////////////////////////////////////////////////////////////////////-->
 		<div class="filter-holder" role="query-filter">
-			<form name="dateRange-frm" ng-submit="changeDateRange()" role="form">
+			<form name="dateRange-frm" ng-submit="reloadData()" role="form">
 				<div class="filter-row-holder">
 					<ul>
 						<li class=" title-small" style="width: 320px">
@@ -39,23 +39,23 @@
 			</ul>
 		</div>
 
-		 <div kendo-window="daws" k-options="dawsOptions" style="text-align: center">
+		 <div id="dawsid" kendo-window="daws" k-options="dawsOptions" style="text-align: center">
 		 	<div class="large-window-title ">
 				<span class="title-reduced" >Daily Assignment Worksheet for:</span>
 				<span class="date-title-large">{{todayDate}}</span>
 			</div>
 			
-			<kendo-grid k-options="dawsGridOptions" k-rebind="dawsGridOptions" id="grid"  k-ng-delay="dawsGridOptions">
+			<kendo-grid k-options="dawsGridOptions" k-rebind="dawsGridOptions" id="grid"  k-ng-delay="dawsGridOptions" k-on-save="trackChanges(kendoEvent)">
 			</kendo-grid >
 
 			<div class="bottom-window">
 				<ul>
 					<li  class="submit-btn">
-                		<kendo-button class="k-button" ng-click="daws.close()">SAVE & CLOSE</kendo-button>
+                		<kendo-button class="k-button" ng-click="saveAndCloseScheduleUpdates()">SAVE & CLOSE</kendo-button>
 					</li>
 						
 					<li  class="submit-btn">
-                		<kendo-button class="k-button">SAVE</kendo-button>
+                		<kendo-button class="k-button" ng-click="saveScheduleUpdates()">SAVE</kendo-button>
 					</li>
 
 					<li  class="submit-btn">
@@ -67,7 +67,7 @@
 		</div>
 
         <!-- DATA GRID /////////////////////////////////////////////////////////////////-->
-		<div role="datagrid" class="grid-holder" >
+		<div id="datagrid" role="datagrid" class="grid-holder" >
 			<kendo-grid k-options="mainGridOptions" k-rebind="mainGridOptions" id="grid"  k-ng-delay="mainGridOptions">
 			</kendo-grid >
 		</div>
@@ -90,4 +90,11 @@
 		</ul>
 	</div>
 	<div class="narrative-text-box" readonly><span>#: narrativeText#</span></div>
+</script>
+
+<!-- Template -->
+<script id="managerDropDownTemplate" type="text/x-kendo-template">
+     #:data.name#
+     ${ (data.otherGroup != null && data.otherGroup!= '' && data.otherGroup!= 'null') ? '(' + data.otherGroup + ')' : ''}
+
 </script>

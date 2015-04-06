@@ -7,12 +7,12 @@ var app = angular.module('ECMSapp', [
 	'ECMSapp.login',
 	'ECMSapp.home',
 	'ECMSapp.mainMenu',
-             'ECMSapp.services',
+    'ECMSapp.services',
 	'ECMSapp.adminMain',
 	'ECMSapp.assignCM',
-            'ECMSapp.intakeDistribution',
+    'ECMSapp.intakeDistribution',
 	'kendo.directives'
-	])
+	]);
 
 // BALLU /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -47,8 +47,8 @@ app.factory("ConfigService", function($window, $rootScope) {
 app.factory('httpRequestInterceptor', function (StorageService, ConfigService) {
     return {
         request: function (config) {
-        	//console.log("Inside interceptor:" )
-        	//console.log(config);
+            //console.log("Inside interceptor:" )
+            //console.log(config);
             config.headers['X-Auth-Token'] = StorageService.getToken();
             if (config.url.indexOf('.html') === -1){
                 config.url = ConfigService.getRestURI() + config.url ;
@@ -85,8 +85,8 @@ app.factory('loginService', function( $http){
             var restservice = "/rest/auth/logout";
             return $http.get(restservice);
         }
-    }
-})
+    };
+});
 
 
 app.config(function ($httpProvider) {
@@ -111,6 +111,6 @@ app.run( function($location, $window, ConfigService, StorageService){
 			//console.log( " Browser prevented from refreshing/accessing directly a partial page: " + $location.path() );
             event.preventDefault();
         }
-    })
+    });
 
 });
