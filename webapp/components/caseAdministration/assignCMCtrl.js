@@ -365,6 +365,11 @@ angular.module('ECMSapp.assignCM', [])
 							operators	: {
 								number	: {
 								eq		: "Equal to",
+								neq		: "Not equal to",
+								gte		: "Greater or equal to",
+								gt		: "Greater than",
+								lte		: "Less or equal to",
+								lt		: "Less than"
 									}
 								}
 							}
@@ -563,9 +568,12 @@ angular.module('ECMSapp.assignCM', [])
 		*/
 	// FILTERING WITH DROPDOWN MENU 
 	var victim	= ["1", "2", "3", "4", "5", "6"],
-		types		= ["ERU", "FA", "NFA", "LIM", "5779", "UHR", "DECC", "RCST", "ATT", "UMR"],
-		sources		= ["Call", "Email", "Internet", "WebService", "Online Sighting Form"];
-			
+		bool	= ["Yes", "No"],
+		status	= ["Active", "Recovered", "Closed"],
+		types	= ["ERU", "FA", "NFA", "LIM", "5779", "UHR", "DECC", "RCST", "ATT", "UMR"],
+		sources	= ["Call", "Email", "Internet", "WebService", "Online Sighting Form"],
+		states	= ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'];
+		
 	function typeFilter(element) {
 		//element.kendoMultiSelect({
 		element.kendoDropDownList({
@@ -585,6 +593,20 @@ angular.module('ECMSapp.assignCM', [])
 	function sourceFilter(element) {
 		element.kendoDropDownList({
 			dataSource: sources,
+			optionLabel: "--Select Value--"
+		});
+	}
+
+	function boolFilter(element) {
+		element.kendoDropDownList({
+			dataSource: bool,
+			optionLabel: "--Select Value--"
+		});
+	}
+
+	function stateFilter(element) {
+		element.kendoDropDownList({
+			dataSource: states,
 			optionLabel: "--Select Value--"
 		});
 	}

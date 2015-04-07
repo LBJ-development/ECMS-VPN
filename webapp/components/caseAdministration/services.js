@@ -112,7 +112,7 @@ angular.module('ECMSapp.services', [])
 				endDate: casesearch.endDate,
 				rcType: "5117", //CASES ONLY
 				rcSource: "-1", //ALL
-				rcStatus: "5136" //ACTIVE ONLY
+				rcStatus: "5120" //ACTIVE ONLY
 			};
 		return getCases(intakeOpt);
 	};

@@ -7,6 +7,8 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
 
     .config(['$routeProvider', function($routeProvider) {
 
+
+
         $routeProvider.when('/login', {
             templateUrl: 'components/login/login.html'
         });
@@ -17,6 +19,7 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
 
         $routeProvider.when('/caseadministration', {
             templateUrl: 'components/caseAdministration/caseAdministration.html'
+
         });
 		
 		$routeProvider.when('/caseadministration/assigncm', {

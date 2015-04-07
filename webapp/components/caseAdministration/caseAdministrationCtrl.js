@@ -255,12 +255,13 @@ angular.module('ECMSapp.adminMain', [])
 						title	: "State",
 						width	: "5%",
 						filterable: {
+							ui			: stateFilter,
 							operators	: {
-									string	: {
-									eq		: "Equal to",
-											}
-										}
+								string	: {
+								eq		: "Equal to"
 									}
+								}
+							}
 						},{
 						field	: "incidentDate",
 						title	: "Incid. Date",
@@ -310,9 +311,12 @@ angular.module('ECMSapp.adminMain', [])
 	}
 		
 	// FILTERING WITH DROPDOWN MENU 
-	var status	= ["Active", "Recovered", "Closed"],
+	var victim	= ["1", "2", "3", "4", "5", "6"],
+		bool	= ["Yes", "No"],
+		status	= ["Active", "Recovered", "Closed"],
 		types	= ["ERU", "FA", "NFA", "LIM", "5779", "UHR", "DECC", "RCST", "ATT", "UMR"],
-		sources = ["Call", "Email", "Internet", "WebService", "Online Sighting Form"];
+		sources	= ["Call", "Email", "Internet", "WebService", "Online Sighting Form"],
+		states	= ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'];
 			
 	function typeFilter(element) {
 		//element.kendoMultiSelect({
@@ -336,4 +340,19 @@ angular.module('ECMSapp.adminMain', [])
 			optionLabel: "--Select Value--"
 		});
 	}
+
+	function boolFilter(element) {
+		element.kendoDropDownList({
+			dataSource: bool,
+			optionLabel: "--Select Value--"
+		});
+	}
+
+	function stateFilter(element) {
+		element.kendoDropDownList({
+			dataSource: states,
+			optionLabel: "--Select Value--"
+		});
+	}
+		
 }]);

@@ -125,14 +125,14 @@ angular.module('ECMSapp.intakeDistribution', [])
 								caseNumber		: { type: "string" },
 								intakeDateTime	: { type: "date"	},
 								source			: { type: "string" },
-								caseTypeAbbr		: { type: "string" },
-								caseStatus		: { type: "string" },
+								caseTypeAbbr	: { type: "string" },
+								// caseStatus	: { type: "string" },
 								childCount		: { type: "number" },
 								state			: { type: "string" },
-								PoliceReport		: { type: "string" },
+								PoliceReport	: { type: "string" },
 								IntlRisk		: { type: "string" },
-								CMAssignedDT	: { type: "string" },
-								RecipDateSentMeth	: { type: "date" }
+								CMAssignedDT	: { type: "date" },
+								RecipDateSentMeth: { type: "string" }
 
 								},
 							}
@@ -228,12 +228,12 @@ angular.module('ECMSapp.intakeDistribution', [])
 							}
 						},{
 						
-						field	: "caseStatus",
+						/*field	: "caseStatus",
 						title	: "Status",
 						width	: "5%",
 						filterable: false,
 						sortable: false,
-						},{
+						},{*/
 
 						field	: "childCount",
 						title	: "# of Vict",
@@ -243,6 +243,11 @@ angular.module('ECMSapp.intakeDistribution', [])
 							operators	: {
 								number	: {
 								eq		: "Equal to",
+								neq		: "Not equal to",
+								gte		: "Greater or equal to",
+								gt		: "Greater than",
+								lte		: "Less or equal to",
+								lt		: "Less than"
 									}
 								}
 							}
@@ -250,17 +255,41 @@ angular.module('ECMSapp.intakeDistribution', [])
 
 						field	: "state",
 						title	: "State",
-						width	: "5%"
+						width	: "5%",
+						filterable: {
+							ui			: stateFilter,
+							operators	: {
+								string	: {
+								eq		: "Equal to"
+									}
+								}
+							}
 						},{
 
 						field	: "PoliceReport",
 						title	: "Pol. Rep.",
-						width	: "5%"
+						width	: "5%",
+						filterable: {
+							ui			: boolFilter,
+							operators	: {
+								string	: {
+								eq		: "Equal to"
+									}
+								}
+							}
 						},{
 
 						field	: "IntlRisk",
 						title	: "Intl. Risk",
-						width	: "5%"
+						width	: "5%",
+						filterable: {
+							ui			: boolFilter,
+							operators	: {
+								string	: {
+								eq		: "Equal to"
+									}
+								}
+							}
 						},{
 
 						field	: "CMAssignedDT",
@@ -270,7 +299,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 
 						field	: "RecipDateSentMeth",
 						title	: "Recip/D Sent/Method",
-						width	: "25%"
+						width	: "30%"
 						},{
 
 						field	: "View",
@@ -319,7 +348,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 	$scope.confirmMessageOptions = {
 		width: 380,
 		visible: false,
-		height: 160,
+		// height: 170,
 		modal: true,
 		scrollable : false,
 		// open: confirmMessage
@@ -449,9 +478,11 @@ angular.module('ECMSapp.intakeDistribution', [])
 
 	// FILTERING WITH DROPDOWN MENU 
 	var victim	= ["1", "2", "3", "4", "5", "6"],
+		bool	= ["Yes", "No"],
 		status	= ["Active", "Recovered", "Closed"],
 		types	= ["ERU", "FA", "NFA", "LIM", "5779", "UHR", "DECC", "RCST", "ATT", "UMR"],
-		sources	= ["Call", "Email", "Internet", "WebService", "Online Sighting Form"];
+		sources	= ["Call", "Email", "Internet", "WebService", "Online Sighting Form"],
+		states	= ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'];
 			
 	function typeFilter(element) {
 		//element.kendoMultiSelect({
@@ -476,9 +507,23 @@ angular.module('ECMSapp.intakeDistribution', [])
 		});
 	}
 
-		function victimFilter(element) {
+	function victimFilter(element) {
 		element.kendoDropDownList({
 			dataSource: victim,
+			optionLabel: "--Select Value--"
+		});
+	}
+
+	function boolFilter(element) {
+		element.kendoDropDownList({
+			dataSource: bool,
+			optionLabel: "--Select Value--"
+		});
+	}
+
+	function stateFilter(element) {
+		element.kendoDropDownList({
+			dataSource: states,
 			optionLabel: "--Select Value--"
 		});
 	}
