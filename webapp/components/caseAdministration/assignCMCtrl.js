@@ -131,7 +131,7 @@ angular.module('ECMSapp.assignCM', [])
 		
 		// push the user changed field and value into the map
 		if (e.values.ooo) {
-			console.log("ooo modified:"+ e.values.ooo);
+			// console.log("ooo modified:"+ e.values.ooo);
 			schedule['ooo'] = (e.values.ooo === 'Yes'?1:0);
         }
 		
@@ -155,8 +155,8 @@ angular.module('ECMSapp.assignCM', [])
 	$scope.saveScheduleUpdates = function() {
 		var scheduleUpdatesAsArray = new Array();
 		for (var id in $scope.modifiedSchedules) {
-			console.log("id:" + id);
-			console.log(JSON.stringify($scope.modifiedSchedules[id]));
+			// console.log("id:" + id);
+			// console.log(JSON.stringify($scope.modifiedSchedules[id]));
 			scheduleUpdatesAsArray.push($scope.modifiedSchedules[id]);
 		}
 		console.log("schedules input for URL:" + JSON.stringify(scheduleUpdatesAsArray) );
@@ -165,9 +165,9 @@ angular.module('ECMSapp.assignCM', [])
 	
 	$scope.saveAndCloseScheduleUpdates = function() {
 		$scope.saveScheduleUpdates();
-		console.log("saveAndCloseScheduleUpdates");
+		// console.log("saveAndCloseScheduleUpdates");
 		$("#dawsid").data("kendoWindow").close();
-		console.log("saveAndCloseScheduleUpdates done");
+		// console.log("saveAndCloseScheduleUpdates done");
 	}
 
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
@@ -184,7 +184,7 @@ angular.module('ECMSapp.assignCM', [])
 		var assignURL = "case:" + $scope.dataItem.caseNumber + "manager:"+ $scope.assignCM.caseManagerId;
 
 		DataFtry.assignCaseManager($scope.dataItem.caseNumber, $scope.assignCM.caseManagerId).then(function(result){
-			console.log("assigned manager successfully:" + assignURL);
+			// console.log("assigned manager successfully:" + assignURL);
 			$scope.dataItem.caseManager = $scope.caseManagerName; //"12312";			
 			//console.log($scope.dataItem);
 			//$scope.reloadData(); //triggering main grid refresh
@@ -197,7 +197,7 @@ angular.module('ECMSapp.assignCM', [])
 	
 	// WHEN DATE RANGE CHANGES //////////////////////////////////////////////////
 	$scope.reloadData = function(){
-		    console.log("reloadData");
+		    // console.log("reloadData");
 			$scope.submitSearch++;
 	};
 
@@ -226,7 +226,7 @@ angular.module('ECMSapp.assignCM', [])
 
 	// WATCH FOR A DATE RANGE CHANGE
 	$scope.$watch('submitSearch', function(newValue, oldValue) {
-		console.log("Calling submitSearch:" + $scope.submitSearch);
+		// console.log("Calling submitSearch:" + $scope.submitSearch);
 		$scope.mainGridOptions.dataSource.data = [];
 		DataFtry.getCasesForAssignment(formatStartingDate(), formatEndingDate()).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;
@@ -399,7 +399,7 @@ angular.module('ECMSapp.assignCM', [])
 		var detailRow = e.detailRow;
 			kendo.bind(detailRow, e.data);
 			// console.log(grid.tbody.find("tr.k-master-row").first());
-		 console.log(e.data.caseManager);
+		 // console.log(e.data.caseManager);
 
 		var caseNumber = e.data.caseNumber;
 		var caseManager = e.data.caseManager;
@@ -442,7 +442,19 @@ angular.module('ECMSapp.assignCM', [])
 		$scope.urlNarrative = "/rest/caseadmin/narratives?caseNumber=" + caseNumber;
 		DataFtry.getData($scope.urlNarrative).then(function(result){
 
+			
+			//massage narrative text
+			for (var i in result.data.content){
+
+				result.data.content[i].narrativeText = result.data.content[i].narrativeText.replace(/(\n\r|\r\n|\f|\xxx|↵)/gi, '<br/>');
+
+				console.log(result.data.content[i].narrativeText);
+			}
+
 			var data = result.data.content;
+
+				// console.log("DATA:");
+				// console.log(data);
 
 			grid = detailRow.find(".gridNarrative").kendoGrid({
 
@@ -502,9 +514,9 @@ angular.module('ECMSapp.assignCM', [])
 			//mgrList.search(caseManager);
 			mgrList.dataSource.read();
 			mgrList.select(function (dataItem) {
-				console.log("Current dataitem name:" +dataItem.name);
-				console.log("Current Case Manager:" + caseManager);
-				console.log("Equals Case Manager:" + (dataItem.name.indexOf(caseManager) >=0 ));
+				// console.log("Current dataitem name:" +dataItem.name);
+				// console.log("Current Case Manager:" + caseManager);
+				// console.log("Equals Case Manager:" + (dataItem.name.indexOf(caseManager) >=0 ));
 				return dataItem.name.indexOf(caseManager) >=0;
 			})
 			
@@ -521,8 +533,8 @@ angular.module('ECMSapp.assignCM', [])
     				//console.log("Selected item" + selectValue);
 						
 					DataFtry.getData($scope.urlCMsForGroup + selectValue).then(function(result){
-						console.log("Refreshing the case managers");
-						console.log(result.data.content);
+						// console.log("Refreshing the case managers");
+						// console.log(result.data.content);
 						
 						var mgrList = $("#caseManagers").data("kendoDropDownList");
 						mgrList.dataSource.data(result.data.content);
