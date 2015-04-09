@@ -441,31 +441,26 @@ angular.module('ECMSapp.assignCM', [])
 		var grid = {};
 		$scope.urlNarrative = "/rest/caseadmin/narratives?caseNumber=" + caseNumber;
 		DataFtry.getData($scope.urlNarrative).then(function(result){
-
-			
+	
 			//massage narrative text
-			for (var i in result.data.content){
+			// for (var i in result.data.content){
 
-				result.data.content[i].narrativeText = result.data.content[i].narrativeText.replace(/(\n\r|\r\n|\f|\xxx|↵)/gi, '<br/>');
-
-				console.log(result.data.content[i].narrativeText);
-			}
-
-			var data = result.data.content;
-
-				// console.log("DATA:");
-				// console.log(data);
+			//	result.data.content[i].narrativeText = result.data.content[i].narrativeText.replace(/(\n\r|\r\n|\f|\xxx|↵)/gi, '<br/>');
+			// }
 
 			grid = detailRow.find(".gridNarrative").kendoGrid({
 
 				dataSource:{
-						data: data,
+						data: result.data.content,
 						pageSize: 1
+
 						}, 
-				scrollable: true,
+				scrollable: false,
 				sortable: false,
 				pageable: true,
 				height	: 300,
+
+
 				rowTemplate: kendo.template($("#row-template").html()),
 				//dataBound: changeNarrative,
 				// toolbar: kendo.template($("#toolbar-template").html()),
@@ -478,7 +473,7 @@ angular.module('ECMSapp.assignCM', [])
 						},
 					]
 				});
-			//function changeNarrative(evt){}
+
 			
 			getCaseManagers(caseManager);
 		});
