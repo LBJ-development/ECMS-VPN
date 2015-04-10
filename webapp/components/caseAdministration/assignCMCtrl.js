@@ -2,7 +2,7 @@
 
 angular.module('ECMSapp.assignCM', [])
 
-.controller('AssignCMCtrl', [ '$scope', 'DataFtry',  function( $scope, DataFtry, $q){
+.controller('AssignCMCtrl', [ '$scope', 'DataFtry', '$http', function( $scope, DataFtry, $http, $q){
 
 	// DAILY ASSIGNMENT WORKSHEET WINDOW //////////////////////////////////////////////////
 
@@ -159,7 +159,7 @@ angular.module('ECMSapp.assignCM', [])
 			// console.log(JSON.stringify($scope.modifiedSchedules[id]));
 			scheduleUpdatesAsArray.push($scope.modifiedSchedules[id]);
 		}
-		console.log("schedules input for URL:" + JSON.stringify(scheduleUpdatesAsArray) );
+		// console.log("schedules input for URL:" + JSON.stringify(scheduleUpdatesAsArray) );
 		DataFtry.submitUpdatedSchedules(scheduleUpdatesAsArray);
 	}
 	
@@ -454,12 +454,11 @@ angular.module('ECMSapp.assignCM', [])
 						data: result.data.content,
 						pageSize: 1
 
-						}, 
+						},
 				scrollable: false,
 				sortable: false,
 				pageable: true,
 				height	: 300,
-
 
 				rowTemplate: kendo.template($("#row-template").html()),
 				//dataBound: changeNarrative,
@@ -479,33 +478,50 @@ angular.module('ECMSapp.assignCM', [])
 		});
 	}
 
+	// GET THE GROUP LIST 
+
+	$http.get( "/rest/casemanager/groups/list/all")
+		.success( function(result) {
+			$scope.acmGroupSource = result.content;
+	});
+
+
+	// GET CASE MANAGERS LIST 
+	$http.get( "/rest/casemanager/list/all")
+		.success( function(result) {
+			$scope.acmCMSource = result.content;
+	});
+
+
+
 	function getCaseManagers(caseManager){
 		$scope.urlMgrGroups = "/rest/casemanager/groups/list/all";
 		$scope.urlAllCMs = "/rest/casemanager/list/all";
 		$scope.urlCMsForGroup = "/rest/casemanager/list/group/";
 
-		DataFtry.getData($scope.urlAllCMs).then(function(result){
+		/*DataFtry.getData($scope.urlAllCMs).then(function(result){
+
 			var mgrList = $("#caseManagers").kendoDropDownList({
 				dataTextField: "name",
 				dataValueField: "id",
-				valueTemplate: $("#managerDropDownTemplate").html(),
-				template: $("#managerDropDownTemplate").html(),
 				optionLabel: {
 					name: "Select Manager...",
 					id: "-1"
 				},
 				dataSource: result.data.content,
+				valueTemplate:  kendo.template($("#managerDropDownTemplate").html()),
+				template:  kendo.template($("#managerDropDownTemplate").html()),
 				select: function(e){
 					//console.log(e);
 					var dataItem = this.dataItem(e.item.index());
 					$scope.disableCaseMgrBtnFlag = false;
 					$scope.caseManagerName = dataItem.name;
-    				//console.log("Selected mgr" + $scope.assignCM.caseManagerName);
+					//console.log("Selected mgr" + $scope.assignCM.caseManagerName);
 					//console.log("assigning disableCaseMgrBtnFlag:" + $scope.disableCaseMgrBtnFlag );
 				}
-			}).data("kendoDropDownList");;
+			}).data("kendoDropDownList");
 			
-			console.log("Current Case Manager:" + caseManager);
+			// console.log("Current Case Manager:" + caseManager);
 			//mgrList.search(caseManager);
 			mgrList.dataSource.read();
 			mgrList.select(function (dataItem) {
@@ -513,11 +529,10 @@ angular.module('ECMSapp.assignCM', [])
 				// console.log("Current Case Manager:" + caseManager);
 				// console.log("Equals Case Manager:" + (dataItem.name.indexOf(caseManager) >=0 ));
 				return dataItem.name.indexOf(caseManager) >=0;
-			})
-			
-		});
+			});
+		});*/
 
-		DataFtry.getData($scope.urlMgrGroups).then(function(result){
+/*		DataFtry.getData($scope.urlMgrGroups).then(function(result){
 			var casegrps = $("#caseGroups").kendoDropDownList({
 				dataTextField: "cm_group",
 				dataValueField: "cm_group",
@@ -525,7 +540,7 @@ angular.module('ECMSapp.assignCM', [])
 				dataSource: result.data.content,
 				select: function(e) {
 					var selectValue = e.item.text();
-    				//console.log("Selected item" + selectValue);
+					//console.log("Selected item" + selectValue);
 						
 					DataFtry.getData($scope.urlCMsForGroup + selectValue).then(function(result){
 						// console.log("Refreshing the case managers");
@@ -543,7 +558,50 @@ angular.module('ECMSapp.assignCM', [])
 			
 			//casegrps.select(1);
 			//casegrps.trigger("select");
-		});
+		});*/
+	}
+
+	$scope.selectMgrGroup = function(ev) {
+
+			// console.log(ev.item.text());
+
+			$scope.urlCMsForGroup = "/rest/casemanager/list/group/";
+
+			var URL;
+
+			if(ev.item.text() == "Select Group") {
+				URL = "/rest/casemanager/list/all";
+			} else {
+				URL = "/rest/casemanager/list/group/" + ev.item.text();
+			}
+
+			// DataFtry.getData($scope.urlCMsForGroup + selectValue).then(function(result){
+			DataFtry.getData(URL).then(function(result){
+						// console.log("Refreshing the case managers");
+						// console.log(result.data.content);
+						
+						/*var mgrList = $("#caseManagers").data("kendoDropDownList");
+
+					
+						mgrList.dataSource.data(result.data.content);*/
+						// console.log($scope.acmCMSource);
+
+						 $scope.acmCMSource = result.data.content;
+						// $scope.disableCaseMgrBtnFlag = true;
+						//console.log("assigning disableCaseMgrBtnFlag:" + $scope.disableCaseMgrBtnFlag );
+						//mgrList.trigger("select");
+						// Use the selected item or its text
+					});
+
+			// console.log("FROM SELECTMGRGROUP FROM DIRECTIVE");
+			// var selectedValue = ev.item.text();
+			// console.log("Selected item" + selectedValue);
+	
+	};
+
+	$scope.selectManager = function(ev) {
+
+
 	}
 			
 	// MAKE THE CHECK BOX PERSISTING
@@ -628,6 +686,17 @@ angular.module('ECMSapp.assignCM', [])
 	controller: 'AssignCMCtrl',
 	templateUrl: 'components/caseAdministration/detailRow.html',
 	link: function (scope, element, attrs){
+
+		/*scope.selectMgrGroup = function(ev) {
+
+			console.log(ev.item.text());
+
+			// console.log("FROM SELECTMGRGROUP FROM DIRECTIVE");
+			// var selectedValue = ev.item.text();
+			// console.log("Selected item" + selectedValue);
+		};*/
+
+
         }
     };
 });

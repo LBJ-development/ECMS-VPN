@@ -185,15 +185,15 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
             var CASelected = false;
 
             scope.onOpen = function(ev) {
-               console.log(CASelected);
+               // console.log(CASelected);
                $("#mainMenu").find(".head-menu").removeClass("k-state-selected");
             };
 
             scope.onClose = function(ev) {
-                console.log(CASelected);
+                // console.log(CASelected);
 
                if(CASelected){
-                     console.log(CASelected);
+                     // console.log(CASelected);
                       $("#mainMenu").find(".head-menu").addClass("k-state-selected");
 
                } 
@@ -204,7 +204,7 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
             // HIDE THE MENU WHEN LOGIN OUT
             scope.logout = function() {
                 $rootScope.displayMainMenu = false;
-               console.log (StorageService.getToken());
+               // console.log (StorageService.getToken());
                 StorageService.setToken(null);
                 loginService.logout();
             };

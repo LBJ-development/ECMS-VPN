@@ -13,7 +13,7 @@ angular.module('ECMSapp.services', [])
 	};
 			
 	var getData = function(url){
-		console.log("inside getData:" + url)
+		// console.log("inside getData:" + url)
 		var $promise =  $http({
 			method: 'GET',
 			url: url,
@@ -23,7 +23,7 @@ angular.module('ECMSapp.services', [])
 		var deferred = $q.defer();
 		
 		$promise.then(function(result){
-			console.log(result);
+			// console.log(result);
 			
 			if(result.data.status == 'SUCCESS'){
 				deferred.resolve(result);
@@ -105,7 +105,7 @@ angular.module('ECMSapp.services', [])
 	var getCasesForIntakeDist = function (casesearch){
 		
 		var data = Object.toparams(casesearch);
-		console.log("FROM GETCASESFORINTAKEDIST" +  data);
+		// console.log("FROM GETCASESFORINTAKEDIST" +  data);
 
 		var intakeOpt = {
 				startDate: casesearch.startDate,
