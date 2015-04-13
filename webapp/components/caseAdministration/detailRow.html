@@ -16,7 +16,7 @@
 				<kendo-button  ng-model="button" ng-disabled="disableCaseMgrBtnFlag" class="k-button" ng-click="assignCM()" id="submitButton">SUBMIT</kendo-button>
 			</li>
 			<li>
-				<select kendo-drop-down-list id="caseManagers"style="width: 200px" k-ng-delay="acmCMSource" k-rebind="acmCMSource"  k-option-label="'Select Manager'" k-data-text-field="'name'"  k-data-text-value="'id'" k-auto-bind="false" k-data-source="acmCMSource" k-on-select="selectManager(kendoEvent)"></select>
+				<select kendo-drop-down-list="caseManagersList" id="caseManagers"style="width: 200px" k-ng-delay="acmCMSource" k-rebind="acmCMSource"  k-option-label="'Select Manager'" k-data-text-field="'name'"  k-data-value-field="'id'" k-auto-bind="false" k-data-source="acmCMSource" ng-model="assignCM.caseManagerId" k-on-select="selectManager(kendoEvent)"></select>
 			</li>
 
 			<li>

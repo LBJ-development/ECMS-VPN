@@ -37,6 +37,8 @@ angular.module('ECMSapp.services', [])
 	
 	var assignCaseManager = function(caseid, managerid) {
 
+		// console.log(caseid + "/" + managerid);
+
 		var $promise =  $http({
 			method: 'POST',
 			url: "/rest/case/assignmanager/",
@@ -94,7 +96,7 @@ angular.module('ECMSapp.services', [])
 		var casesearch = {
 				startDate: starDate,
 				endDate: endDate,
-				rcType: "5117", //CASES ONLY
+				rcType: "5118", //CASES ONLY
 				// rcSource: "5119", //ACTIVE
 				rcSource: "-1", //ALL
 				rcStatus: "-1" //set default value to ALL for drop-down list
@@ -110,7 +112,7 @@ angular.module('ECMSapp.services', [])
 		var intakeOpt = {
 				startDate: casesearch.startDate,
 				endDate: casesearch.endDate,
-				rcType: "5117", //CASES ONLY
+				rcType: "5118", //CASES ONLY
 				rcSource: "-1", //ALL
 				rcStatus: "5120" //ACTIVE ONLY
 			};

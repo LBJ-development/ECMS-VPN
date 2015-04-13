@@ -184,9 +184,10 @@ angular.module('ECMSapp.assignCM', [])
 		var assignURL = "case:" + $scope.dataItem.caseNumber + "manager:"+ $scope.assignCM.caseManagerId;
 
 		DataFtry.assignCaseManager($scope.dataItem.caseNumber, $scope.assignCM.caseManagerId).then(function(result){
-			// console.log("assigned manager successfully:" + assignURL);
-			$scope.dataItem.caseManager = $scope.caseManagerName; //"12312";			
-			//console.log($scope.dataItem);
+			 // console.log("assigned manager successfully:" + assignURL);
+			$scope.dataItem.caseManager = $scope.caseManagerName; //"12312";
+
+			console.log($scope.caseManagerName);
 			//$scope.reloadData(); //triggering main grid refresh
 		});
 	}	
@@ -403,6 +404,7 @@ angular.module('ECMSapp.assignCM', [])
 
 		var caseNumber = e.data.caseNumber;
 		var caseManager = e.data.caseManager;
+		$scope.caseManager = e.data.caseManager;
 
 		$scope.urlDetail = "/rest/caseadmin/incidentDetails?caseNumber=" + caseNumber;
 		DataFtry.getData($scope.urlDetail).then(function(result){
@@ -489,16 +491,54 @@ angular.module('ECMSapp.assignCM', [])
 	// GET CASE MANAGERS LIST 
 	$http.get( "/rest/casemanager/list/all")
 		.success( function(result) {
-			$scope.acmCMSource = result.content;
+			 $scope.acmCMSource = result.content;
+
+
+
+			// console.log($scope.caseManagersList);
+
+			// var dropdownlist = $("#caseManagers").data("kendoDropDownList");
+
+			// dropdownlist.select(1);
+			// $scope.caseManagersList.select(2);
+
+
+			$scope.caseManagersList.bind("dataBound", dropdownlist_dataBound);
+
+			function dropdownlist_dataBound(e) {
+  				console.log("FROM DATABOUND");
+
+				}
+
+       	
+
+			$scope.caseManagersList.select(function(dataItem) {
+
+				console.log("FROM SELECT")
+
+
+
+				return dataItem.name === $scope.caseManager;
+			});
+
+			// mgrList.search($scope.caseManager);
+			// mgrList.dataSource.read();
+			// mgrList.select(function (dataItem) {
+			// console.log("Current dataitem name:" +dataItem.name);
+			// console.log("Current Case Manager:" + $scope.caseManager);
+			// console.log("Equals Case Manager:" + (dataItem.name.indexOf($scope.caseManager) >=0 ));
+			// 	return dataItem.name.indexOf($scope.caseManager) >=0;
+			// });
 	});
 
 
 
 	function getCaseManagers(caseManager){
 		$scope.urlMgrGroups = "/rest/casemanager/groups/list/all";
-		$scope.urlAllCMs = "/rest/casemanager/list/all";
+		// $scope.urlAllCMs = "/rest/casemanager/list/all";
 		$scope.urlCMsForGroup = "/rest/casemanager/list/group/";
 
+	
 		/*DataFtry.getData($scope.urlAllCMs).then(function(result){
 
 			var mgrList = $("#caseManagers").kendoDropDownList({
@@ -563,7 +603,7 @@ angular.module('ECMSapp.assignCM', [])
 
 	$scope.selectMgrGroup = function(ev) {
 
-			// console.log(ev.item.text());
+			console.log("FROM SELECT MGR GROUP");
 
 			$scope.urlCMsForGroup = "/rest/casemanager/list/group/";
 
@@ -584,9 +624,20 @@ angular.module('ECMSapp.assignCM', [])
 
 					
 						mgrList.dataSource.data(result.data.content);*/
-						// console.log($scope.acmCMSource);
+						// console.log($scope.acmCMSource);					
 
-						 $scope.acmCMSource = result.data.content;
+				$scope.acmCMSource = result.data.content;
+
+					var mgrList = $("#caseManagers").kendoDropDownList();
+		
+
+				// $scope.acmCMSourceOptions = {
+				// 	dataSource: result.data.content,
+				// 	dataTextField: "name",
+				// 	dataValueField: "id"
+				// };
+
+				console.log(result.data.content);
 						// $scope.disableCaseMgrBtnFlag = true;
 						//console.log("assigning disableCaseMgrBtnFlag:" + $scope.disableCaseMgrBtnFlag );
 						//mgrList.trigger("select");
@@ -600,6 +651,9 @@ angular.module('ECMSapp.assignCM', [])
 	};
 
 	$scope.selectManager = function(ev) {
+
+		$scope.caseManagerName = ev.item.text();
+		console.log($scope.caseManagerName);
 
 
 	}
