@@ -1,34 +1,26 @@
 
-	<div class="gridDetail" ></div>
+<div class="gridDetail" ></div>
 
+<!-- NARRATIVE WIHT GRID -->
+<div class="gridNarrative" ></div>
 
-	<!-- NARRATIVE WIHT GRID -->
-	<div class="gridNarrative" ></div>
-
-	<!-- NARRATIVE WIHT TEXT  BOX -->
-    	<!-- <div class="text-box" readonly><span>{{narrativeText}}</span></div> -->
+<!-- NARRATIVE WIHT TEXT  BOX -->
+    <!-- <div class="text-box" readonly><span>{{narrativeText}}</span></div> -->
 	
-	<div style="width: 100%, text-align: left, heigth: 15px" class="detail-bottom">
-		<form id="assignform" >
-	   
+<div style="width: 100%, text-align: left, heigth: 15px" class="detail-bottom">
+	<form id="assignform" >
 		<ul>
 			<li>
 				<kendo-button  ng-model="button" ng-disabled="disableCaseMgrBtnFlag" class="k-button" ng-click="assignCM()" id="submitButton">SUBMIT</kendo-button>
 			</li>
 			<li>
-				<select kendo-drop-down-list="caseManagersList" id="caseManagers"style="width: 200px" k-ng-delay="acmCMSource" k-rebind="acmCMSource"  k-option-label="'Select Manager'" k-data-text-field="'name'"  k-data-value-field="'id'" k-auto-bind="false" k-data-source="acmCMSource" ng-model="assignCM.caseManagerId" k-on-select="selectManager(kendoEvent)"></select>
+				<select kendo-drop-down-list="caseManagersList" id="caseManagers"style="width: 200px" k-ng-delay="acmCMSource" k-rebind="acmCMSource"  k-option-label="'Select Manager'" k-data-text-field="'name'"  k-data-value-field="'id'" k-auto-bind="false" k-data-source="acmCMSource" ng-model="assignCM.caseManagerId"></select>
 			</li>
-
 			<li>
 				<select kendo-drop-down-list id="caseGroups" style="width: 200px" k-ng-delay="acmGroupSource"  k-option-label="'Select Group'" k-data-text-field="'cm_group'" k-auto-bind="false" k-data-source="acmGroupSource" k-on-select="selectMgrGroup(kendoEvent)"></select>
-
-				<!-- <select kendo-drop-down-list  style="width: 200px"  id="caseGroups">
-				</select> -->
-
 			</li>
 		</ul>
-		
-		</form>
-	</div> 
+	</form>
+</div> 
 
 	

@@ -172,7 +172,7 @@ angular.module('ECMSapp.assignCM', [])
 
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
 	var todayDate		= new Date();
-	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 2 DAYS 
+	var dateOffset		= (24*60*60*1000) * 2; //DEFAULT: 2 DAYS 
 	var startingDate	= new Date(todayDate.getTime() - dateOffset);
 	var endingDate		= todayDate;
 	$scope.startingDate	= startingDate;
@@ -387,12 +387,7 @@ angular.module('ECMSapp.assignCM', [])
 				};
 			
 	// GRID DETAIL SETTINGS /////////////////////////////////////////////////////////////////////////////////////
-	function detailIExpand(e) {
 
-		// console.log("FROM EXPAND ");
-		// console.log(e);
-
-	}
 	function detailInit(e) {
 /*var grid = e.detailRow.find("[data-role=grid]").data("kendoGrid");
 		grid.dataSource.read();*/
@@ -474,136 +469,46 @@ angular.module('ECMSapp.assignCM', [])
 						},
 					]
 				});
-
 			
-			getCaseManagers(caseManager);
+			// getCaseManagers(caseManager);
 		});
 	}
 
 	// GET THE GROUP LIST 
-
 	$http.get( "/rest/casemanager/groups/list/all")
 		.success( function(result) {
 			$scope.acmGroupSource = result.content;
-	});
+			$scope.disableCaseMgrBtnFlag = true;
+		});
 
 
 	// GET CASE MANAGERS LIST 
 	$http.get( "/rest/casemanager/list/all")
 		.success( function(result) {
-			 $scope.acmCMSource = result.content;
+			$scope.acmCMSource = result.content;
 
 
+			if($scope.caseManagersList ){
 
-			// console.log($scope.caseManagersList);
+				$scope.caseManagersList.dataSource.read();
 
-			// var dropdownlist = $("#caseManagers").data("kendoDropDownList");
+				$scope.caseManagersList.select(function(dataItem) {
 
-			// dropdownlist.select(1);
-			// $scope.caseManagersList.select(2);
+					console.log("FROM CASE MANAGER LIST: " + dataItem.name + " / " + $scope.caseManager);
 
+					return dataItem.name === $scope.caseManager;
+				});
 
-			$scope.caseManagersList.bind("dataBound", dropdownlist_dataBound);
+			} 
+		});
 
-			function dropdownlist_dataBound(e) {
-  				console.log("FROM DATABOUND");
+	$scope.selectManager = function(ev) {
 
-				}
-
-       	
-
-			$scope.caseManagersList.select(function(dataItem) {
-
-				console.log("FROM SELECT")
-
-
-
-				return dataItem.name === $scope.caseManager;
-			});
-
-			// mgrList.search($scope.caseManager);
-			// mgrList.dataSource.read();
-			// mgrList.select(function (dataItem) {
-			// console.log("Current dataitem name:" +dataItem.name);
-			// console.log("Current Case Manager:" + $scope.caseManager);
-			// console.log("Equals Case Manager:" + (dataItem.name.indexOf($scope.caseManager) >=0 ));
-			// 	return dataItem.name.indexOf($scope.caseManager) >=0;
-			// });
-	});
-
-
-
-	function getCaseManagers(caseManager){
-		$scope.urlMgrGroups = "/rest/casemanager/groups/list/all";
-		// $scope.urlAllCMs = "/rest/casemanager/list/all";
-		$scope.urlCMsForGroup = "/rest/casemanager/list/group/";
-
-	
-		/*DataFtry.getData($scope.urlAllCMs).then(function(result){
-
-			var mgrList = $("#caseManagers").kendoDropDownList({
-				dataTextField: "name",
-				dataValueField: "id",
-				optionLabel: {
-					name: "Select Manager...",
-					id: "-1"
-				},
-				dataSource: result.data.content,
-				valueTemplate:  kendo.template($("#managerDropDownTemplate").html()),
-				template:  kendo.template($("#managerDropDownTemplate").html()),
-				select: function(e){
-					//console.log(e);
-					var dataItem = this.dataItem(e.item.index());
-					$scope.disableCaseMgrBtnFlag = false;
-					$scope.caseManagerName = dataItem.name;
-					//console.log("Selected mgr" + $scope.assignCM.caseManagerName);
-					//console.log("assigning disableCaseMgrBtnFlag:" + $scope.disableCaseMgrBtnFlag );
-				}
-			}).data("kendoDropDownList");
-			
-			// console.log("Current Case Manager:" + caseManager);
-			//mgrList.search(caseManager);
-			mgrList.dataSource.read();
-			mgrList.select(function (dataItem) {
-				// console.log("Current dataitem name:" +dataItem.name);
-				// console.log("Current Case Manager:" + caseManager);
-				// console.log("Equals Case Manager:" + (dataItem.name.indexOf(caseManager) >=0 ));
-				return dataItem.name.indexOf(caseManager) >=0;
-			});
-		});*/
-
-/*		DataFtry.getData($scope.urlMgrGroups).then(function(result){
-			var casegrps = $("#caseGroups").kendoDropDownList({
-				dataTextField: "cm_group",
-				dataValueField: "cm_group",
-				optionLabel: "Select Mgr Group...",
-				dataSource: result.data.content,
-				select: function(e) {
-					var selectValue = e.item.text();
-					//console.log("Selected item" + selectValue);
-						
-					DataFtry.getData($scope.urlCMsForGroup + selectValue).then(function(result){
-						// console.log("Refreshing the case managers");
-						// console.log(result.data.content);
-						
-						var mgrList = $("#caseManagers").data("kendoDropDownList");
-						mgrList.dataSource.data(result.data.content);
-						$scope.disableCaseMgrBtnFlag = true;
-						//console.log("assigning disableCaseMgrBtnFlag:" + $scope.disableCaseMgrBtnFlag );
-						//mgrList.trigger("select");
-						// Use the selected item or its text
-					});
-				}
-			}).data('kendoDropDownList');
-			
-			//casegrps.select(1);
-			//casegrps.trigger("select");
-		});*/
 	}
 
-	$scope.selectMgrGroup = function(ev) {
 
-			console.log("FROM SELECT MGR GROUP");
+
+	$scope.selectMgrGroup = function(ev) {
 
 			$scope.urlCMsForGroup = "/rest/casemanager/list/group/";
 
@@ -624,11 +529,12 @@ angular.module('ECMSapp.assignCM', [])
 
 					
 						mgrList.dataSource.data(result.data.content);*/
-						// console.log($scope.acmCMSource);					
+						// console.log($scope.acmCMSource);
+				$scope.disableCaseMgrBtnFlag = true;					
 
 				$scope.acmCMSource = result.data.content;
 
-					var mgrList = $("#caseManagers").kendoDropDownList();
+					// var mgrList = $("#caseManagers").kendoDropDownList();
 		
 
 				// $scope.acmCMSourceOptions = {
@@ -637,7 +543,7 @@ angular.module('ECMSapp.assignCM', [])
 				// 	dataValueField: "id"
 				// };
 
-				console.log(result.data.content);
+				// console.log(result.data.content);
 						// $scope.disableCaseMgrBtnFlag = true;
 						//console.log("assigning disableCaseMgrBtnFlag:" + $scope.disableCaseMgrBtnFlag );
 						//mgrList.trigger("select");
@@ -653,7 +559,8 @@ angular.module('ECMSapp.assignCM', [])
 	$scope.selectManager = function(ev) {
 
 		$scope.caseManagerName = ev.item.text();
-		console.log($scope.caseManagerName);
+		$scope.disableCaseMgrBtnFlag = false;
+		// console.log($scope.caseManagerName);
 
 
 	}

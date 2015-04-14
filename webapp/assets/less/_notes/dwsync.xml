@@ -52,15 +52,15 @@
 <file name="650.less" server="Z:/ECMS/app/" local="130711982047595850" remote="130711982040000000" Dst="2" />
 <file name="850.less" server="Z:/ECMS/app/" local="130711982047615851" remote="130711982040000000" Dst="2" />
 <file name="CC-forms.less" server="Z:/ECMS/app/" local="130711982047675854" remote="130711982040000000" Dst="2" />
-<file name="CC-general.less" server="Z:/ECMS/app/" local="130716863244517144" remote="130716863240000000" Dst="2" />
+<file name="CC-general.less" server="Z:/ECMS/app/" local="130730660327703679" remote="130730660320000000" Dst="2" />
 <file name="CC-masthead.less" server="Z:/ECMS/app/" local="130711982047735858" remote="130711982040000000" Dst="2" />
 <file name="CC-mixins.less" server="Z:/ECMS/app/" local="130711982047755859" remote="130711982040000000" Dst="2" />
 <file name="CC-styles.less" server="Z:/ECMS/app/" local="130711982047775860" remote="130711982040000000" Dst="2" />
-<file name="CC-typography.less" server="Z:/ECMS/app/" local="130716993804994928" remote="130716993800000000" Dst="2" />
+<file name="CC-typography.less" server="Z:/ECMS/app/" local="130719362025130286" remote="130719362020000000" Dst="2" />
 <file name="CC-variables.less" server="Z:/ECMS/app/" local="130716953403711473" remote="130716953400000000" Dst="2" />
 <file name="colour.less" server="Z:/ECMS/app/" local="130711982047905867" remote="130711982040000000" Dst="2" />
 <file name="forms.less" server="Z:/ECMS/app/" local="130711982047925868" remote="130711982040000000" Dst="2" />
-<file name="kendoUI-redefined.less" server="Z:/ECMS/app/" local="130713402968330971" remote="130713402960000000" Dst="2" />
+<file name="kendoUI-redefined.less" server="Z:/ECMS/app/" local="130730559504983448" remote="130730559500000000" Dst="2" />
 <file name="mixins.less" server="Z:/ECMS/app/" local="130711982047975871" remote="130711982040000000" Dst="2" />
 <file name="reset.less" server="Z:/ECMS/app/" local="130711982048945927" remote="130711982040000000" Dst="2" />
 <file name="variables.less" server="Z:/ECMS/app/" local="130711982048975929" remote="130711982040000000" Dst="2" />
@@ -90,7 +90,7 @@
 <file name="ng-Animation.less" server="Z:/UIDesigns/ECMS/app/" local="130688388332088081" remote="130688388330000000" Dst="1" />
 <file name="CC-variables.less" server="Z:/UIDesigns/ECMS/app/" local="130717615466031948" remote="130717615460000000" Dst="2" />
 <file name="ng-Animation.less" server="Z:/ECMS/app/" local="130711982047995872" remote="130711982040000000" Dst="2" />
-<file name="CC-buttons.less" server="Z:/ECMS/app/" local="130716958578138251" remote="130716958570000000" Dst="2" />
+<file name="CC-buttons.less" server="Z:/ECMS/app/" local="130722865663543300" remote="130722865660000000" Dst="2" />
 <file name="CC-buttons.less" server="Z:/UIDesigns/ECMS/app/" local="130723659449922000" remote="130723659440000000" Dst="2" />
 <file name="JQX-redefined.less" server="Z:/ECMS/app/" local="130711982047845864" remote="130711982040000000" Dst="2" />
 </dwsync>

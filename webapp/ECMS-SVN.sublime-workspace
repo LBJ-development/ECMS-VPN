@@ -43,6 +43,33 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "components/caseAdministration/assignCM.html",
+			"settings":
+			{
+				"buffer_size": 3873,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "\n<div class=\"gridDetail\" ></div>\n\n<!-- NARRATIVE WIHT GRID -->\n<div class=\"gridNarrative\" ></div>\n\n<!-- NARRATIVE WIHT TEXT  BOX -->\n    <!-- <div class=\"text-box\" readonly><span>{{narrativeText}}</span></div> -->\n	\n<div style=\"width: 100%, text-align: left, heigth: 15px\" class=\"detail-bottom\">\n	<form id=\"assignform\" >\n		<ul>\n			<li>\n				<kendo-button  ng-model=\"button\" ng-disabled=\"disableCaseMgrBtnFlag\" class=\"k-button\" ng-click=\"assignCM()\" id=\"submitButton\">SUBMIT</kendo-button>\n			</li>\n			<li>\n				<select kendo-drop-down-list=\"caseManagersList\" id=\"caseManagers\"style=\"width: 200px\" k-ng-delay=\"acmCMSource\" k-rebind=\"acmCMSource\"  k-option-label=\"'Select Manager'\" k-data-text-field=\"'name'\"  k-data-value-field=\"'id'\" k-auto-bind=\"false\" k-data-source=\"acmCMSource\" ng-model=\"assignCM.caseManagerId\" k-on-select=\"selectManager(kendoEvent)\"></select>\n			</li>\n			<li>\n				<select kendo-drop-down-list id=\"caseGroups\" style=\"width: 200px\" k-ng-delay=\"acmGroupSource\"  k-option-label=\"'Select Group'\" k-data-text-field=\"'cm_group'\" k-auto-bind=\"false\" k-data-source=\"acmGroupSource\" k-on-select=\"selectMgrGroup(kendoEvent)\"></select>\n			</li>\n		</ul>\n	</form>\n</div> \n\n	",
+			"file": "components/caseAdministration/detailRow.html",
+			"file_size": 1166,
+			"file_write_time": 130735061965134685,
+			"settings":
+			{
+				"buffer_size": 1181,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "components/caseAdministration/assignCMCtrl.js",
+			"settings":
+			{
+				"buffer_size": 17898,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -116,36 +143,36 @@
 	},
 	"file_history":
 	[
+		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/components/caseAdministration/services.js",
+		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/components/caseAdministration/assignCMCtrl.js",
+		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/components/caseAdministration/detailRow.html",
+		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/assets/less/CC-general.less",
+		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/assets/less/CC-masthead.less",
+		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/assets/less/CC-mixins.less",
+		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/components/caseAdministration/assignCM.html",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/components/caseAdministration/intakeDistribution.html",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/components/caseAdministration/caseAdministration.html",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/components/caseAdministration/caseAdministrationCtrl.js",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/assets/less/CC-typography.less",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/components/caseAdministration/intakeDistributionCtrl.js",
-		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/assets/less/CC-general.less",
-		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/components/caseAdministration/detailRow.html",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/index.html",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/app.js",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/components/shared/mainMenuCtrl.js",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/assets/less/kendoUI-redefined.less",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/components/shared/mainMenu.html",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/assets/less/CC-buttons.less",
-		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/components/caseAdministration/assignCMCtrl.js",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/components/caseAdministration/acm-detailRow.js",
-		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/components/caseAdministration/assignCM.html",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/assets/less/CC-variables.less",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/components/login/login.html",
-		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/components/caseAdministration/services.js",
 		"/C/Users/ljablonski/AppData/Roaming/Sublime Text 2/Packages/SublimeLinter/SublimeLinter.sublime-settings",
 		"/C/Users/ljablonski/AppData/Roaming/Sublime Text 2/Packages/SublimeLinter/changelog.txt",
 		"/C/Users/ljablonski/AppData/Roaming/Sublime Text 2/Packages/User/JavaScript.sublime-settings",
-		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/assets/less/CC-masthead.less",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/assets/less/CC-forms.less",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/assets/less/variables.less",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/components/login/loginCtrl.js",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/ECMS-SVN.sublime-workspace",
 		"/C/Users/ljablonski/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
 		"/C/Users/ljablonski/AppData/Roaming/Sublime Text 2/Packages/User/Package Control.sublime-settings",
-		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/assets/less/CC-mixins.less",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/lib/kendoui/examples/line-charts/stacked-line.html",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/ECMS-SVN.sublime-project",
 		"/C/Users/ljablonski/Documents/workingProgress-L/ECMS-VPN/webapp/lib/angular-1.3.9/docs/components/open-sans-fontface-1.0.4/fonts/LightItalic/OpenSans-LightItalic.svg",
@@ -191,6 +218,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"kendoDropDownList",
 			"gridDetail",
 			"dataItem",
 			"5",
@@ -236,13 +264,364 @@
 	"groups":
 	[
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "components/caseAdministration/assignCM.html",
+					"settings":
+					{
+						"buffer_size": 3873,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3095,
+								3095
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/AngularJS/AngularJS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1093.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "components/caseAdministration/detailRow.html",
+					"settings":
+					{
+						"buffer_size": 1181,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								827,
+								840
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/AngularJS/AngularJS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		},
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 2,
+					"file": "components/caseAdministration/assignCMCtrl.js",
+					"settings":
+					{
+						"buffer_size": 17898,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								13774,
+								13774
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"devel": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": "load-save",
+							"sublimelinter_delay": 2,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 9938.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -274,7 +653,7 @@
 		"cols":
 		[
 			0.0,
-			0.5,
+			0.446875,
 			1.0
 		],
 		"rows":
@@ -316,7 +695,7 @@
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 230.0,
 	"status_bar_visible": true
 }

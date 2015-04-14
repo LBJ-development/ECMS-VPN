@@ -112,9 +112,9 @@ angular.module('ECMSapp.services', [])
 		var intakeOpt = {
 				startDate: casesearch.startDate,
 				endDate: casesearch.endDate,
-				rcType: "5118", //CASES ONLY
+				rcType: "-1", //CASES ONLY
 				rcSource: "-1", //ALL
-				rcStatus: "5120" //ACTIVE ONLY
+				rcStatus: "-1" //ACTIVE ONLY
 			};
 		return getCases(intakeOpt);
 	};
