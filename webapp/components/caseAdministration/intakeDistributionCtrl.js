@@ -200,6 +200,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 						title	: "Intake D/T",
 						format	:"{0:MM/dd/yyyy}",
 						width	: "15%",
+						filterable: false
 						},{
 							
 						field	: "source",
@@ -299,7 +300,8 @@ angular.module('ECMSapp.intakeDistribution', [])
 
 						field	: "RecipDateSentMeth",
 						title	: "Recip/D Sent/Method",
-						width	: "30%"
+						width	: "30%",
+						filterable: false,
 						},{
 
 						field	: "View",

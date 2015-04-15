@@ -148,8 +148,7 @@ angular.module('ECMSapp.assignCM', [])
         }
 		$scope.modifiedSchedules[e.model.id] = schedule;
 		
-		//console.log("modified schedules:" + JSON.stringify($scope.modifiedSchedules) );
-                                
+		//console.log("modified schedules:" + JSON.stringify($scope.modifiedSchedules) );                        
     };
 	
 	$scope.saveScheduleUpdates = function() {
@@ -172,7 +171,7 @@ angular.module('ECMSapp.assignCM', [])
 
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
 	var todayDate		= new Date();
-	var dateOffset		= (24*60*60*1000) * 2; //DEFAULT: 2 DAYS 
+	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 2 DAYS 
 	var startingDate	= new Date(todayDate.getTime() - dateOffset);
 	var endingDate		= todayDate;
 	$scope.startingDate	= startingDate;
@@ -239,7 +238,6 @@ angular.module('ECMSapp.assignCM', [])
 			$scope.warning = result.data.messages.CASES_LIST;
 			$scope.disabled = true;
 		});
-		
 		//var divgrid = angular.element('#datagrid').data("kendo-grid").dataSource.read(); 
 	});
 	
@@ -389,13 +387,13 @@ angular.module('ECMSapp.assignCM', [])
 	// GRID DETAIL SETTINGS /////////////////////////////////////////////////////////////////////////////////////
 
 	function detailInit(e) {
-/*var grid = e.detailRow.find("[data-role=grid]").data("kendoGrid");
+		/*var grid = e.detailRow.find("[data-role=grid]").data("kendoGrid");
 		grid.dataSource.read();*/
 
 		var detailRow = e.detailRow;
 			kendo.bind(detailRow, e.data);
-			// console.log(grid.tbody.find("tr.k-master-row").first());
-		 // console.log(e.data.caseManager);
+		// console.log(grid.tbody.find("tr.k-master-row").first());
+		// console.log(e.data.caseManager);
 
 		var caseNumber = e.data.caseNumber;
 		var caseManager = e.data.caseManager;
@@ -430,20 +428,12 @@ angular.module('ECMSapp.assignCM', [])
 
 	function getNarrative(e, caseNumber, caseManager){
 
-		// $Scope.dataItem = detailRow.data;
-
 		var detailRow = e.detailRow;
 		kendo.bind(detailRow, e.data);
 
 		var grid = {};
 		$scope.urlNarrative = "/rest/caseadmin/narratives?caseNumber=" + caseNumber;
 		DataFtry.getData($scope.urlNarrative).then(function(result){
-	
-			//massage narrative text
-			// for (var i in result.data.content){
-
-			//	result.data.content[i].narrativeText = result.data.content[i].narrativeText.replace(/(\n\r|\r\n|\f|\xxx|↵)/gi, '<br/>');
-			// }
 
 			grid = detailRow.find(".gridNarrative").kendoGrid({
 
@@ -473,125 +463,7 @@ angular.module('ECMSapp.assignCM', [])
 			// getCaseManagers(caseManager);
 		});
 	}
-
-	// GET THE GROUP LIST 
-	$http.get( "/rest/casemanager/groups/list/all")
-		.success( function(result) {
-			$scope.acmGroupSource = result.content;
-			$scope.disableCaseMgrBtnFlag = true;
-		});
-
-
-	// GET CASE MANAGERS LIST 
-	$http.get( "/rest/casemanager/list/all")
-		.success( function(result) {
-			$scope.acmCMSource = result.content;
-
-
-			if($scope.caseManagersList ){
-
-				$scope.caseManagersList.dataSource.read();
-
-				$scope.caseManagersList.select(function(dataItem) {
-
-					console.log("FROM CASE MANAGER LIST: " + dataItem.name + " / " + $scope.caseManager);
-
-					return dataItem.name === $scope.caseManager;
-				});
-
-			} 
-		});
-
-	$scope.selectManager = function(ev) {
-
-	}
-
-
-
-	$scope.selectMgrGroup = function(ev) {
-
-			$scope.urlCMsForGroup = "/rest/casemanager/list/group/";
-
-			var URL;
-
-			if(ev.item.text() == "Select Group") {
-				URL = "/rest/casemanager/list/all";
-			} else {
-				URL = "/rest/casemanager/list/group/" + ev.item.text();
-			}
-
-			// DataFtry.getData($scope.urlCMsForGroup + selectValue).then(function(result){
-			DataFtry.getData(URL).then(function(result){
-						// console.log("Refreshing the case managers");
-						// console.log(result.data.content);
-						
-						/*var mgrList = $("#caseManagers").data("kendoDropDownList");
-
-					
-						mgrList.dataSource.data(result.data.content);*/
-						// console.log($scope.acmCMSource);
-				$scope.disableCaseMgrBtnFlag = true;					
-
-				$scope.acmCMSource = result.data.content;
-
-					// var mgrList = $("#caseManagers").kendoDropDownList();
-		
-
-				// $scope.acmCMSourceOptions = {
-				// 	dataSource: result.data.content,
-				// 	dataTextField: "name",
-				// 	dataValueField: "id"
-				// };
-
-				// console.log(result.data.content);
-						// $scope.disableCaseMgrBtnFlag = true;
-						//console.log("assigning disableCaseMgrBtnFlag:" + $scope.disableCaseMgrBtnFlag );
-						//mgrList.trigger("select");
-						// Use the selected item or its text
-					});
-
-			// console.log("FROM SELECTMGRGROUP FROM DIRECTIVE");
-			// var selectedValue = ev.item.text();
-			// console.log("Selected item" + selectedValue);
-	
-	};
-
-	$scope.selectManager = function(ev) {
-
-		$scope.caseManagerName = ev.item.text();
-		$scope.disableCaseMgrBtnFlag = false;
-		// console.log($scope.caseManagerName);
-
-
-	}
 			
-	// MAKE THE CHECK BOX PERSISTING
-/*	var checkedIds = {};
-	
-	function selectRow(){
-		var checked		= this.checked,
-			row			= $(this).closest("tr"),
-			grid		= $("#grid").data("kendoGrid"),
-			dataItem	= grid.dataItem(row);
-
-			checkedIds[dataItem.caseNumber] = checked;
-
-	}
-
-	// ON DATABOUND EVENT (WHEN PAGING) RESTORE PREVIOUSLY SELECTED ROWS
-    function onDataBound(e) {
-
-		var view = this.dataSource.view();
-			for(var i = 0; i < view.length;i++){
-				if(checkedIds[view[i].caseNumber]){
-					this.tbody.find("tr[data-uid='" + view[i].uid + "']")
-					//.addClass("k-state-selected")
-					.find(".checkbox")
-					.attr("checked","checked");
-            }
-        }
-    }
-		*/
 	// FILTERING WITH DROPDOWN MENU 
 	var victim	= ["1", "2", "3", "4", "5", "6"],
 		bool	= ["Yes", "No"],
@@ -639,8 +511,8 @@ angular.module('ECMSapp.assignCM', [])
 
 }])
 
-
-.directive ('detailRow', function () {
+// DIRECTVE FOR THE DETAIL ROW ///////////////////////////////////////
+.directive ('detailRow', ['DataFtry', '$http', function (DataFtry, $http) {
 	return {
 	restrict: 'E',
 	// scope :{},
@@ -648,19 +520,75 @@ angular.module('ECMSapp.assignCM', [])
 	templateUrl: 'components/caseAdministration/detailRow.html',
 	link: function (scope, element, attrs){
 
-		/*scope.selectMgrGroup = function(ev) {
+		console.log("FROM DIRECTIVE");
 
-			console.log(ev.item.text());
+		// GET THE GROUP LIST 
+		$http.get( "/rest/casemanager/groups/list/all")
+			.success( function(result) {
+				scope.acmGroupSource = result.content;
+				scope.disableCaseMgrBtnFlag = true;
 
-			// console.log("FROM SELECTMGRGROUP FROM DIRECTIVE");
-			// var selectedValue = ev.item.text();
-			// console.log("Selected item" + selectedValue);
-		};*/
+				console.log("FROM GET MANAGER GROUP");
+			});
 
+		// GET CASE MANAGERS LIST 
+		$http.get( "/rest/casemanager/list/all")
+			.success( function(result) {
+				scope.acmCMSource = result.content;
 
-        }
-    };
-});
+				setTimeout(function(){
+
+					if(scope.caseManagersList ){
+
+						scope.caseManagersList.dataSource.read();
+
+						scope.caseManagersList.select(function(dataItem) {
+
+							console.log("FROM CASE MANAGER LIST: " + dataItem.name + " / " + scope.caseManager + "ARE THEY THE SAME? " + (dataItem.name == scope.caseManager));
+
+							// console.log(dataItem.name == scope.caseManager);
+
+							return dataItem.name === scope.caseManager;
+						});
+					}
+				}, 500);
+			});
+
+		//SELECT MANAGER GROUP ///////////////////////////////
+		scope.selectMgrGroup = function(ev) {
+
+			// scope.urlCMsForGroup = "/rest/casemanager/list/group/";
+
+			var URL;
+
+			if(ev.item.text() == "Select Group") {
+				URL = "/rest/casemanager/list/all";
+			} else {
+				URL = "/rest/casemanager/list/group/" + ev.item.text();
+			}
+
+			DataFtry.getData(URL).then(function(result){
+
+				console.log("FROM SELECT MANAGER GROUP");
+
+				scope.disableCaseMgrBtnFlag = true;
+
+				scope.acmCMSource = result.data.content;
+
+				});
+			};
+
+		//SELECT CASE MANAGER ///////////////////////////////
+		scope.selectManager = function(ev) {
+			console.log("FROM SELELCT MANAGER");
+			scope.caseManagerName = ev.item.text();
+			scope.disableCaseMgrBtnFlag = false;
+		// console.log($scope.caseManagerName);
+			};
+
+		}
+	};
+}]);
 
 
 
