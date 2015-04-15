@@ -8,7 +8,7 @@
         </ul>
     </div>
     <div class="CC-title"></div>
-        <div id="quicksearchWrapper" role="quicksearch">
+        <div ng-show="hasPermission('menu:edit:simplesearch')" id="quicksearchWrapper" role="quicksearch">
 		<form name="form" ng-submit="login(credentials)" role="form">
      		<label for="username"  class="search-label">Quick search</label>
 			<input class="k-textbox" style="width: 200px" id="quicksearch" type="text" name="quicksearch" >

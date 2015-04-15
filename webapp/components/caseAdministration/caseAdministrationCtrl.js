@@ -20,17 +20,17 @@ angular.module('ECMSapp.adminMain', [])
 		
 		//handle null and  convert to string array into comma-separated string
 		if ($scope.casesearch.rcType === null){
-			console.log('assigning -1');
+			//console.log('assigning -1');
 			$scope.casesearch.rcType = "-1";
 		}
 		
 		if ($scope.casesearch.rcSource === null){
-			console.log('assigning -1');
+			//console.log('assigning -1');
 			$scope.casesearch.rcSource = "-1";
 		}
 		
 		if ($scope.casesearch.rcStatus === null){
-			console.log('assigning -1');
+			//console.log('assigning -1');
 			$scope.casesearch.rcStatus = "-1";
 		}
 		$scope.casesearch.rcType = $scope.casesearch.rcType.toString();
@@ -54,17 +54,17 @@ angular.module('ECMSapp.adminMain', [])
 		return enYear + "-" + enMonth  + "-" + enDate;
 	}
 
-	$http.get("/rest/caseadmin/lookup?lookupName=lt_rcsource")
+	$http.get("/rest/caseadmin/lookup?lookupName=rcSource")
 		.success( function(result) {
 			$scope.rcSourceDataSource = result.content;
 		});
 			 
-	$http.get("/rest/caseadmin/lookup?lookupName=lt_rctype")
+	$http.get("/rest/caseadmin/lookup?lookupName=rcType")
 		.success( function(result) {
 			$scope.rcTypeDataSource = result.content;
 	});
 	
-	$http.get("/rest/caseadmin/lookup?lookupName=lt_rcstatus")
+	$http.get("/rest/caseadmin/lookup?lookupName=rcStatus")
 		.success( function(result) {
 			$scope.rcStatusDataSource = result.content;
 	});

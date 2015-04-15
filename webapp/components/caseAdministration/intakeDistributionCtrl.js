@@ -7,11 +7,17 @@ angular.module('ECMSapp.intakeDistribution', [])
 	$scope.casesearch = {
 		startDate: null,
 		endDate: null,
-		rcPolice: "-1", //set default value to ALL for drop-down list
-		rcDistribution: "-1", //set default value to ALL for drop-down list
-		rcRecipient: "-1" //set default value to ALL for drop-down list
+		rcType: "5118", //Cases only
+		rcSource: "-1", //ALL Sources
+		rcStatus: "5120", //ACTIVE ONLY
+		rcPoliceReportStatus: "-1", //set default value to ALL for drop-down list
+		rcDistributionTo: "-1", //set default value to ALL for drop-down list
+		rcDistributionStatus: "-1" //set default value to ALL for drop-down list
 	};
-
+	
+	 //CASES ONLY
+				
+				
 	$scope.submitSearch = function(){
 		// data massaging
 		// format dates
@@ -19,23 +25,23 @@ angular.module('ECMSapp.intakeDistribution', [])
 		$scope.casesearch.endDate = formatendDate();
 		
 		//handle null and  convert to string array into comma-separated string
-		if ($scope.casesearch.rcPolice === null){
+		if ($scope.casesearch.rcPoliceReportStatus === null){
 			// console.log('assigning -1');
-			$scope.casesearch.rcPolice = "-1";
+			$scope.casesearch.rcPoliceReportStatus = "-1";
 		}
 		
-		if ($scope.casesearch.rcDistribution === null){
+		if ($scope.casesearch.rcDistributionTo === null){
 			// console.log('assigning -1');
-			$scope.casesearch.rcDistribution = "-1";
+			$scope.casesearch.rcDistributionTo = "-1";
 		}
 		
-		if ($scope.casesearch.rcRecipient === null){
+		if ($scope.casesearch.rcDistributionStatus === null){
 			// console.log('assigning -1');
-			$scope.casesearch.rcRecipient = "-1";
+			$scope.casesearch.rcDistributionStatus = "-1";
 		}
-		$scope.casesearch.rcPolice = $scope.casesearch.rcPolice.toString();
-		$scope.casesearch.rcDistribution = $scope.casesearch.rcDistribution.toString();
-		$scope.casesearch.rcRecipient = $scope.casesearch.rcRecipient.toString(); 
+		$scope.casesearch.rcPoliceReportStatus = $scope.casesearch.rcPoliceReportStatus.toString();
+		$scope.casesearch.rcDistributionTo = $scope.casesearch.rcDistributionTo.toString();
+		$scope.casesearch.rcDistributionStatus = $scope.casesearch.rcDistributionStatus.toString(); 
 		
 		$scope.submissionCount ++;
 	};
@@ -62,19 +68,19 @@ angular.module('ECMSapp.intakeDistribution', [])
 		return enYear + "-" + enMonth  + "-" + enDate;
 	}
 
-	$http.get("/rest/caseadmin/lookup?lookupName=lt_policereport")
+	$http.get("/rest/caseadmin/lookup?lookupName=rcPoliceReportStatus")
 		.success( function(result) {
-			$scope.rcPoliceDataSource = result.content;
+			$scope.rcPoliceReportStatusDataSource = result.content;
 		});
 		 
-	$http.get("/rest/caseadmin/lookup?lookupName=lt_distribution")
+	$http.get("/rest/caseadmin/lookup?lookupName=rcDistributionStatus")
 		.success( function(result) {
-			$scope.rcDistributionDataSource = result.content;
+			$scope.rcDistributionStatusDataSource = result.content;
 	});
 	
-	$http.get("/rest/caseadmin/lookup?lookupName=lt_sent")
+	$http.get("/rest/caseadmin/lookup?lookupName=rcDistributionTo")
 		.success( function(result) {
-			$scope.rcSentDataSource = result.content;
+			$scope.rcDistributionToDataSource = result.content;
 	});
 
 	// INITIAL DATE RANGE //////////////////////////////////////////////////

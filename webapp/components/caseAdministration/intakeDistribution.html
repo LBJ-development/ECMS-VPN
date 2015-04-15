@@ -29,15 +29,15 @@
 					<ul >
 						<li style="width: 200px">
 							<span class="labelText-small" >Police Report:</span>
-							<select kendo-drop-down-list style="width: 200px"  k-ng-delay="rcPoliceDataSource" ng-model="casesearch.rcPolice" k-placeholder="'Select Police Report'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcPoliceDataSource" k-on-change="enableSumbitBtn()"></select>
+							<select kendo-drop-down-list style="width: 200px"  k-ng-delay="rcPoliceReportStatusDataSource" ng-model="casesearch.rcPoliceReportStatus" k-placeholder="'Select Police Report'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcPoliceReportStatusDataSource" k-on-change="enableSumbitBtn()"></select>
 						</li> 
                 		<li style="width: 150px">
-                			<span  class="labelText-small" >Distribution Status:</span>
-        					<select kendo-drop-down-list style="width: 150px" k-ng-delay="rcSentDataSource" ng-model="casesearch.rcDistribution" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcSentDataSource" k-on-change="enableSumbitBtn()"></select>
+                			<span  class="labelText-small" >Distributed To:</span>
+        					<select kendo-drop-down-list style="width: 150px" k-ng-delay="rcDistributionToDataSource" ng-model="casesearch.rcDistributionTo" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcDistributionToDataSource" k-on-change="enableSumbitBtn()"></select>
 						</li>
                 		<li style="width: 300px">
-							<span class="labelText-small">Recipient:</span>
-        					<select kendo-multi-select style="width: 300px" k-ng-delay="rcDistributionDataSource" ng-model="casesearch.rcRecipient" k-placeholder="'Select Recipient'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcDistributionDataSource" k-on-change="enableSumbitBtn()"> </select>
+							<span class="labelText-small">Distributed Status:</span>
+        					<select kendo-drop-down-list style="width: 300px" k-ng-delay="rcDistributionToDataSource" ng-model="casesearch.rcDistributionStatus" k-placeholder="'Select Recipient'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcDistributionStatusDataSource" k-on-change="enableSumbitBtn()"> </select>
                 		</li>
 
 
@@ -50,9 +50,9 @@
 		</div>
 
 	<!-- DISTRIBUTE INTAKES  /////////////////////////////////////////////////////////////////-->
-		<div class="row-holder title-small" style="padding: 0px 0 0px 0px">
+		<div  class="row-holder title-small" style="padding: 0px 0 0px 0px">
 			<span ng-class="warningClass"> {{warning}} </span>
-			<ul>
+			<ul ng-show="hasPermission('caseadmin:edit:intakedistribution')">
 				<li class="linkButton toPrint" style="opacity: 0.5"><a>Print Labels</a></li>
 				<li class="linkButton"><img src="assets/images/darkPipe.png" ></li>
 				<li class="linkButton toEmail"><a href=""  ng-click="confirmEmail()" >Custom Email</a></li>

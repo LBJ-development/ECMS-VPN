@@ -95,7 +95,7 @@ app.config(function ($httpProvider) {
 
 
 
-app.run( function($location, $window, ConfigService, StorageService){
+app.run( function($location, $window, $rootScope, ConfigService, StorageService){
     //ConfigService.setRestURI("http://localhost:8080/");
     ConfigService.initializeApp();
     //ConfigService.setRestURI("http://cc-devapp1.ncmecad.net:8080/ecms-staging");
@@ -112,5 +112,10 @@ app.run( function($location, $window, ConfigService, StorageService){
             event.preventDefault();
         }
     });
+	
+	$rootScope.hasPermission = function (permission) {
+		console.log("checking for permission:" + permission + ", " + ($.inArray(permission, $rootScope.permissions) >= 0));
+        return ($.inArray(permission, $rootScope.permissions) >= 0);
+    }
 
 });

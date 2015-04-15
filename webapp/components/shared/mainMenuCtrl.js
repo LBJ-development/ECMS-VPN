@@ -45,66 +45,66 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
             spriteCssClass: "home-menu-sel-btn", // Item image sprite CSS class, optional.
             cssClass: "k-state-selected",
             url: "#/home" ,
-            permission: "menu:home"
+            permission: "menu:view:home"
 
         },{
             text: "Call Management",
             url: "#/callmanagement",
-            permission: "menu:callmanagement"
+            permission: "menu:view:callmgmt"
         }, {
                  text: "Case Administration",
                 url: "#/caseadministration",
                 cssClass: "head-menu", // EMPTY CLASS ONLY FOR SELECTION PURPOSES
-                permission: "menu:caseadministration",
+                permission: "menu:view:caseadmin",
                 items: [ {
                     text: "Assign CM",
                     cssClass: "sub-menu",
                     url: "#/caseadministration/assigncm",
-                    permission: "menu:caseadministration:assigncm"
+                    permission: "caseadmin:view:basic"
                 },
                     {
                         text: "Intake Distribution",
                         cssClass: "sub-menu",
                         url: "#/caseadministration/intakedistribution",
-                        permission: "menu:caseadministration:intakedistribution"
+                        permission: "caseadmin:view:basic"
                     },
                     {
                         text: "Manage Recoveries",
                         cssClass: "sub-menu",
                         url: "#/caseadministration/managerecoveries",
-                        permission: "menu:caseadministration:managerecoveries"
+                        permission: "caseadmin:view:basic"
                     },
                     {
                         text: "Des Case Rev Cat",
                         cssClass: "sub-menu",
                         url: "#/caseadministration/descaserevcat",
-                        permission: "menu:caseadministration:descaserevcat"
+                        permission: "menu:view:caseadmin:caserevcat"
                     }]
             },
             {
                 text: "Case Management",
                 url: "#/casemanagement",
-                permission: "menu:casemanagement"
+                permission: "menu:view:casemgmt"
             },
             {
                 text: "Case Analysis",
                 url: "#/caseanalysis",
-                permission: "menu:caseanalysis"
+                permission: "menu:view:caseanalysis"
             },
             {
                 text: "Person Management",
                 url: "#/personmanagement" ,
-                permission: "menu:personmanagement"
+                permission: "menu:view:personmgmt"
             },
             {
                 text: "Reports",
                 url: "#/reports",
-                permission: "menu:reports"
+                permission: "menu:view:reports"
             },
             {
                 text: "Supervisor",
                 url: "#/supervisor",
-                permission: "menu:supervisor"
+                permission: "menu:view:supervisory"
             }];
     })
 
@@ -132,22 +132,28 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
             var permissions = $rootScope.permissions;
             $rootScope.menuWithPermissions = [];
 
+			//console.log(permissions);
             if (permissions) {
                 for (var i in scope.menuSource) {
-                    if ($.inArray(scope.menuSource[i]['permission'], permissions)){
-                        //alert(scope.menuSource[i]['permission'] + ' will be enabled');
-                        $rootScope.menuWithPermissions.push(scope.menuSource[i]);
-
+                    if ($.inArray(scope.menuSource[i]['permission'], permissions) > 0){
+						//Remove any unauthorized submenu items before adding menu to menuWithPermissions
                         if('items' in scope.menuSource[i]){
-                            var submenu = scope.menuSource[i]['items'];
-                            //console.log(submenu);
-                            for (var k in submenu){
-                                //console.log(submenu[k]['permission'] in permissions);
-                                if (!(submenu[k]['permission'] in permissions)) {
-                                    //console.log(submenu[k]['permission'] + ' will be disabled');
-                                }
-                            }
+                            var submenu = scope.menuSource[i]['items'].slice();
+							var k=submenu.length-1;
+							//console.log(scope.menuSource[i]['items']);
+							while(k>=0){
+								//console.log("Submenu item");
+								//console.log(submenu[k]);
+								//if submenu item is not in permissions list, remove it
+								if ($.inArray(submenu[k]['permission'], permissions) < 0) {
+									scope.menuSource[i]['items'].splice(k, 1);
+								}
+								k--;
+							}
                         }
+						
+						//console.log(scope.menuSource[i]['permission'] + ' will be enabled because:' + ($.inArray(scope.menuSource[i]['permission'], permissions) >0));
+                        $rootScope.menuWithPermissions.push(scope.menuSource[i]);
                     }
                 }
             }
@@ -250,7 +256,8 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
         }
     };
 })
-    .directive('authorized', function($location, StorageService){
+
+.directive('authorized', function($location, StorageService){
     return {
         link: function (scope, element, attrs){
             if(StorageService.getToken() === 'null') $location.path('/login');
@@ -258,14 +265,14 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
 
         }
     };
-    })
+})
 
-    .directive ('footer', function () {
-    return {
-        restrict: 'E',
-        templateUrl: 'components/shared/footer.html',
-        link: function (scope, element, attrs){
+.directive ('footer', function () {
+		return {
+			restrict: 'E',
+			templateUrl: 'components/shared/footer.html',
+			link: function (scope, element, attrs){
 
-        }
-    };
-});
+			}
+		};
+})
