@@ -1,5 +1,5 @@
 
-<div authorized class="content-wrapper">
+<div authorized ng-show="hasPermission('menu:view:home')" class="content-wrapper">
 	<div class="content-holder">
 		<div role="datagrid" class="grid-holder" ng-controller="HomeCtrl">
 			<div class="title-holder">
@@ -7,4 +7,7 @@
 
             	<div kendo-grid="mainGrid" id="grid" k-options="mainGridOptions" k-rebind="mainGridOptions"  k-ng-delay="mainGridOptions"></div>
 		</div>
-	</div>
+</div>
+<div ng-show="!hasPermission('menu:view:home')" class="content-wrapper">
+	 You do not have permission to view this page. Please check with administrator
+</div>

@@ -2,50 +2,51 @@
 
 angular.module('ECMSapp.intakeDistribution', [])
 
-.controller('IntakeDistributionCtrl', [ '$scope', 'DataFtry', '$http', 'ConfigService',  function( $scope, DataFtry, $http, ConfigService){
+.controller('IntakeDistributionCtrl', [ '$scope', 'DataFtry', '$http',  function( $scope, DataFtry, $http){
+	
+	// QUERY OPTIONS ///////////////////////////////////////////////////////////////////////
+	// INITIAL DATE RANGE //////////////////////////////////////////////////
+	var todayDate		= new Date();
+	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 1 DAY 
+	var startingDate	= new Date(todayDate.getTime() - dateOffset);
+	var endingDate		= todayDate;
 
 	$scope.casesearch = {
-		startDate: null,
-		endDate: null,
-		rcType: "5118", //Cases only
-		rcSource: "-1", //ALL Sources
-		rcStatus: "5120", //ACTIVE ONLY
-		rcPoliceReportStatus: "-1", //set default value to ALL for drop-down list
-		rcDistributionTo: "-1", //set default value to ALL for drop-down list
-		rcDistributionStatus: "-1" //set default value to ALL for drop-down list
+		caseCreateStartDate: startingDate,
+		caseCreateEndDate: endingDate,
+		caseHasPoliceReport: "-1", //set default value to ALL for drop-down list
+		caseDistributedTo: "-1", //set default value to ALL for drop-down list
+		caseDistributedStatus: "-1" //set default value to ALL for drop-down list
 	};
 	
-	 //CASES ONLY
-				
-				
+
 	$scope.submitSearch = function(){
 		// data massaging
 		// format dates
-		$scope.casesearch.startDate = formatstartDate();
-		$scope.casesearch.endDate = formatendDate();
+		$scope.casesearch.caseCreateStartDate = formatcaseCreateStartDate();
+		$scope.casesearch.caseCreateEndDate = formatcaseCreateEndDate();
 		
 		//handle null and  convert to string array into comma-separated string
-		if ($scope.casesearch.rcPoliceReportStatus === null){
+		if ($scope.casesearch.caseHasPoliceReport === null){
 			// console.log('assigning -1');
-			$scope.casesearch.rcPoliceReportStatus = "-1";
+			$scope.casesearch.caseHasPoliceReport = "-1";
 		}
 		
-		if ($scope.casesearch.rcDistributionTo === null){
+		if ($scope.casesearch.caseDistributedTo === null){
 			// console.log('assigning -1');
-			$scope.casesearch.rcDistributionTo = "-1";
+			$scope.casesearch.caseDistributedTo = "-1";
 		}
 		
-		if ($scope.casesearch.rcDistributionStatus === null){
+		if ($scope.casesearch.caseDistributedStatus === null){
 			// console.log('assigning -1');
-			$scope.casesearch.rcDistributionStatus = "-1";
+			$scope.casesearch.caseDistributedStatus = "-1";
 		}
-		$scope.casesearch.rcPoliceReportStatus = $scope.casesearch.rcPoliceReportStatus.toString();
-		$scope.casesearch.rcDistributionTo = $scope.casesearch.rcDistributionTo.toString();
-		$scope.casesearch.rcDistributionStatus = $scope.casesearch.rcDistributionStatus.toString(); 
+		$scope.casesearch.caseHasPoliceReport = $scope.casesearch.caseHasPoliceReport.toString();
+		$scope.casesearch.caseDistributedTo = $scope.casesearch.caseDistributedTo.toString();
+		$scope.casesearch.caseDistributedStatus = $scope.casesearch.caseDistributedStatus.toString(); 
 		
 		$scope.submissionCount ++;
 	};
-
 
 	function formatDate(){
 		var date	= new Date().getDate();
@@ -54,42 +55,42 @@ angular.module('ECMSapp.intakeDistribution', [])
 		return   month  + "/" + date + "/" +  year ;
 	}
 
-	function formatstartDate(){
-		var stDate	= $scope.startDate.getDate();
-		var stMonth = $scope.startDate.getMonth() + 1;
-		var stYear	= $scope.startDate.getFullYear();
+	function formatcaseCreateStartDate(){
+		var stDate	= $scope.caseCreateStartDate.getDate();
+		var stMonth = $scope.caseCreateStartDate.getMonth() + 1;
+		var stYear	= $scope.caseCreateStartDate.getFullYear();
 		return stYear + "-" + stMonth  + "-" + stDate;
 	}
 
-	function formatendDate(){
-		var enDate	= $scope.endDate.getDate();
-		var enMonth = $scope.endDate.getMonth() + 1;
-		var enYear	= $scope.endDate.getFullYear();
+	function formatcaseCreateEndDate(){
+		var enDate	= $scope.caseCreateEndDate.getDate();
+		var enMonth = $scope.caseCreateEndDate.getMonth() + 1;
+		var enYear	= $scope.caseCreateEndDate.getFullYear();
 		return enYear + "-" + enMonth  + "-" + enDate;
 	}
 
-	$http.get("/rest/caseadmin/lookup?lookupName=rcPoliceReportStatus")
+	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCasePoliceReport")
 		.success( function(result) {
-			$scope.rcPoliceReportStatusDataSource = result.content;
+			$scope.caseHasPoliceReportDataSource = result.content;
 		});
 		 
-	$http.get("/rest/caseadmin/lookup?lookupName=rcDistributionStatus")
+	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseDistributedStatus")
 		.success( function(result) {
-			$scope.rcDistributionStatusDataSource = result.content;
+			$scope.caseDistributedStatusDataSource = result.content;
 	});
 	
-	$http.get("/rest/caseadmin/lookup?lookupName=rcDistributionTo")
+	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseDistributorTo")
 		.success( function(result) {
-			$scope.rcDistributionToDataSource = result.content;
+			$scope.caseDistributedToDataSource = result.content;
 	});
 
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
 	var todayDate		= new Date();
 	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 2 DAYS 
-	var startDate		= new Date(todayDate.getTime() - dateOffset);
-	var endDate			= todayDate;
-	$scope.startDate	= startDate;
-	$scope.endDate		= endDate;
+	var caseCreateStartDate		= new Date(todayDate.getTime() - dateOffset);
+	var caseCreateEndDate			= todayDate;
+	$scope.caseCreateStartDate	= caseCreateStartDate;
+	$scope.caseCreateEndDate		= caseCreateEndDate;
 	$scope.submissionCount = 0; //	
 
 	$scope.submitSearch();
@@ -105,7 +106,6 @@ angular.module('ECMSapp.intakeDistribution', [])
 			return;
 		}
 		DataFtry.getCasesForIntakeDist($scope.casesearch).then(function(result){
-		// DataFtry.getCasesForAssignment(formatstartDate(), formatendDate()).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;
 
 			// console.log(result.data.content.length)
@@ -128,18 +128,17 @@ angular.module('ECMSapp.intakeDistribution', [])
 				schema: {
 					model: {
 						fields: {
-								caseNumber		: { type: "string" },
-								intakeDateTime	: { type: "date"	},
-								source			: { type: "string" },
-								caseTypeAbbr	: { type: "string" },
+								caseNumber				: { type: "string" },
+								caseDateTimeReceived	: { type: "date"	},
+								caseSource				: { type: "string" },
+								caseTypeAbbr			: { type: "string" },
 								// caseStatus	: { type: "string" },
-								childCount		: { type: "number" },
-								state			: { type: "string" },
-								PoliceReport	: { type: "string" },
-								IntlRisk		: { type: "string" },
-								CMAssignedDT	: { type: "date" },
-								RecipDateSentMeth: { type: "string" }
-
+								caseChildrenCount		: { type: "number" },
+								caseIncidentState		: { type: "string" },
+								caseHasPoliceReport     : { type: "string" },
+								caseIsInternational		: { type: "string" },
+								caseAssignmentDateTime	: { type: "date" },
+								caseDistributionMehtod	: { type: "string" }
 								},
 							}
 						},
@@ -202,14 +201,14 @@ angular.module('ECMSapp.intakeDistribution', [])
 						width	: "10%"
 						},{
 
-						field	: "intakeDateTime",
+						field	: "caseDateTimeReceived",
 						title	: "Intake D/T",
 						format	:"{0:MM/dd/yyyy}",
 						width	: "15%",
 						filterable: false
 						},{
 							
-						field	: "source",
+						field	: "caseSource",
 						title	: "Source",
 						width	: "5%",
 						filterable: {
@@ -242,7 +241,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 						sortable: false,
 						},{*/
 
-						field	: "childCount",
+						field	: "caseChildrenCount",
 						title	: "# of Vict",
 						width	: "5%",
 						filterable: {
@@ -260,7 +259,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 							}
 						},{
 
-						field	: "state",
+						field	: "caseIncidentState",
 						title	: "State",
 						width	: "5%",
 						filterable: {
@@ -273,7 +272,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 							}
 						},{
 
-						field	: "PoliceReport",
+						field	: "caseHasPoliceReport",
 						title	: "Pol. Rep.",
 						width	: "5%",
 						filterable: {
@@ -299,12 +298,12 @@ angular.module('ECMSapp.intakeDistribution', [])
 							}
 						},{
 
-						field	: "CMAssignedDT",
+						field	: "caseAssignmentDateTime",
 						title	: "CM Assigned D/T",
 						width	: "10%"
 						},{
 
-						field	: "RecipDateSentMeth",
+						field	: "caseDistributionMehtod",
 						title	: "Recip/D Sent/Method",
 						width	: "30%",
 						filterable: false,
@@ -332,7 +331,6 @@ angular.module('ECMSapp.intakeDistribution', [])
 	// GRID FUNCTIONALITIES /////////////////////////////////////////////////////////////////////////////////////
 	$scope.enableSumbitBtn = function() {
 		$scope.disabled = false;
-
 	};
 
 	$scope.toggleSelectAll = function(ev) {

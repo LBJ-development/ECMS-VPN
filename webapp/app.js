@@ -4,6 +4,7 @@
 var app = angular.module('ECMSapp', [
 	'ngRoute',
 	'ngAnimate',
+	'ECMSapp.config',
 	'ECMSapp.login',
 	'ECMSapp.home',
 	'ECMSapp.mainMenu',
@@ -20,16 +21,18 @@ app.factory("StorageService", function($window, $rootScope) {
 
     return {
         setToken: function(val) {
+			console.log("setting token:" +val);
             $window.localStorage && $window.localStorage.setItem('token', val);
             return this;
         },
         getToken: function() {
+			console.log("returning token:" + $window.localStorage.getItem('token'));
             return $window.localStorage && $window.localStorage.getItem('token');
         }
     };
 });
-
-app.factory("ConfigService", function($window, $rootScope) {
+/*
+app.factory("ECMSConfig", function($window, $rootScope) {
     return {
         setRestURI: function(val) {
             $window.localStorage && $window.localStorage.setItem('resturl', val);
@@ -43,22 +46,22 @@ app.factory("ConfigService", function($window, $rootScope) {
         }
     };
 });
-
-app.factory('httpRequestInterceptor', function (StorageService, ConfigService) {
+*/
+app.factory('httpRequestInterceptor', function (StorageService, ECMSConfig) {
     return {
         request: function (config) {
             //console.log("Inside interceptor:" )
-            //console.log(config);
+            console.log(config);
             config.headers['X-Auth-Token'] = StorageService.getToken();
             if (config.url.indexOf('.html') === -1){
-                config.url = ConfigService.getRestURI() + config.url ;
+                config.url = ECMSConfig.restServicesURI + config.url ;
             }
             return config;
         }
     };
 });
 
-app.factory('loginService', function( $http){
+app.factory('loginService', function( $http, StorageService){
     return{
         login:function(credentials){
 
@@ -83,7 +86,10 @@ app.factory('loginService', function( $http){
 
         logout : function(){
             var restservice = "/rest/auth/logout";
-            return $http.get(restservice);
+            return $http.get(restservice)
+						.success(function() {
+									StorageService.setToken(null);
+								}) ;
         }
     };
 });
@@ -94,12 +100,11 @@ app.config(function ($httpProvider) {
 });
 
 
-
-app.run( function($location, $window, $rootScope, ConfigService, StorageService){
-    //ConfigService.setRestURI("http://localhost:8080/");
-    ConfigService.initializeApp();
-    //ConfigService.setRestURI("http://cc-devapp1.ncmecad.net:8080/ecms-staging");
-	ConfigService.setRestURI("http://cc-devapp1.ncmecad.net:8080/ecms-services.nightly");
+app.run( function($location, $window, $rootScope, StorageService){
+    //ECMSConfig.setRestURI("http://localhost:8080/");
+    //ECMSConfig.initializeApp();
+    //ECMSConfig.setRestURI("http://cc-devapp1.ncmecad.net:8080/ecms-staging");
+	//ECMSConfig.setRestURI("http://ecms-devapp1.ncmecad.net:8080/ecms-services.nightly");
     StorageService.setToken(null);
 
     var windowElement = angular.element($window);
@@ -114,8 +119,9 @@ app.run( function($location, $window, $rootScope, ConfigService, StorageService)
     });
 	
 	$rootScope.hasPermission = function (permission) {
-		console.log("checking for permission:" + permission + ", " + ($.inArray(permission, $rootScope.permissions) >= 0));
+		//console.log("checking for permission:" + permission + ", " + ($.inArray(permission,$rootScope.permissions) >= 0));
         return ($.inArray(permission, $rootScope.permissions) >= 0);
     }
 
+	$rootScope.loggedIn = false;
 });

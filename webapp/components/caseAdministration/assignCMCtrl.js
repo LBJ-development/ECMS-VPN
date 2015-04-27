@@ -177,30 +177,9 @@ angular.module('ECMSapp.assignCM', [])
 	$scope.startingDate	= startingDate;
 	$scope.endingDate	= endingDate;
 	$scope.submitSearch = 0; //
+	$scope.disabled		= true; // DISABLES THE SUBMIT BUTTON
+	$scope.datePickerDisable = false; // ENABLES THE DATE PICKER
 		
-		
-	$scope.assignCM = function(){
-		var assignURL = "case:" + $scope.dataItem.caseNumber + "manager:"+ $scope.assignCM.caseManagerId;
-
-		DataFtry.assignCaseManager($scope.dataItem.caseNumber, $scope.assignCM.caseManagerId).then(function(result){
-			 // console.log("assigned manager successfully:" + assignURL);
-			$scope.dataItem.caseManager = $scope.caseManagerName; //"12312";
-
-			console.log($scope.caseManagerName);
-			//$scope.reloadData(); //triggering main grid refresh
-		});
-	}	
-	
-	$scope.enableSumbitBtn = function() {
-		$scope.disabled = false;
-	};
-	
-	// WHEN DATE RANGE CHANGES //////////////////////////////////////////////////
-	$scope.reloadData = function(){
-		    // console.log("reloadData");
-			$scope.submitSearch++;
-	};
-
 	function formatDate(){
 		var date	= new Date().getDate();
 		var month	= new Date().getMonth() + 1;
@@ -221,8 +200,32 @@ angular.module('ECMSapp.assignCM', [])
 		return enYear + "-" + enMonth  + "-" + enDate;
 	}
 	
-	// GRID ////////////////////////////////////////////////////////////////////
-	var result = {};
+	$scope.assignCM = function(){
+		var assignURL = "case:" + $scope.dataItem.caseNumber + "manager:"+ $scope.assignCM.caseManagerId;
+
+		DataFtry.assignCaseManager($scope.dataItem.caseNumber, $scope.assignCM.caseManagerId).then(function(result){
+			// console.log("assigned manager successfully:" + assignURL);
+			$scope.dataItem.caseManager = $scope.caseManagerName; //"12312";
+
+			console.log($scope.caseManagerName);
+			//$scope.reloadData(); //triggering main grid refresh
+		});
+	};
+
+	$scope.handleRadioSelection = function(ev) {
+		$scope.disabled = false;
+		ev == 0? $scope.datePickerDisable = false : $scope.datePickerDisable = true;
+	};
+	
+	$scope.enableSumbitBtn = function() {
+		$scope.disabled = false;
+	};
+	
+	// WHEN DATE RANGE CHANGES //////////////////////////////////////////////////
+	$scope.reloadData = function(){
+			// console.log("reloadData");
+			$scope.submitSearch++;
+	};
 
 	// WATCH FOR A DATE RANGE CHANGE
 	$scope.$watch('submitSearch', function(newValue, oldValue) {
@@ -241,7 +244,10 @@ angular.module('ECMSapp.assignCM', [])
 		//var divgrid = angular.element('#datagrid').data("kendo-grid").dataSource.read(); 
 	});
 	
-	// MAIN GRID SETTINGS //////////////////////////////////////////////////////////////////////////////////////
+	
+    // MAIN GRID SETTINGS //////////////////////////////////////////////////////////////////////////////////////	
+	var result = {};
+	
 	$scope.mainGridOptions =  {
 		 
 		dataSource: {
@@ -442,16 +448,16 @@ angular.module('ECMSapp.assignCM', [])
 						pageSize: 1
 
 						},
-				scrollable: false,
+				scrollable: true,
 				sortable: false,
 				pageable: true,
-				height	: 300,
+				height	: 500,
 
 				rowTemplate: kendo.template($("#row-template").html()),
 				//dataBound: changeNarrative,
 				// toolbar: kendo.template($("#toolbar-template").html()),
 				columns: [
-					{ field: "", width: "100%" ,
+					{ field: "", width: "100%" , height: "100%",
 
 					headerAttributes: {
 						style: "display: none"
@@ -589,7 +595,3 @@ angular.module('ECMSapp.assignCM', [])
 		}
 	};
 }]);
-
-
-
-

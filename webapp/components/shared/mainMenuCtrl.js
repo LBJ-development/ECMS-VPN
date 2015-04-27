@@ -73,13 +73,13 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
                         cssClass: "sub-menu",
                         url: "#/caseadministration/managerecoveries",
                         permission: "caseadmin:view:basic"
-                    },
+                    }/*,
                     {
                         text: "Des Case Rev Cat",
                         cssClass: "sub-menu",
                         url: "#/caseadministration/descaserevcat",
                         permission: "menu:view:caseadmin:caserevcat"
-                    }]
+                    }*/]
             },
             {
                 text: "Case Management",
@@ -211,7 +211,6 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
             scope.logout = function() {
                 $rootScope.displayMainMenu = false;
                // console.log (StorageService.getToken());
-                StorageService.setToken(null);
                 loginService.logout();
             };
 

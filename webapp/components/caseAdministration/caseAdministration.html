@@ -1,5 +1,5 @@
 
-<div authorized class="content-wrapper">
+<div authorized ng-show="hasPermission('caseadmin:view:basic')" class="content-wrapper">
 	<div class="content-holder" ng-controller="MainCaseAdminCtrl">
 		<div class="title-holder">
 			<span class="title">Case Administration</span>
@@ -25,18 +25,18 @@
 				<div class="filter-row-holder">
 					<ul >
 						<li style="width: 170px">
-                			<span class="labelText-small" >RFS/Case:</span>
-        					<select kendo-drop-down-list style="width: 160px" k-ng-delay="rcTypeDataSource" ng-model="casesearch.rcType" k-placeholder="'Select Type'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcTypeDataSource" k-on-change="enableSumbitBtn()"></select>
+                			<span class="labelText-small" >RFS Type:</span>
+        					<select kendo-drop-down-list style="width: 160px" k-ng-delay="rfsPrimaryTypeDataSource" ng-model="searchCriteria.rfsPrimaryType" k-placeholder="'Select Type'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsPrimaryTypeDataSource" k-on-change="enableSumbitBtn()"></select>
                 		</li> 
 
                 		<li style="width: 170px">
-							<span class="labelText-small">RFS/Case Status:</span>
-        					<select kendo-drop-down-list style="width: 160px" k-ng-delay="rcStatusDataSource" ng-model="casesearch.rcStatus" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcStatusDataSource" k-on-change="enableSumbitBtn()"></select>
+							<span class="labelText-small">RFS Status:</span>
+        					<select kendo-drop-down-list style="width: 160px" k-ng-delay="rfsStatusDataSource" ng-model="searchCriteria.rfsStatus" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsStatusDataSource" k-on-change="enableSumbitBtn()"></select>
                 		</li>
 
                 		<li style="width: 310px">
-                			<span  class="labelText-small" >RFS/Case Source:</span>
-        					<select kendo-multi-select style="width: 310px" k-ng-delay="rcSourceDataSource" ng-model="casesearch.rcSource" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rcSourceDataSource" k-on-change="enableSumbitBtn()" ></select>
+                			<span  class="labelText-small" >RFS Source:</span>
+        					<select kendo-drop-down-list style="width: 310px" k-ng-delay="rfsSourceDataSource" ng-model="searchCriteria.rfsSource" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsSourceDataSource" k-on-change="enableSumbitBtn()" ></select>
                 		</li>
 
                 		<li  class="submit-btn" style="padding-top:20px">
@@ -49,10 +49,10 @@
 		<!-- DATA GRIG /////////////////////////////////////////////////////////////////-->
       	<div class="row-holder title-small" style="padding: 0px 0 0px 0px">
 			<span ng-class="warningClass"> {{warning}} </span>
-			<ul>
+			<ul ng-show="hasPermission('caseadmin:edit:main')" >
 				<li class="linkButton toEmail"><a href=""  ng-click="" >Email</a></li>
 				<li class="linkButton toPrint"><a href=""  ng-click="" >Print</a></li>
-				<li class="linkButton toPDF"><a href=""  ng-click="">Export to PDF</a></li>
+				<li class="linkButton toPDF"><a href=""  ng-click="">Export</a></li>
 			</ul>
 		</div>
         
@@ -64,4 +64,7 @@
 	</div>
 </div>
 
+<div ng-show="!hasPermission('caseadmin:view:basic')" class="content-wrapper">
+	 You do not have permission to view this page. Please check with administrator
+</div>
 

@@ -2,40 +2,40 @@
 
 angular.module('ECMSapp.adminMain', [])
 
-.controller('MainCaseAdminCtrl', ['$scope', 'DataFtry', '$http', 'ConfigService',  function($scope, DataFtry, $http, ConfigService){
+.controller('MainCaseAdminCtrl', ['$scope', 'DataFtry', '$http', function($scope, DataFtry, $http){
 	
-	$scope.casesearch = {
+	$scope.searchCriteria = {
 		startDate: null,
 		endDate: null,
-		rcType: "-1", //set default value to ALL for drop-down list
-		rcSource: "-1", //set default value to ALL for drop-down list
-		rcStatus: "-1" //set default value to ALL for drop-down list
+		rfsPrimaryType: "-1", //set default value to ALL for drop-down list
+		rfsSource: "-1", //set default value to ALL for drop-down list
+		rfsStatus: "-1" //set default value to ALL for drop-down list
 	};
 
 	$scope.submitSearch = function(){
 		// data massaging
 		// format dates
-		$scope.casesearch.startDate = formatstartDate();
-		$scope.casesearch.endDate = formatendDate();
+		$scope.searchCriteria.startDate = formatstartDate();
+		$scope.searchCriteria.endDate = formatendDate();
 		
 		//handle null and  convert to string array into comma-separated string
-		if ($scope.casesearch.rcType === null){
+		if ($scope.searchCriteria.rfsPrimaryType === null){
 			//console.log('assigning -1');
-			$scope.casesearch.rcType = "-1";
+			$scope.searchCriteria.rfsPrimaryType = "-1";
 		}
 		
-		if ($scope.casesearch.rcSource === null){
+		if ($scope.searchCriteria.rfsSource === null){
 			//console.log('assigning -1');
-			$scope.casesearch.rcSource = "-1";
+			$scope.searchCriteria.rfsSource = "-1";
 		}
 		
-		if ($scope.casesearch.rcStatus === null){
+		if ($scope.searchCriteria.rfsStatus === null){
 			//console.log('assigning -1');
-			$scope.casesearch.rcStatus = "-1";
+			$scope.searchCriteria.rfsStatus = "-1";
 		}
-		$scope.casesearch.rcType = $scope.casesearch.rcType.toString();
-		$scope.casesearch.rcSource = $scope.casesearch.rcSource.toString();
-		$scope.casesearch.rcStatus = $scope.casesearch.rcStatus.toString();
+		$scope.searchCriteria.rfsPrimaryType = $scope.searchCriteria.rfsPrimaryType.toString();
+		$scope.searchCriteria.rfsSource = $scope.searchCriteria.rfsSource.toString();
+		$scope.searchCriteria.rfsStatus = $scope.searchCriteria.rfsStatus.toString();
 		
 		$scope.submissionCount ++;
 	};
@@ -54,19 +54,19 @@ angular.module('ECMSapp.adminMain', [])
 		return enYear + "-" + enMonth  + "-" + enDate;
 	}
 
-	$http.get("/rest/caseadmin/lookup?lookupName=rcSource")
+	$http.get("/rest/caseadmin/lookup?lookupName=rfsSource")
 		.success( function(result) {
-			$scope.rcSourceDataSource = result.content;
+			$scope.rfsSourceDataSource = result.content;
 		});
 			 
-	$http.get("/rest/caseadmin/lookup?lookupName=rcType")
+	$http.get("/rest/caseadmin/lookup?lookupName=rfsPrimaryType")
 		.success( function(result) {
-			$scope.rcTypeDataSource = result.content;
+			$scope.rfsPrimaryTypeDataSource = result.content;
 	});
 	
-	$http.get("/rest/caseadmin/lookup?lookupName=rcStatus")
+	$http.get("/rest/caseadmin/lookup?lookupName=rfsStatus")
 		.success( function(result) {
-			$scope.rcStatusDataSource = result.content;
+			$scope.rfsStatusDataSource = result.content;
 	});
 		
 	var result = {};
@@ -77,8 +77,8 @@ angular.module('ECMSapp.adminMain', [])
 	$scope.startDate	= new Date(todayDate.getTime() - dateOffset);
 	$scope.endDate		= todayDate;
 	
-	$scope.casesearch.startDate = formatstartDate();
-	$scope.casesearch.endDate = formatendDate();
+	$scope.searchCriteria.startDate = formatstartDate();
+	$scope.searchCriteria.endDate = formatendDate();
 	$scope.submissionCount = 0;
 	
 	//Initial Load
@@ -93,7 +93,7 @@ angular.module('ECMSapp.adminMain', [])
 			return;
 		}
 
-		DataFtry.getCases($scope.casesearch).then(function(result){
+		DataFtry.getRFSes($scope.searchCriteria).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;
 			if(result.data.content.length >= 500){
 				$scope.warningClass = "inline-err";
@@ -140,16 +140,22 @@ angular.module('ECMSapp.adminMain', [])
 			schema: {
 					model: {
 						fields: {
-								caseNumber		: { type: "string"	},
-								dateReceived	: { type: "date"	},
-								incidentDate	: { type: "date"	},
-								source			: { type: "string"	},
-								caseTypeAbbr	: { type: "string"	},
-								caseStatus		: { type: "string"	},
-								alerts			: { type: "string"	},
-								state			: { type: "string"	},
-								caseManager		: { type: "string"	}
+									rfsAlerts				: { type: "string"},
+									rfsDateTimeReceived     : { type: "date"  }, 
+									rfsNumberDisplay		: { type: "string"}, 
+									rfsNumber				: { type: "string"}, 
+									caseNumberDisplay		: { type: "string"}, 
+									caseNumber				: { type: "string"}, 
+									rfsSource				: { type: "string"},
+									rfsTypeDisplay			: { type: "string"}, 
+									rfsPrimaryType			: { type: "string"}, 
+									rfsSecondaryType		: { type: "string"}, 
+									rfsStatus				: { type: "string"},
+									rfsIncidentDate			: { type: "date"  },
+									rfsIncidentState		: { type: "string"},
+									caseManager				: { type: "string"}
 								}
+						
 							}
 						}
 					},
@@ -200,22 +206,27 @@ angular.module('ECMSapp.adminMain', [])
 				sortDescending	: "Sort (desc)"
 							}
 					},*/
+
 		columns		: [{
-						field	: "alerts",
+						field	: "rfsAlerts",
 						title	: "Alerts",
 						width	: "8%"
 						},{
-						field	: "dateReceived",
+						field	: "rfsDateTimeReceived",
 						title	: "Date Rcvd.",
 						format	:"{0:MM/dd/yyyy}" ,
 						width	: "9%",
 						filterable: false,
 						},{
-						field	: "caseNumber",
-						title	: "RFS/Case",
+						field	: "rfsNumberDisplay",
+						title	: "RFS",
 						width	: "8%"
 						},{
-						field	: "source",
+						field	: "caseNumberDisplay",
+						title	: "Case",
+						width	: "8%"
+						},{
+						field	: "rfsSource",
 						title	: "Source",
 						width	: "6%",
 						filterable: {
@@ -227,8 +238,8 @@ angular.module('ECMSapp.adminMain', [])
 								}
 							}
 						},{
-						field	: "caseTypeAbbr",
-						title	: "Type",
+						field	: "rfsTypeDisplay",
+						title	: "RFS Type",
 						width	: "9%",
 						filterable: {
 							ui			: typeFilter,
@@ -239,8 +250,8 @@ angular.module('ECMSapp.adminMain', [])
 								}
 							}
 						},{
-						field	: "caseStatus",
-						title	: "Status",
+						field	: "rfsStatus",
+						title	: "RFS Status",
 						width	: "9%",
 						filterable: {
 							ui			: statusFilter,
@@ -251,7 +262,12 @@ angular.module('ECMSapp.adminMain', [])
                          				}
 									}
 						},{
-						field	: "state",
+						field	: "rfsIncidentDate",
+						title	: "Incid. Date",
+						format	:"{0:MM/dd/yyyy}" ,
+						width	: "9%"
+						},{
+						field	: "rfsIncidentState",
 						title	: "State",
 						width	: "5%",
 						filterable: {
@@ -262,11 +278,6 @@ angular.module('ECMSapp.adminMain', [])
 									}
 								}
 							}
-						},{
-						field	: "incidentDate",
-						title	: "Incid. Date",
-						format	:"{0:MM/dd/yyyy}" ,
-						width	: "9%"
 						},{
 							
 						field	: "caseManager",

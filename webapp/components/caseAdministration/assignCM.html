@@ -1,5 +1,5 @@
 
-<div class="content-wrapper">
+<div  ng-show="hasPermission('caseadmin:view:basic')" class="content-wrapper">
 	<div class="content-holder" ng-controller="AssignCMCtrl">
 		<div class="title-holder">
 			<span class="title">Assign Case Manager</span>
@@ -7,19 +7,29 @@
 
 	<!-- DATE RANGE ///////////////////////////////////////////////////////////////////////////////-->
 		<div class="filter-holder" role="query-filter">
-			<form name="dateRange-frm" ng-submit="reloadData()" role="form">
+			<form name="dateRange-frm" ng-submit="reloadData()" role="form" >
 				<div class="filter-row-holder">
 					<ul>
-						<li class=" title-small" style="width: 320px">
-							Select an other received date range:
+						<li style="width: 250px" ng-init="isUnassignedCases=0">
+						 	
+						 	<input type="radio" style="float: left; margin:6px" name="isUnassignedCases" ng-model="isUnassignedCases" ng-change="handleRadioSelection(isUnassignedCases)"  value="0" id="bydate"/>
+						 	<label for="bydate">Case Creation Date Range</label>
 						</li>
 						<li style="padding-right: 0px">
-							<span class="labelText-small" >From:</span> 
-							<input kendo-date-picker k-on-change="enableSumbitBtn()" k-ng-model="startingDate" style="width: 180px"/> 
+							<span class="labelText-small">From:</span> 
+							<input kendo-date-picker id="startingDate" k-on-change="enableSumbitBtn()" k-ng-model="startingDate" ng-disabled="datePickerDisable" style="width: 180px"/> 
 						</li>
 						<li style="padding-right: 0px">
-							<span class="labelText-small" >to:</span> 
-							<input kendo-date-picker k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
+							<span class="labelText-small">to:</span> 
+							<input kendo-date-picker id="endingDate" ng-disabled="datePickerDisable"  k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
+						</li>
+					</ul>
+				</div>
+				<div class="filter-row-holder" style="padding: 0 0 10px 15px">
+					<ul>
+						<li style="width: 617px">
+							<input type="radio"  style="float: left; margin:6px" name="isUnassignedCases" value="1" ng-model="isUnassignedCases" ng-change="handleRadioSelection(isUnassignedCases)" id="unassignedcases"/>
+							<label for="unassignedcases">All Unassigned Cases</label>
 						</li>
 						<li  class="submit-btn">
                 			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT
@@ -34,7 +44,7 @@
 		<div class="row-holder title-small" style="padding: 0px 0 0px 0px">
 			<span ng-class="warningClass"> {{warning}} </span>
 			<ul>
-				<li class="linkButton daws"><a href="" ng-click="daws.center().open()">Daily assignment worksheet</a>
+				<li class="linkButton daws"><a href="" ng-click="daws.center().open()">Daily Assignment Worksheet</a>
 				</li>
 			</ul>
 		</div>
@@ -48,20 +58,17 @@
 			<kendo-grid k-options="dawsGridOptions" k-rebind="dawsGridOptions" id="grid"  k-ng-delay="dawsGridOptions" k-on-save="trackChanges(kendoEvent)">
 			</kendo-grid >
 
-			<div class="bottom-window">
+			<div ng-show="hasPermission('caseadmin:edit:dailyassignws')" class="bottom-window">
 				<ul>
 					<li  class="submit-btn">
                 		<kendo-button class="k-button" ng-click="saveAndCloseScheduleUpdates()">SAVE & CLOSE</kendo-button>
-					</li>
-						
+					</li>	
 					<li  class="submit-btn">
                 		<kendo-button class="k-button" ng-click="saveScheduleUpdates()">SAVE</kendo-button>
 					</li>
-
 					<li  class="submit-btn">
                 		<kendo-button  class="k-button"  ng-click="daws.close()">CANCEL</kendo-button>
-					</li>
-						
+					</li>	
         		</ul>
 			</div>	
 		</div>
@@ -72,6 +79,10 @@
 			</kendo-grid >
 		</div>
 	</div>
+</div>
+
+<div ng-show="!hasPermission('caseadmin:view:basic')" class="content-wrapper">
+	 You do not have permission to view this page. Please check with administrator
 </div>
 
 <!--  GRID DETAIL TEMPLATE /////////////////////////////////////////////////////////////////-->

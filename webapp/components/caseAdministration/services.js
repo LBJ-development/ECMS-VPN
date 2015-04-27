@@ -82,8 +82,8 @@ angular.module('ECMSapp.services', [])
         return executeHttpJSONPost("/rest/casemanager/worksheet/edit", updatedSchedules);
 	};		
 		
-	var getCases = function(casesearch) {
-        return executeHttpJSONPost("/rest/caseadmin/casesPlus", casesearch);
+	var getRFSes = function(searchCriteria) {
+        return executeHttpJSONPost("/rest/caseadmin/rfsSearch", searchCriteria);
 	};
 	
 	var getCasesBySearch = function(casesearch) {
@@ -94,22 +94,18 @@ angular.module('ECMSapp.services', [])
 		
 		var casesearch = {
 				startDate: starDate,
-				endDate: endDate,
-				rcType: "5118", //CASES ONLY
-				// rcSource: "5119", //ACTIVE
-				rcSource: "-1", //ALL
-				rcStatus: "-1" //set default value to ALL for drop-down list
+				endDate: endDate
 			};
-		return getCases(casesearch);
+		return getCasesBySearch(casesearch);
 	}
 	
 	var getCasesForIntakeDist = function (casesearch){
 		return getCasesBySearch(casesearch);
-			};
+	};
 
 	return {
 		getData: getData,
-		getCases: getCases,
+		getRFSes: getRFSes,
 		getCasesForAssignment: getCasesForAssignment,
 		getCasesForIntakeDist: getCasesForIntakeDist,
 		assignCaseManager: assignCaseManager,
