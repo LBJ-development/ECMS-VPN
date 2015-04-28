@@ -260,7 +260,7 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
     return {
         link: function (scope, element, attrs){
             if(StorageService.getToken() === 'null') $location.path('/login');
-            console.log('Token-hold-debug' + StorageService.getToken());
+            //console.log('Token-hold-debug' + StorageService.getToken());
 
         }
     };

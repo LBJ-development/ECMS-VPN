@@ -21,12 +21,12 @@ app.factory("StorageService", function($window, $rootScope) {
 
     return {
         setToken: function(val) {
-			console.log("setting token:" +val);
+			//console.log("setting token:" +val);
             $window.localStorage && $window.localStorage.setItem('token', val);
             return this;
         },
         getToken: function() {
-			console.log("returning token:" + $window.localStorage.getItem('token'));
+			//console.log("returning token:" + $window.localStorage.getItem('token'));
             return $window.localStorage && $window.localStorage.getItem('token');
         }
     };
@@ -51,7 +51,7 @@ app.factory('httpRequestInterceptor', function (StorageService, ECMSConfig) {
     return {
         request: function (config) {
             //console.log("Inside interceptor:" )
-            console.log(config);
+           // console.log(config);
             config.headers['X-Auth-Token'] = StorageService.getToken();
             if (config.url.indexOf('.html') === -1){
                 config.url = ECMSConfig.restServicesURI + config.url ;

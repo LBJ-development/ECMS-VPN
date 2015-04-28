@@ -88,7 +88,7 @@ angular.module('ECMSapp.adminMain', [])
 	// WATCH FOR A Search Submission
 	$scope.$watch('submissionCount', function(newValue, oldValue) {
 		
-		console.log("FROM WATCH: submissionCount ="  + $scope.submissionCount);
+		//console.log("FROM WATCH: submissionCount ="  + $scope.submissionCount);
 		if (newValue === 0){
 			return;
 		}
@@ -365,5 +365,32 @@ angular.module('ECMSapp.adminMain', [])
 			optionLabel: "--Select Value--"
 		});
 	}
-		
+
+	// CUSTOM EMAIL WINDOW //////////////////////////////////////////////////
+
+	$scope.emailWindowOptions = {
+		width: 590,
+		height:400,
+		visible: false,	
+		modal: true,
+		scrollable : false,
+		// title: "Daily Assignment Worksheet",
+		// open: getDAWSdata
+		// position: {
+		// top: 400,
+		// left: "center"
+		// },
+	};
+
+	$scope.openEmailWindow = function(e) {
+	
+		$scope.emailWindow.center().open();
+		$scope.Placeholder = "1232323.xls";
+	};
+
+	$scope.sendEmail = function(){
+		$scope.emailWindow.close();
+		console.log("SEND EMAIL");
+
+	};
 }]);

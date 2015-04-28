@@ -61,18 +61,17 @@
 			<div ng-show="hasPermission('caseadmin:edit:dailyassignws')" class="bottom-window">
 				<ul>
 					<li  class="submit-btn">
-                		<kendo-button class="k-button" ng-click="saveAndCloseScheduleUpdates()">SAVE & CLOSE</kendo-button>
+                					<kendo-button class="k-button" ng-click="saveAndCloseScheduleUpdates()">SAVE & CLOSE</kendo-button>
 					</li>	
 					<li  class="submit-btn">
-                		<kendo-button class="k-button" ng-click="saveScheduleUpdates()">SAVE</kendo-button>
+                					<kendo-button class="k-button" ng-click="saveScheduleUpdates()">SAVE</kendo-button>
 					</li>
 					<li  class="submit-btn">
-                		<kendo-button  class="k-button"  ng-click="daws.close()">CANCEL</kendo-button>
+                					<kendo-button  class="k-button"  ng-click="daws.close()">CANCEL</kendo-button>
 					</li>	
-        		</ul>
+        				</ul>
 			</div>	
 		</div>
-
         <!-- DATA GRID /////////////////////////////////////////////////////////////////-->
 		<div id="datagrid" role="datagrid" class="grid-holder" >
 			<kendo-grid k-options="mainGridOptions" k-rebind="mainGridOptions" id="grid"  k-ng-delay="mainGridOptions">
