@@ -369,8 +369,8 @@ angular.module('ECMSapp.adminMain', [])
 	// CUSTOM EMAIL WINDOW //////////////////////////////////////////////////
 
 	$scope.emailWindowOptions = {
-		width: 590,
-		height:400,
+		width: 690,
+		height:550,
 		visible: false,	
 		modal: true,
 		scrollable : false,

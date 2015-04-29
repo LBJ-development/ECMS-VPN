@@ -86,21 +86,22 @@ angular.module('ECMSapp.services', [])
         return executeHttpJSONPost("/rest/caseadmin/rfsSearch", searchCriteria);
 	};
 	
-	var getCasesBySearch = function(casesearch) {
-        return executeHttpJSONPost("/rest/caseadmin/caseSearch", casesearch);
-	};
-	
-	var getCasesForAssignment = function (starDate, endDate){
+	var getCasesForAssignment = function (starDate, endDate, isUnAssignedCases){
 		
 		var casesearch = {
-				startDate: starDate,
-				endDate: endDate
+				caseCreateStartDate: starDate,
+				caseCreateEndDate: endDate,
+				isUnassignedCases : isUnAssignedCases
 			};
-		return getCasesBySearch(casesearch);
+		console.log("search criteria");
+		console.log(casesearch);
+		return executeHttpJSONPost("/rest/caseadmin/caseSearch", casesearch);
 	}
 	
 	var getCasesForIntakeDist = function (casesearch){
-		return getCasesBySearch(casesearch);
+		console.log("search criteria");
+		console.log(casesearch);
+		return executeHttpJSONPost("/rest/caseadmin/activeCaseSearch", casesearch);
 	};
 
 	return {

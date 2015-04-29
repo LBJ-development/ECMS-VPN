@@ -55,59 +55,55 @@
 				<li class="linkButton toPDF"><a href=""  ng-click="">Export</a></li>
 			</ul>
 		</div>
-        
 		<div role="datagrid" class="grid-holder" >
 			<div>
 				<div kendo-grid="mainGrid" id="grid" k-options="mainGridOptions" k-rebind="mainGridOptions"  k-ng-delay="mainGridOptions" ></div>
 			</div>  
 		</div>
-
 		<!-- EMAIL WINDOW  /////////////////////////////////////////////////////////////////-->
 		 <div kendo-window="emailWindow" k-options="emailWindowOptions" >
-		 	<span class="title-small full-width" style="width: 90%; padding-left:15px">Please provide email info:</span>
-
+		 	<span class="title-small full-width" style="width: 90%; padding-left:15px">
+		 		Please provide email info:
+		 	</span>
 		 	<form name="customEmail" role="form">
-
-		 		<div class="filter-holder" style="margin: 0 10px 0px 15px; padding:20px; width: 500px">
+		 		<div class="filter-holder" style="margin: 0 10px 0px 15px; padding:20px; width: 600px">
 		 			<ul style="float:left">
 		 				<li>
 		 					<span class="labelClass" style="width: 130px">Enter Recipient(s):</span>
-		 					<input class="k-textbox" style="width: 200px" id="quicksearch" type="text" name="recipients">
-            							<span class="search-btn"  style="float:left"><a href="" ></a></span>
-            							<input   id="includeMyself" type="checkbox" name="copyMyself" style="float:left; margin-top:7px">
-            							<label  class="labelClass"  for="includeMyself"> Copy Myself</label>
-            						</li>
-            						<li >
+		 					<input class="k-textbox" style="width: 300px" id="quicksearch" type="text" name="recipients">
+            				<span class="search-btn"  style="float:left"><a href="" ></a></span>
+            				<input   id="includeMyself" type="checkbox" name="copyMyself" style="float:left; margin-top:7px">
+            				<label  class="labelClass"  for="includeMyself"> Copy Myself</label>
+            			</li>
+            			<li >
 		 					<span  class="labelClass" style="width: 130px" >Subject Text:</span>
-		 					<input class="k-textbox" style="width: 200px" id="" type="text" name="">
-            						</li>
-            						<li >
+		 					<input class="k-textbox" style="width: 300px" id="" type="text" name="">
+            			</li>
+            			<li >
 		 					<span class="labelClass" style="width: 130px">Body Text:</span>
-		 					<textarea class="k-textbox" style="width: 350px; max-width: 350px; min-width:350px" id="" type="text" name=""></textarea>
-            						</li>
-            						<li >
+		 					<textarea class="k-textbox" style="width: 450px; max-width: 440px; min-width:440px; height: 250px" id="" type="text" name=""></textarea>
+            			</li>
+            			<li style="padding-bottom:0">
 		 					<span class="labelClass" style="width: 130px">Attachement(s):</span>
 		 					<span class="linkButton toXLS" style="padding-top:6px"><a  href=""  >{{Placeholder}}*</a></span>
-            						</li>
-            					</ul>
-
+            			</li>
+            		</ul>
 		 		</div>
 		 		<span class="captionText" style="padding-left:15px">*Click to preview</span>
-				<div class="bottom-window" style="padding: 0px 10px 0px 0">
+				<div class="bottom-window" style="padding: 0px 15px 0px 0">
 					<ul>
 						<li  class="submit-btn">
-                						<kendo-button class="k-button" ng-click="sendEmail()">SEND</kendo-button>
+                			<kendo-button class="k-button" ng-click="sendEmail()">SEND</kendo-button>
 						</li>
 						<li  class="submit-btn">
-                						<kendo-button  class="k-button"  ng-click="emailWindow.close()">CANCEL</kendo-button>
+                			<kendo-button  class="k-button"  ng-click="emailWindow.close()">CANCEL</kendo-button>
 						</li>	
-        					</ul>
+        			</ul>
 				</div>	
 			</form>
 		</div>
 	</div>
 </div>
-
 <!-- HANDLING PERMISSIONS  /////////////////////////////////////////////////////////////////-->
 <div ng-show="!hasPermission('caseadmin:view:basic')" class="content-wrapper">
 	 You do not have permission to view this page. Please check with administrator

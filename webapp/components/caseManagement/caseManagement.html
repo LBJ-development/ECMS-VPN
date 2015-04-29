@@ -1,0 +1,11 @@
+
+<div authorized ng-show="hasPermission('casemgmt:view:basic')" class="content-wrapper">
+	<div class="content-holder">
+		<div role="" class="" ng-controller="CaseManagementCtrl">
+			This is the CASE MANAGEMENT PAGE!
+		</div>
+	</div>		
+</div>
+<div ng-show="!hasPermission('casemgmt:view:basic')" class="content-wrapper">
+	 You do not have permission to view this page. Please check with administrator
+</div>

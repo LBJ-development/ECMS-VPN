@@ -4,7 +4,6 @@
 		<div class="title-holder">
 			<span class="title">Intake Distribution</span>
 		</div>
-
 	<!-- DATE RANGE ///////////////////////////////////////////////////////////////////////////////-->
 		<div class="filter-holder" role="query-filter">
 			<form name="dateRange-frm" ng-submit="submitSearch()" role="form">
@@ -22,25 +21,22 @@
 							<input kendo-date-picker k-on-change="enableSumbitBtn()"  k-ng-model="caseCreateEndDate"  style="width: 180px"/>
 						</li>
 					</ul>
-        				</div>
-
-        				<!--  SEARCH OPTIONS ///////////////////////////////////////////////////////////////////////////////-->
+        		</div>
+	<!--  SEARCH OPTIONS ////////////////////////////////////////////////////////////////////////////-->
 				<div class="filter-row-holder">
 					<ul >
 						<li style="width: 200px">
 							<span class="labelText-small" >Police Report:</span>
-							<select kendo-drop-down-list style="width: 200px"  k-ng-delay="caseHasPoliceReportDataSource" ng-model="casesearch.caseHasPoliceReport" k-placeholder="'Select Police Report'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="caseHasPoliceReportDataSource" k-on-change="enableSumbitBtn()"></select>
+							<select kendo-drop-down-list style="width: 200px"  k-ng-delay="frmSrchCaseHasPoliceReportDataSource" ng-model="casesearch.frmSrchCaseHasPoliceReport" k-placeholder="'Select Police Report'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchCaseHasPoliceReportDataSource" k-on-change="enableSumbitBtn()"></select>
 						</li> 
                 		<li style="width: 150px">
                 			<span  class="labelText-small" >Distributed To:</span>
-        					<select kendo-drop-down-list style="width: 150px" k-ng-delay="caseDistributedToDataSource" ng-model="casesearch.caseDistributedTo" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="caseDistributedToDataSource" k-on-change="enableSumbitBtn()"></select>
+        					<select kendo-drop-down-list style="width: 150px" k-ng-delay="frmSrchCaseDistributedToDataSource" ng-model="casesearch.frmSrchCaseDistributedTo" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchCaseDistributedToDataSource" k-on-change="enableSumbitBtn()"></select>
 						</li>
                 		<li style="width: 300px">
 							<span class="labelText-small">Distributed Status:</span>
-        					<select kendo-drop-down-list style="width: 300px" k-ng-delay="caseDistributedToDataSource" ng-model="casesearch.caseDistributedStatus" k-placeholder="'Select Recipient'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="caseDistributedStatusDataSource" k-on-change="enableSumbitBtn()"> </select>
+        					<select kendo-drop-down-list style="width: 300px" k-ng-delay="frmSrchCaseDistributedToDataSource" ng-model="casesearch.frmSrchCaseDistributedStatus" k-placeholder="'Select Recipient'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchCaseDistributedStatusDataSource" k-on-change="enableSumbitBtn()"> </select>
                 		</li>
-
-
                 		<li  class="submit-btn" style="padding-top:20px">
                 			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
                 		</li>
@@ -48,7 +44,6 @@
                	</div> 	
 			</form>
 		</div>
-
 	<!-- DISTRIBUTE INTAKES  /////////////////////////////////////////////////////////////////-->
 		<div  class="row-holder title-small" style="padding: 0px 0 0px 0px">
 			<span ng-class="warningClass"> {{warning}} </span>
@@ -78,13 +73,10 @@
         		</ul>
 			</div>	
 		</div>
-
 		<!-- PDF PREVIEW  /////////////////////////////////////////////////////////////////-->
 		 <div kendo-window="PDFPreview" k-options="PDFPreviewOptions" style="text-align: center">
-		 	
 			<embed src="http://www.jablonski.info/pdfSample.pdf" width="100%" height="100%" type='application/pdf'></embed>
 		</div>
-
         <!-- DATA GRID /////////////////////////////////////////////////////////////////-->
 		<div role="datagrid" class="grid-holder" >
 			<kendo-grid k-options="mainGridOptions" k-rebind="mainGridOptions" id="grid"  k-ng-delay="mainGridOptions">
@@ -92,7 +84,6 @@
 		</div>
 	</div>
 </div>
-
 <!--  GRID DETAIL TEMPLATE /////////////////////////////////////////////////////////////////-->
 <script id="detail-template-Int-Dist" type="text/x-kendo-template" >
 	

@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('ECMSapp.assignCM', [])
+angular.module('ECMSapp.mediaCertDistribu', [])
 
-.controller('AssignCMCtrl', [ '$scope', 'DataFtry', '$http', function( $scope, DataFtry, $http, $q){
+.controller('mediaCertDistribuCtrl', [ '$scope', 'DataFtry', '$http', function( $scope, DataFtry, $http, $q){
 
 	// DAILY ASSIGNMENT WORKSHEET WINDOW //////////////////////////////////////////////////
 

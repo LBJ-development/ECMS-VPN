@@ -30,6 +30,14 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
             templateUrl: 'components/caseAdministration/intakeDistribution.html'
         });
 
+        $routeProvider.when('/caseadministration/mediacertdistribu', {
+            templateUrl: 'components/caseAdministration/mediaCertDistribu.html'
+        });
+
+        $routeProvider.when('/casemanagement', {
+            templateUrl: 'components/caseManagement/caseManagement.html'
+        });
+
         $routeProvider.when('/comingsoon', {
             templateUrl: 'components/shared/comingSoon.html'
         });
@@ -68,18 +76,18 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
                         url: "#/caseadministration/intakedistribution",
                         permission: "caseadmin:view:basic"
                     },
-                    {
+                   /* {
                         text: "Manage Recoveries",
                         cssClass: "sub-menu",
                         url: "#/caseadministration/managerecoveries",
                         permission: "caseadmin:view:basic"
-                    }/*,
+                    },*/
                     {
-                        text: "Des Case Rev Cat",
+                        text: "Media Cert. Distribu.",
                         cssClass: "sub-menu",
-                        url: "#/caseadministration/descaserevcat",
-                        permission: "menu:view:caseadmin:caserevcat"
-                    }*/]
+                        url: "#/caseadministration/mediacertdistribu",
+                        permission: "caseadmin:view:basic"
+                    }]
             },
             {
                 text: "Case Management",
@@ -131,7 +139,7 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
 
             var permissions = $rootScope.permissions;
             $rootScope.menuWithPermissions = [];
-
+           
 			//console.log(permissions);
             if (permissions) {
                 for (var i in scope.menuSource) {

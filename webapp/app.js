@@ -12,6 +12,8 @@ var app = angular.module('ECMSapp', [
 	'ECMSapp.adminMain',
 	'ECMSapp.assignCM',
     'ECMSapp.intakeDistribution',
+    'ECMSapp.mediaCertDistribu',
+    'ECMSapp.caseManagement',
 	'kendo.directives'
 	]);
 
@@ -101,10 +103,6 @@ app.config(function ($httpProvider) {
 
 
 app.run( function($location, $window, $rootScope, StorageService){
-    //ECMSConfig.setRestURI("http://localhost:8080/");
-    //ECMSConfig.initializeApp();
-    //ECMSConfig.setRestURI("http://cc-devapp1.ncmecad.net:8080/ecms-staging");
-	//ECMSConfig.setRestURI("http://ecms-devapp1.ncmecad.net:8080/ecms-services.nightly");
     StorageService.setToken(null);
 
     var windowElement = angular.element($window);
@@ -119,7 +117,7 @@ app.run( function($location, $window, $rootScope, StorageService){
     });
 	
 	$rootScope.hasPermission = function (permission) {
-		//console.log("checking for permission:" + permission + ", " + ($.inArray(permission,$rootScope.permissions) >= 0));
+		console.log("checking for permission:" + permission + ", " + ($.inArray(permission,$rootScope.permissions) >= 0));
         return ($.inArray(permission, $rootScope.permissions) >= 0);
     }
 

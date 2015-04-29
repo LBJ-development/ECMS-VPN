@@ -14,11 +14,10 @@ angular.module('ECMSapp.intakeDistribution', [])
 	$scope.casesearch = {
 		caseCreateStartDate: startingDate,
 		caseCreateEndDate: endingDate,
-		caseHasPoliceReport: "-1", //set default value to ALL for drop-down list
-		caseDistributedTo: "-1", //set default value to ALL for drop-down list
-		caseDistributedStatus: "-1" //set default value to ALL for drop-down list
+		frmSrchCaseHasPoliceReport: "-1", //set default value to ALL for drop-down list
+		frmSrchCaseDistributedTo: "-1", //set default value to ALL for drop-down list
+		frmSrchCaseDistributedStatus: "-1" //set default value to ALL for drop-down list
 	};
-	
 
 	$scope.submitSearch = function(){
 		// data massaging
@@ -27,23 +26,23 @@ angular.module('ECMSapp.intakeDistribution', [])
 		$scope.casesearch.caseCreateEndDate = formatcaseCreateEndDate();
 		
 		//handle null and  convert to string array into comma-separated string
-		if ($scope.casesearch.caseHasPoliceReport === null){
+		if ($scope.casesearch.frmSrchCaseHasPoliceReport === null){
 			// console.log('assigning -1');
-			$scope.casesearch.caseHasPoliceReport = "-1";
+			$scope.casesearch.frmSrchCaseHasPoliceReport = "-1";
 		}
 		
-		if ($scope.casesearch.caseDistributedTo === null){
+		if ($scope.casesearch.frmSrchCaseDistributedTo === null){
 			// console.log('assigning -1');
-			$scope.casesearch.caseDistributedTo = "-1";
+			$scope.casesearch.frmSrchCaseDistributedTo = "-1";
 		}
 		
-		if ($scope.casesearch.caseDistributedStatus === null){
+		if ($scope.casesearch.frmSrchCaseDistributedStatus === null){
 			// console.log('assigning -1');
-			$scope.casesearch.caseDistributedStatus = "-1";
+			$scope.casesearch.frmSrchCaseDistributedStatus = "-1";
 		}
-		$scope.casesearch.caseHasPoliceReport = $scope.casesearch.caseHasPoliceReport.toString();
-		$scope.casesearch.caseDistributedTo = $scope.casesearch.caseDistributedTo.toString();
-		$scope.casesearch.caseDistributedStatus = $scope.casesearch.caseDistributedStatus.toString(); 
+		$scope.casesearch.frmSrchCaseHasPoliceReport = $scope.casesearch.frmSrchCaseHasPoliceReport.toString();
+		$scope.casesearch.frmSrchCaseDistributedTo = $scope.casesearch.frmSrchCaseDistributedTo.toString();
+		$scope.casesearch.frmSrchCaseDistributedStatus = $scope.casesearch.frmSrchCaseDistributedStatus.toString(); 
 		
 		$scope.submissionCount ++;
 	};
@@ -69,19 +68,19 @@ angular.module('ECMSapp.intakeDistribution', [])
 		return enYear + "-" + enMonth  + "-" + enDate;
 	}
 
-	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCasePoliceReport")
+	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseHasPoliceReport")
 		.success( function(result) {
-			$scope.caseHasPoliceReportDataSource = result.content;
+			$scope.frmSrchCaseHasPoliceReportDataSource = result.content;
 		});
 		 
 	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseDistributedStatus")
 		.success( function(result) {
-			$scope.caseDistributedStatusDataSource = result.content;
+			$scope.frmSrchCaseDistributedStatusDataSource = result.content;
 	});
 	
-	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseDistributorTo")
+	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseDistributedTo")
 		.success( function(result) {
-			$scope.caseDistributedToDataSource = result.content;
+			$scope.frmSrchCaseDistributedToDataSource = result.content;
 	});
 
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
@@ -95,10 +94,8 @@ angular.module('ECMSapp.intakeDistribution', [])
 
 	$scope.submitSearch();
 	
-	// GRID ////////////////////////////////////////////////////////////////////
-	var result = {};
-
 	// WATCH FOR A DATE RANGE CHANGE
+	var result = {};
 	$scope.$watch('submissionCount', function(newValue, oldValue) {
 		// console.log("Calling submissionCount:" + $scope.submissionCount);
 
@@ -285,7 +282,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 							}
 						},{
 
-						field	: "IntlRisk",
+						field	: "caseIsInternational",
 						title	: "Intl. Risk",
 						width	: "5%",
 						filterable: {
@@ -472,8 +469,8 @@ angular.module('ECMSapp.intakeDistribution', [])
 				columns: [
 					{ field: "childRecoveryStatus", title: "Recovery Status", width: "12%" },
 					{ field: "incidenType", title:"Child Case Type", width: "20%" },
-					{ field: "childName", title:"Child Name", width: "20%" },
-					{ field: "childAge", title:"Child Age", width: "45px" },
+					{ field: "childName", title:"Child Name", width: "40%" },
+					{ field: "childAge", title:"Child Age", width: "8%" },
 					{ field: "id", title: "Person ID", width: "20%" }
 					]
 				});
