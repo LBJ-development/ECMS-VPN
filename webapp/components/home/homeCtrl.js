@@ -66,7 +66,7 @@ angular.module('ECMSapp.home', [])
 			    schema: {
 					model: {
 						fields: {
-								id		: { type: "number" },
+								// id		: { type: "number" },
 								type	: { type: "string" },
 								details	: { type: "string" },
 								assigner	: { type: "string" },
@@ -75,9 +75,9 @@ angular.module('ECMSapp.home', [])
 							}
 						},
 					},
-		height		: 550,
+		height		: 490,
 		sortable: true,
-		columns		: [{
+		columns		: [/*{
 						field	: "id",
 						title	: "ID",
 						width	: "50px",
@@ -85,7 +85,7 @@ angular.module('ECMSapp.home', [])
 						attributes: {
       						style: "text-align: center"
     						}
-						},{
+						},*/{
 						field	: "type",
 						title	: "Type",
 						width	: "15%"

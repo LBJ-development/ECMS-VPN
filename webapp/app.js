@@ -117,7 +117,7 @@ app.run( function($location, $window, $rootScope, StorageService){
     });
 	
 	$rootScope.hasPermission = function (permission) {
-		console.log("checking for permission:" + permission + ", " + ($.inArray(permission,$rootScope.permissions) >= 0));
+		//console.log("checking for permission:" + permission + ", " + ($.inArray(permission,$rootScope.permissions) >= 0));
         return ($.inArray(permission, $rootScope.permissions) >= 0);
     }
 

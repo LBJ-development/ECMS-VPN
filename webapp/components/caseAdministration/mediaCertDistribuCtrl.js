@@ -4,171 +4,6 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 
 .controller('mediaCertDistribuCtrl', [ '$scope', 'DataFtry', '$http', function( $scope, DataFtry, $http, $q){
 
-	// DAILY ASSIGNMENT WORKSHEET WINDOW //////////////////////////////////////////////////
-
-	$scope.dawsOptions = {
-		width: "80%",
-		visible: false,
-		maxWidth: 1200,
-		height: "80%",
-		modal: true,
-		// title: "Daily Assignment Worksheet",
-		open: getDAWSdata
-		// position: {
-		// top: 400,
-		// left: "center"
-		// },
-	};
-
-	$scope.todayDate = formatDate();
-
-	function getDAWSdata(){
-
-		var url = "/rest/casemanager/worksheet/current";
-
-		DataFtry.getData(url).then(function(result){
-
-			$scope.dawsGridOptions.dataSource.data = result.data.content;
-		});
-	};
-
-	$scope.dawsGridOptions =  { 
-		dataSource: {
-			data: result,
-				schema: {
-					model: {
-						fields: {
-								id			: { type: "integer", editable: false},
-								name		: { type: "string", editable: false},
-								location	: { type: "string",  editable: false},
-								cmGroup	: { type: "string" , editable: false},
-								otherGroup	: { type: "string",  editable: false },
-								faRegion	: { type: "string",  editable: false },
-								foreignLang	: { type: "string",  editable: false },
-								ooo		: { type: "string" },
-								onCall		: { type: "string" },
-								shift		: { type: "string" },
-								telecommute	: { type: "string" }
-								},
-							}
-						},
-					},
-		sortable	: true,
-		scrollable	: true,
-		height 		: "83%",
-		editable	: true,
-		columns		: [{
-						field	: "id",
-						title	: "Id",
-						width	: "5%",
-					},{
-						field	: "name",
-						title	: "Name",
-						width	: "15%",
-					},{
-						field	: "location",
-						title	: "Loc.",
-						width	: "6%"
-					},{	
-						field	: "cmGroup",
-						title	: "CM Grp.",
-						width	: "7%"
-					},{
-						field	: "otherGroup",
-						title	: "Other",
-						width	: "6%"
-					},{
-						field	: "faRegion",
-						title	: "FA Region",
-						width	: "10%"
-					},{
-						field	: "foreignLang",
-						title	: "Language(s)",
-						width	: "10%"
-					},{
-						field	: "ooo",
-						title	: "OOO",
-						width	: "6%",
-						editor: categoryDropDownEditor,
-					},{
-						field	: "onCall",
-						title	: "On-call",
-						width	: "6%",
-						editor: categoryDropDownEditor,
-					},{
-						field	: "shift",
-						title	: "Shift hrs",
-						width	: "17%"
-					},{
-						field	: "telecommute",
-						title	:"Telecom.",
-						width	: "7%",
-						editor: categoryDropDownEditor,
-					} ]
-				};
-
-	function categoryDropDownEditor(container, options) {
-		 $('<input required data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '"/>')
-		.appendTo(container)
-		.kendoDropDownList({
-			autoBind: false,
-			dataSource: {
-				data :  [
-					{ text: "Yes", value: "Yes" },
-					{ text: "No", value: "No" }
-					],
-				}
-			});
-		}
-	
-	$scope.modifiedSchedules = {};
-	$scope.trackChanges = function(e) {
-        //console.log("inside save");
-		//console.log("values string:" + JSON.stringify(e.values) +" model string:" + JSON.stringify(e.model));
-		
-		//Find if row is modified already for another field
-		var schedule = $scope.modifiedSchedules[e.model.id] ? $scope.modifiedSchedules[e.model.id] : {'id': e.model.id};
-		
-		// push the user changed field and value into the map
-		if (e.values.ooo) {
-			// console.log("ooo modified:"+ e.values.ooo);
-			schedule['ooo'] = (e.values.ooo === 'Yes'?1:0);
-        }
-		
-		if (e.values.onCall) {
-			schedule['onCall'] = (e.values.onCall === 'Yes'?1:0);
-        }
-		
-		if (e.values.telecommute) {
-			schedule['telecommute'] = (e.values.telecommute === 'Yes'?1:0);
-        }
-
-		if (e.values.shift) {
-			schedule['shift'] = e.values.shift;
-        }
-		$scope.modifiedSchedules[e.model.id] = schedule;
-		
-		//console.log("modified schedules:" + JSON.stringify($scope.modifiedSchedules) );                        
-    };
-	
-	$scope.saveScheduleUpdates = function() {
-		var scheduleUpdatesAsArray = new Array();
-		for (var id in $scope.modifiedSchedules) {
-			// console.log("id:" + id);
-			// console.log(JSON.stringify($scope.modifiedSchedules[id]));
-			scheduleUpdatesAsArray.push($scope.modifiedSchedules[id]);
-		}
-		// console.log("schedules input for URL:" + JSON.stringify(scheduleUpdatesAsArray) );
-		DataFtry.submitUpdatedSchedules(scheduleUpdatesAsArray);
-	}
-	
-	$scope.saveAndCloseScheduleUpdates = function() {
-		$scope.saveScheduleUpdates();
-		// console.log("saveAndCloseScheduleUpdates");
-		$("#dawsid").data("kendoWindow").close();
-		// console.log("saveAndCloseScheduleUpdates done");
-	}
-
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
 	var todayDate		= new Date();
 	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 2 DAYS 
@@ -201,21 +36,16 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 		return enYear + "-" + enMonth  + "-" + enDate;
 	}
 	
-	$scope.assignCM = function(){
-		var assignURL = "case:" + $scope.dataItem.caseNumber + "manager:"+ $scope.assignCM.caseManagerId;
 
-		DataFtry.assignCaseManager($scope.dataItem.caseNumber, $scope.assignCM.caseManagerId).then(function(result){
-			// console.log("assigned manager successfully:" + assignURL);
-			$scope.dataItem.caseManager = $scope.caseManagerName; //"12312";
-
-			console.log($scope.caseManagerName);
-			//$scope.reloadData(); //triggering main grid refresh
+	// QUERY DROPDOWN ENDPOINTS /////////////////////////////////////////////////////////////
+	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseHasPoliceReport")
+		.success( function(result) {
+			$scope.frmSrchCaseHasPoliceReportDataSource = result.content;
 		});
-	};
 
 	$scope.handleRadioSelection = function(ev) {
 		$scope.disabled = false;
-		ev == 0? $scope.datePickerDisable = false : $scope.datePickerDisable = true;
+		ev == 2? $scope.datePickerDisable = true : $scope.datePickerDisable = false;
 	};
 	
 	$scope.enableSumbitBtn = function() {
@@ -224,7 +54,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 	
 	// WHEN DATE RANGE CHANGES //////////////////////////////////////////////////
 	$scope.reloadData = function(){
-		    console.log("reloadData");
+		//console.log("reloadData");
 			$scope.submitSearch++;
 	};
 
@@ -518,84 +348,6 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 
 }])
 
-// DIRECTVE FOR THE DETAIL ROW ///////////////////////////////////////
-.directive ('detailRow', ['DataFtry', '$http', function (DataFtry, $http) {
-	return {
-	restrict: 'E',
-	// scope :{},
-	controller: 'AssignCMCtrl',
-	templateUrl: 'components/caseAdministration/detailRow.html',
-	link: function (scope, element, attrs){
-
-		console.log("FROM DIRECTIVE");
-
-		// GET THE GROUP LIST 
-		$http.get( "/rest/casemanager/groups/list/all")
-			.success( function(result) {
-				scope.acmGroupSource = result.content;
-				scope.disableCaseMgrBtnFlag = true;
-
-				console.log("FROM GET MANAGER GROUP");
-			});
-
-		// GET CASE MANAGERS LIST 
-		$http.get( "/rest/casemanager/list/all")
-			.success( function(result) {
-				scope.acmCMSource = result.content;
-
-				setTimeout(function(){
-
-					if(scope.caseManagersList ){
-
-						scope.caseManagersList.dataSource.read();
-
-						scope.caseManagersList.select(function(dataItem) {
-
-							console.log("FROM CASE MANAGER LIST: " + dataItem.name + " / " + scope.caseManager + "ARE THEY THE SAME? " + (dataItem.name == scope.caseManager));
-
-							// console.log(dataItem.name == scope.caseManager);
-
-							return dataItem.name === scope.caseManager;
-						});
-					}
-				}, 500);
-			});
-
-		//SELECT MANAGER GROUP ///////////////////////////////
-		scope.selectMgrGroup = function(ev) {
-
-			// scope.urlCMsForGroup = "/rest/casemanager/list/group/";
-
-			var URL;
-
-			if(ev.item.text() == "Select Group") {
-				URL = "/rest/casemanager/list/all";
-			} else {
-				URL = "/rest/casemanager/list/group/" + ev.item.text();
-			}
-
-			DataFtry.getData(URL).then(function(result){
-
-				console.log("FROM SELECT MANAGER GROUP");
-
-				scope.disableCaseMgrBtnFlag = true;
-
-				scope.acmCMSource = result.data.content;
-
-				});
-			};
-
-		//SELECT CASE MANAGER ///////////////////////////////
-		scope.selectManager = function(ev) {
-			console.log("FROM SELELCT MANAGER");
-			scope.caseManagerName = ev.item.text();
-			scope.disableCaseMgrBtnFlag = false;
-		// console.log($scope.caseManagerName);
-			};
-
-		}
-	};
-}]);
 
 
 

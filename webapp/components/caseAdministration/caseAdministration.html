@@ -7,39 +7,39 @@
         <!-- DATE RANGE /////////////////////////////////////////////////////////////////-->
 		<div class="filter-holder" role="query-filter">
 			<form name="dateRange-frm" ng-submit="submitSearch()" role="form">
-        		<div class="filter-row-holder">
+        		<div class="filter-row-holder" style="padding-top:20px">
         			<ul>
-        				<li class=" title-small" style="width: 320px">
-        					Select an other received date range:
+        				<li class=" title-small" style="width: 330px; padding-top:0">
+        					Select another Received Date Range:
         				</li>
         				<li style="padding-right: 0px">
-							<span class="labelText-small" >From:</span> 
+							<label>From:</label> 
 							<input kendo-date-picker k-on-change="enableSumbitBtn()" k-ng-model="startDate" style="width: 180px"/> 
 						</li>
 						<li style="padding-right: 0px">
-							<span class="labelText-small" >to:</span> 
+							<label>To:</label> 
 							<input kendo-date-picker k-on-change="enableSumbitBtn()"  k-ng-model="endDate"  style="width: 180px"/>
 						</li>
         			</ul>
         		</div>
 				<div class="filter-row-holder">
 					<ul >
-						<li style="width: 170px">
-                			<span class="labelText-small" >RFS Type:</span>
-        					<select kendo-drop-down-list style="width: 160px" k-ng-delay="rfsPrimaryTypeDataSource" ng-model="searchCriteria.rfsPrimaryType" k-placeholder="'Select Type'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsPrimaryTypeDataSource" k-on-change="enableSumbitBtn()"></select>
+						<li style="width: 223px">
+                			<label >RFS Type:</label>
+        					<select kendo-drop-down-list style="width: 200px" k-ng-delay="rfsPrimaryTypeDataSource" ng-model="searchCriteria.rfsPrimaryType" k-placeholder="'Select Type'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsPrimaryTypeDataSource" k-on-change="enableSumbitBtn()"></select>
                 		</li> 
 
-                		<li style="width: 170px">
-							<span class="labelText-small">RFS Status:</span>
-        					<select kendo-drop-down-list style="width: 160px" k-ng-delay="rfsStatusDataSource" ng-model="searchCriteria.rfsStatus" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsStatusDataSource" k-on-change="enableSumbitBtn()"></select>
+                		<li style="width: 223px">
+							<label>RFS Status:</label>
+        					<select kendo-drop-down-list style="width: 200px" k-ng-delay="rfsStatusDataSource" ng-model="searchCriteria.rfsStatus" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsStatusDataSource" k-on-change="enableSumbitBtn()"></select>
                 		</li>
 
-                		<li style="width: 310px">
-                			<span  class="labelText-small" >RFS Source:</span>
-        					<select kendo-drop-down-list style="width: 310px" k-ng-delay="rfsSourceDataSource" ng-model="searchCriteria.rfsSource" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsSourceDataSource" k-on-change="enableSumbitBtn()" ></select>
+                		<li style="width: 223px">
+                			<label>RFS Source:</label>
+        					<select kendo-drop-down-list style="width: 200px" k-ng-delay="rfsSourceDataSource" ng-model="searchCriteria.rfsSource" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsSourceDataSource" k-on-change="enableSumbitBtn()" ></select>
                 		</li>
 
-                		<li  class="submit-btn" style="padding-top:20px">
+                		<li  class="submit-btn" style="padding-top:25px">
                 			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
                 		</li>
             		</ul>

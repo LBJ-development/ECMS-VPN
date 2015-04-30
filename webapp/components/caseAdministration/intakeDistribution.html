@@ -7,37 +7,37 @@
 	<!-- DATE RANGE ///////////////////////////////////////////////////////////////////////////////-->
 		<div class="filter-holder" role="query-filter">
 			<form name="dateRange-frm" ng-submit="submitSearch()" role="form">
-				<div class="filter-row-holder">
+				<div class="filter-row-holder" style="padding-top:20px">
 					<ul>
-						<li class="title-small" style="width: 320px">
-							Select an other intake date range:
+						<li class="title-small" style="width: 330px; padding-top:0">
+							Select another Intake Date Range:
 						</li>
 						<li style="padding-right: 0px">
-							<span class="labelText-small" >From:</span> 
+							<label >From:</label> 
 							<input id="startingDate" kendo-date-picker k-on-change="enableSumbitBtn()" k-ng-model="caseCreateStartDate" style="width: 180px"/> 
 						</li>
 						<li style="padding-right: 0px">
-							<span id="endingDate" class="labelText-small" >to:</span> 
-							<input kendo-date-picker k-on-change="enableSumbitBtn()"  k-ng-model="caseCreateEndDate"  style="width: 180px"/>
+							<label>To:</label> 
+							<input id="endingDate" kendo-date-picker k-on-change="enableSumbitBtn()"  k-ng-model="caseCreateEndDate"  style="width: 180px"/>
 						</li>
 					</ul>
         		</div>
 	<!--  SEARCH OPTIONS ////////////////////////////////////////////////////////////////////////////-->
 				<div class="filter-row-holder">
 					<ul >
-						<li style="width: 200px">
-							<span class="labelText-small" >Police Report:</span>
+						<li style="width: 223px">
+							<label >Police Report:</label>
 							<select kendo-drop-down-list style="width: 200px"  k-ng-delay="frmSrchCaseHasPoliceReportDataSource" ng-model="casesearch.frmSrchCaseHasPoliceReport" k-placeholder="'Select Police Report'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchCaseHasPoliceReportDataSource" k-on-change="enableSumbitBtn()"></select>
 						</li> 
-                		<li style="width: 150px">
-                			<span  class="labelText-small" >Distributed To:</span>
-        					<select kendo-drop-down-list style="width: 150px" k-ng-delay="frmSrchCaseDistributedToDataSource" ng-model="casesearch.frmSrchCaseDistributedTo" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchCaseDistributedToDataSource" k-on-change="enableSumbitBtn()"></select>
+                		<li style="width: 223px">
+                			<label  >Distributed To:</label>
+        					<select kendo-drop-down-list style="width: 200px" k-ng-delay="frmSrchCaseDistributedToDataSource" ng-model="casesearch.frmSrchCaseDistributedTo" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchCaseDistributedToDataSource" k-on-change="enableSumbitBtn()"></select>
 						</li>
-                		<li style="width: 300px">
-							<span class="labelText-small">Distributed Status:</span>
-        					<select kendo-drop-down-list style="width: 300px" k-ng-delay="frmSrchCaseDistributedToDataSource" ng-model="casesearch.frmSrchCaseDistributedStatus" k-placeholder="'Select Recipient'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchCaseDistributedStatusDataSource" k-on-change="enableSumbitBtn()"> </select>
+                		<li style="width: 223px">
+							<label >Distributed Status:</label>
+        					<select kendo-drop-down-list style="width: 200px" k-ng-delay="frmSrchCaseDistributedToDataSource" ng-model="casesearch.frmSrchCaseDistributedStatus" k-placeholder="'Select Recipient'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchCaseDistributedStatusDataSource" k-on-change="enableSumbitBtn()"> </select>
                 		</li>
-                		<li  class="submit-btn" style="padding-top:20px">
+                		<li  class="submit-btn" style="padding-top:25px">
                 			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
                 		</li>
             		</ul>
@@ -50,10 +50,11 @@
 			<ul ng-show="hasPermission('caseadmin:edit:intakedistribution')">
 				<li class="linkButton toPrint" style="opacity: 0.5"><a>Print Labels</a></li>
 				<li class="linkButton"><img src="assets/images/darkPipe.png" ></li>
-				<li class="linkButton toEmail"><a href=""  ng-click="confirmEmail()" >Custom Email</a></li>
-				<li class="linkButton teamHope"><a href=""  ng-click="confirmTeamHope()">Team Hope</a></li>
-				<li class="linkButton clearinghouse"><a href="" id="clearinghouse" ng-click="confirmClearinghouse()">Clearinghouses</a></li>
-				<li class="linkButton">Mass Distribution Target:</li>
+				<li class="linkButton toEmail"><a href=""  ng-click="confirmEmail()" >Custom Email</a>
+				<li class="linkButton"><img src="assets/images/darkPipe.png" ></li></li>
+				<li class="linkButton teamHope"><a href=""  ng-click="confirmTeamHope()">Send to Team Hope</a></li>
+				<li class="linkButton clearinghouse"><a href="" id="clearinghouse" ng-click="confirmClearinghouse()">Send to Clearinghouses</a></li>
+				
 			</ul>
 		</div>
 		<!-- CONFIRM MESSAGES  /////////////////////////////////////////////////////////////////-->

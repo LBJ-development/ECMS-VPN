@@ -7,25 +7,25 @@
 		<!-- DATE RANGE ///////////////////////////////////////////////////////////////////////////////-->
 		<div class="filter-holder" role="query-filter">
 			<form name="dateRange-frm" ng-submit="reloadData()" role="form" >
-				<div class="filter-row-holder">
+				<div class="filter-row-holder" style="padding-top:20px">
 					<ul>
 						<li style="width: 250px" ng-init="isUnassignedCases=0">
 						 	<input type="radio" style="float: left; margin:6px" name="isUnassignedCases" ng-model="isUnassignedCases" ng-change="handleRadioSelection(isUnassignedCases)"  value="0" id="bydate"/>
 						 	<label for="bydate">Case Creation Date Range</label>
 						</li>
 						<li style="padding-right: 0px">
-							<span class="labelText-small">From:</span> 
+							<label >From:</label> 
 							<input kendo-date-picker id="startingDate" k-on-change="enableSumbitBtn()" k-ng-model="startingDate" ng-disabled="datePickerDisable" style="width: 180px"/> 
 						</li>
 						<li style="padding-right: 0px">
-							<span class="labelText-small">to:</span> 
+							<label  >To:</label> 
 							<input kendo-date-picker id="endingDate" ng-disabled="datePickerDisable"  k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
 						</li>
 					</ul>
 				</div>
-				<div class="filter-row-holder" style="padding: 0 0 10px 15px">
+				<div class="filter-row-holder" >
 					<ul>
-						<li style="width: 617px">
+						<li style="width: 627px">
 							<input type="radio"  style="float: left; margin:6px" name="isUnassignedCases" value="1" ng-model="isUnassignedCases" ng-change="handleRadioSelection(isUnassignedCases)" id="unassignedcases"/>
 							<label for="unassignedcases">All Unassigned Cases</label>
 						</li>

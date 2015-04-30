@@ -7,68 +7,97 @@
 		<!-- DATE RANGE ///////////////////////////////////////////////////////////////////////////////-->
 		<div class="filter-holder" role="query-filter">
 			<form name="dateRange-frm" ng-submit="reloadData()" role="form" >
-				<div class="filter-row-holder">
+				<div class="filter-row-holder" style="padding-top:20px">
 					<ul>
-						<li style="width: 250px" ng-init="isUnassignedCases=0">
-						 	<input type="radio" style="float: left; margin:6px" name="isUnassignedCases" ng-model="isUnassignedCases" ng-change="handleRadioSelection(isUnassignedCases)"  value="0" id="bydate"/>
-						 	<label for="bydate">Case Creation Date Range</label>
+						<li style="width: 200px" ng-init="certDistribution=0">
+						 	<input type="radio" style="float: left; margin:6px" name="certDistribution" ng-model="certDistribution" ng-change="handleRadioSelection(certDistribution)"  value="0" id="certDateRange"/>
+						 	<label for="certDateRange">Ceritfied Date Range</label>
+						</li>
+						<li style="width: 220px">
+						 	<input type="radio" style="float: left; margin:6px" name="certDistribution" ng-model="certDistribution" ng-change="handleRadioSelection(certDistribution)"  value="1" id="restrictedDateRange"/>
+						 	<label for="restrictedDateRange">Restricted Date Range</label>
 						</li>
 						<li style="padding-right: 0px">
-							<span class="labelText-small">From:</span> 
+							<label >From:</label> 
 							<input kendo-date-picker id="startingDate" k-on-change="enableSumbitBtn()" k-ng-model="startingDate" ng-disabled="datePickerDisable" style="width: 180px"/> 
 						</li>
 						<li style="padding-right: 0px">
-							<span class="labelText-small">to:</span> 
+							<label >To:</label> 
 							<input kendo-date-picker id="endingDate" ng-disabled="datePickerDisable"  k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
 						</li>
 					</ul>
 				</div>
-				<div class="filter-row-holder" style="padding: 0 0 10px 15px">
+				<!-- <div class="filter-row-holder">
 					<ul>
-						<li style="width: 617px">
-							<input type="radio"  style="float: left; margin:6px" name="isUnassignedCases" value="1" ng-model="isUnassignedCases" ng-change="handleRadioSelection(isUnassignedCases)" id="unassignedcases"/>
-							<label for="unassignedcases">All Unassigned Cases</label>
+						<li style="width: 250px">
+						 	<input type="radio" style="float: left; margin:6px" name="certDistribution" ng-model="certDistribution" ng-change="handleRadioSelection(certDistribution)"  value="1" id="restrictedDateRange"/>
+						 	<label for="restrictedDateRange">Restricted Date Range</label>
 						</li>
-						<li  class="submit-btn">
-                			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT
-                			</kendo-button>
+						<li style="padding-right: 0px">
+							<label >From:</label> 
+							<input kendo-date-picker id="startingDate" k-on-change="enableSumbitBtn()" k-ng-model="startingDate" ng-disabled="datePickerDisable" style="width: 180px"/> 
+						</li>
+						<li style="padding-right: 0px">
+							<label  >to:</label> 
+							<input kendo-date-picker id="endingDate" ng-disabled="datePickerDisable"  k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
 						</li>
 					</ul>
+				</div> -->
+				<div class="filter-row-holder">
+					<ul>
+						<li style="width: 500px">
+						 	<input type="radio" style="float: left; margin:6px" name="certDistribution" ng-model="certDistribution" ng-change="handleRadioSelection(certDistribution)"  value="2" id="allCasesWithoutDate"/>
+						 	<label for="allCasesWithoutDate">All Cases without Certified Date or Restricted Date</label>
+						</li>
+				
+					</ul>
 				</div>
+				<div class="filter-row-holder">
+					<ul >
+						<li style="width: 140px">
+                			<label >Case Type:</label>
+        					<select kendo-drop-down-list style="width: 140px" k-ng-delay="rfsPrimaryTypeDataSource" ng-model="searchCriteria.rfsPrimaryType" k-placeholder="'Select Type'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsPrimaryTypeDataSource" k-on-change="enableSumbitBtn()"></select>
+                		</li> 
+
+                		<li style="width: 160px">
+							<label >Police Report:</label>
+							<select kendo-drop-down-list style="width: 160px"  k-ng-delay="frmSrchCaseHasPoliceReportDataSource" ng-model="casesearch.frmSrchCaseHasPoliceReport" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchCaseHasPoliceReportDataSource" k-on-change="enableSumbitBtn()"></select>
+						</li> 
+
+                		<li style="width: 160px">
+                			<label >Case Media Status:</label>
+        					<select kendo-drop-down-list style="width: 160px" k-ng-delay="rfsSourceDataSource" ng-model="searchCriteria.rfsSource" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsSourceDataSource" k-on-change="enableSumbitBtn()" ></select>
+                		</li>
+                		<li style="width: 140px">
+                			<label >Distributon Status:</label>
+        					<select kendo-drop-down-list style="width: 140px" k-ng-delay="rfsSourceDataSource" ng-model="searchCriteria.rfsSource" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsSourceDataSource" k-on-change="enableSumbitBtn()" ></select>
+                		</li>
+                		<li style="width: 160px">
+                			<label >Recipients:</label>
+        					<select kendo-drop-down-list style="width: 160px" k-ng-delay="rfsSourceDataSource" ng-model="searchCriteria.rfsSource" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsSourceDataSource" k-on-change="enableSumbitBtn()" ></select>
+                		</li>
+
+                		<li  class="submit-btn" style="padding-top:25px">
+                			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
+                		</li>
+            		</ul>
+               	</div> 	
 			</form>
 		</div>
-	<!-- DAILY ASSIGNMENT WORKSHEET /////////////////////////////////////////////////////////////////-->
-		<div class="row-holder title-small" style="padding: 0px 0 0px 0px">
+
+		<!-- RESULT + EMAIL  /////////////////////////////////////////////////////////////////-->
+		<div  class="row-holder title-small" style="padding: 0px 0 0px 0px">
 			<span ng-class="warningClass"> {{warning}} </span>
-			<ul>
-				<li class="linkButton daws"><a href="" ng-click="daws.center().open()">Daily Assignment Worksheet</a>
-				</li>
+			<ul ng-show="hasPermission('caseadmin:edit:intakedistribution')">
+					<li class="linkButton toEmail"><a href=""  ng-click="confirmEmail()">Custom Email</a></li>
+				<li class="linkButton"><img src="assets/images/darkPipe.png" ></li>
+			
+				<li class="linkButton toLEA"><a href=""  ng-click="confirmLEA()">Send to LEA</a></li>
+				<li class="linkButton toPG"><a href="" id="clearinghouse" ng-click="confirmPG()">Send to Parent/Guardian</a></li>
+				<li class="linkButton">Select Email Template/Recipient:</li>
 			</ul>
 		</div>
-
-		 <div id="dawsid" kendo-window="daws" k-options="dawsOptions" style="text-align: center">
-		 	<div class="large-window-title ">
-				<span class="title-reduced" >Daily Assignment Worksheet for:</span>
-				<span class="date-title-large">{{todayDate}}</span>
-			</div>
-			
-			<kendo-grid k-options="dawsGridOptions" k-rebind="dawsGridOptions" id="grid"  k-ng-delay="dawsGridOptions" k-on-save="trackChanges(kendoEvent)">
-			</kendo-grid >
-
-			<div ng-show="hasPermission('caseadmin:edit:assignws')" class="bottom-window">
-				<ul>
-					<li  class="submit-btn">
-                		<kendo-button class="k-button" ng-click="saveAndCloseScheduleUpdates()">SAVE & CLOSE</kendo-button>
-					</li>	
-					<li  class="submit-btn">
-                		<kendo-button class="k-button" ng-click="saveScheduleUpdates()">SAVE</kendo-button>
-					</li>
-					<li  class="submit-btn">
-                		<kendo-button  class="k-button"  ng-click="daws.close()">CANCEL</kendo-button>
-					</li>	
-        		</ul>
-			</div>	
-		</div>
+		
         <!-- DATA GRID /////////////////////////////////////////////////////////////////-->
 		<div id="datagrid" role="datagrid" class="grid-holder" >
 			<kendo-grid k-options="mainGridOptions" k-rebind="mainGridOptions" id="grid"  k-ng-delay="mainGridOptions">

@@ -141,15 +141,15 @@ angular.module('ECMSapp.adminMain', [])
 					model: {
 						fields: {
 									rfsAlerts				: { type: "string"},
-									rfsDateTimeReceived     : { type: "date"  }, 
-									rfsNumberDisplay		: { type: "string"}, 
-									rfsNumber				: { type: "string"}, 
-									caseNumberDisplay		: { type: "string"}, 
-									caseNumber				: { type: "string"}, 
+									rfsDateTimeReceived     : { type: "date"  },
+									rfsNumberDisplay		: { type: "string"},
+									rfsNumber				: { type: "string"},
+									caseNumberDisplay		: { type: "string"},
+									caseNumber				: { type: "string"},
 									rfsSource				: { type: "string"},
-									rfsTypeDisplay			: { type: "string"}, 
-									rfsPrimaryType			: { type: "string"}, 
-									rfsSecondaryType		: { type: "string"}, 
+									rfsTypeDisplay			: { type: "string"},
+									rfsPrimaryType			: { type: "string"},
+									rfsSecondaryType		: { type: "string"},
 									rfsStatus				: { type: "string"},
 									rfsIncidentDate			: { type: "date"  },
 									rfsIncidentState		: { type: "string"},
@@ -187,7 +187,7 @@ angular.module('ECMSapp.adminMain', [])
 								},
 							date	: {
 								gt			: "After",
-						 		lt			: "Before"
+								lt			: "Before"
 								}
 							}
 						},
@@ -259,7 +259,7 @@ angular.module('ECMSapp.adminMain', [])
 									string	: {
 									eq		: "Equal to",
 											}
-                         				}
+										}
 									}
 						},{
 						field	: "rfsIncidentDate",
@@ -304,7 +304,7 @@ angular.module('ECMSapp.adminMain', [])
 			dataItem	= grid.dataItem(row);
 
 			checkedIds[dataItem.caseNumber] = checked;
-			console.log(dataItem.caseNumber)	
+			//console.log(dataItem.caseNumber)	
 	}
 
 	// ON DATABOUND EVENT (WHEN PAGING) RESTORE PREVIOUSLY SELECTED ROWS
