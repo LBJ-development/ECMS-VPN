@@ -51,14 +51,14 @@ angular.module('ECMSapp.services', [])
 			
 			if(result.data.status == 'SUCCESS'){
 				deferred.resolve(result);
-			} else {	
+			} else {
 				alert("Something better is coming!");
 			}
 		});
 		return deferred.promise;
 	};
 		
-	function executeHttpJSONPost(restservice, dataobject) {	
+	function executeHttpJSONPost(restservice, dataobject) {
 		var $promise =  $http({
 			method: 'POST',
 			url: restservice,
@@ -76,11 +76,11 @@ angular.module('ECMSapp.services', [])
 			}
 		});
 		return deferred.promise;
-	};
+	}
 
 	var submitUpdatedSchedules = function(updatedSchedules) {
         return executeHttpJSONPost("/rest/casemanager/worksheet/edit", updatedSchedules);
-	};		
+	};
 		
 	var getRFSes = function(searchCriteria) {
         return executeHttpJSONPost("/rest/caseadmin/rfsSearch", searchCriteria);
@@ -96,7 +96,7 @@ angular.module('ECMSapp.services', [])
 		console.log("search criteria");
 		console.log(casesearch);
 		return executeHttpJSONPost("/rest/caseadmin/caseSearch", casesearch);
-	}
+	};
 	
 	var getCasesForIntakeDist = function (casesearch){
 		console.log("search criteria");
@@ -104,12 +104,20 @@ angular.module('ECMSapp.services', [])
 		return executeHttpJSONPost("/rest/caseadmin/activeCaseSearch", casesearch);
 	};
 
+	var getCasesForMediaCertDist = function (casesearch){
+		console.log("search criteria");
+		console.log(casesearch);
+		return executeHttpJSONPost("/rest/caseadmin/mediaCaseSearch", casesearch);
+	};
+
+
 	return {
-		getData: getData,
-		getRFSes: getRFSes,
-		getCasesForAssignment: getCasesForAssignment,
-		getCasesForIntakeDist: getCasesForIntakeDist,
-		assignCaseManager: assignCaseManager,
-		submitUpdatedSchedules: submitUpdatedSchedules
+		getData					: getData,
+		getRFSes				: getRFSes,
+		getCasesForAssignment	: getCasesForAssignment,
+		getCasesForIntakeDist	: getCasesForIntakeDist,
+		getCasesForMediaCertDist: getCasesForMediaCertDist,
+		assignCaseManager		: assignCaseManager,
+		submitUpdatedSchedules	: submitUpdatedSchedules
 		};
 });

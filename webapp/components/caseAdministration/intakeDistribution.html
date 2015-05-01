@@ -35,7 +35,7 @@
 						</li>
                 		<li style="width: 223px">
 							<label >Distributed Status:</label>
-        					<select kendo-drop-down-list style="width: 200px" k-ng-delay="frmSrchCaseDistributedToDataSource" ng-model="casesearch.frmSrchCaseDistributedStatus" k-placeholder="'Select Recipient'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchCaseDistributedStatusDataSource" k-on-change="enableSumbitBtn()"> </select>
+        					<select kendo-drop-down-list style="width: 200px" k-ng-delay="frmSrchCaseDistributedStatusDataSource" ng-model="casesearch.frmSrchCaseDistributedStatus" k-placeholder="'Select Recipient'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchCaseDistributedStatusDataSource" k-on-change="enableSumbitBtn()"> </select>
                 		</li>
                 		<li  class="submit-btn" style="padding-top:25px">
                 			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
@@ -89,7 +89,7 @@
 <script id="detail-template-Int-Dist" type="text/x-kendo-template" >
 	
 	<div class="gridDetail-wrapper">
-		<div class="gridDetail-center"></div>
+		<div class="gridDetail-center" id="gridDetail-ID"></div>
 	</div>
 </script>
 

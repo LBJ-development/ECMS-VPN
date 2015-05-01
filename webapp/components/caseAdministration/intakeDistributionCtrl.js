@@ -5,11 +5,6 @@ angular.module('ECMSapp.intakeDistribution', [])
 .controller('IntakeDistributionCtrl', [ '$scope', 'DataFtry', '$http',  function( $scope, DataFtry, $http){
 	
 	// QUERY OPTIONS ///////////////////////////////////////////////////////////////////////
-	// INITIAL DATE RANGE //////////////////////////////////////////////////
-	var todayDate		= new Date();
-	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 1 DAY 
-	var startingDate	= new Date(todayDate.getTime() - dateOffset);
-	var endingDate		= todayDate;
 
 	$scope.casesearch = {
 		caseCreateStartDate: startingDate,
@@ -458,7 +453,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 
 		DataFtry.getData($scope.urlDetail).then(function(result){
 
-			detailRow.find(".gridDetail-center").kendoGrid({
+			detailRow.find("#gridDetail-ID").kendoGrid({
 
 				dataSource:{
 						data: result.data.content,
@@ -476,8 +471,6 @@ angular.module('ECMSapp.intakeDistribution', [])
 				});
 			});
 		}
-
-	
 
 	// FILTERING WITH DROPDOWN MENU 
 	var victim	= ["1", "2", "3", "4", "5", "6"],

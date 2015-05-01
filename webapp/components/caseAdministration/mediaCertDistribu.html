@@ -6,12 +6,12 @@
 		</div>
 		<!-- DATE RANGE ///////////////////////////////////////////////////////////////////////////////-->
 		<div class="filter-holder" role="query-filter">
-			<form name="dateRange-frm" ng-submit="reloadData()" role="form" >
+			<form name="dateRange-frm" ng-submit="submitSearch()" role="form" >
 				<div class="filter-row-holder" style="padding-top:20px">
 					<ul>
-						<li style="width: 200px" ng-init="certDistribution=0">
+						<li style="width: 210px" ng-init="certDistribution=0">
 						 	<input type="radio" style="float: left; margin:6px" name="certDistribution" ng-model="certDistribution" ng-change="handleRadioSelection(certDistribution)"  value="0" id="certDateRange"/>
-						 	<label for="certDateRange">Ceritfied Date Range</label>
+						 	<label for="certDateRange">Certitfied Date Range</label>
 						</li>
 						<li style="width: 220px">
 						 	<input type="radio" style="float: left; margin:6px" name="certDistribution" ng-model="certDistribution" ng-change="handleRadioSelection(certDistribution)"  value="1" id="restrictedDateRange"/>
@@ -56,7 +56,7 @@
 					<ul >
 						<li style="width: 140px">
                 			<label >Case Type:</label>
-        					<select kendo-drop-down-list style="width: 140px" k-ng-delay="rfsPrimaryTypeDataSource" ng-model="searchCriteria.rfsPrimaryType" k-placeholder="'Select Type'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsPrimaryTypeDataSource" k-on-change="enableSumbitBtn()"></select>
+        					<select kendo-drop-down-list style="width: 140px" k-ng-delay="frmSrchCaseTypeDataSource" ng-model="casesearch.frmSrchCaseType" k-placeholder="'Select Type'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchCaseTypeDataSource" k-on-change="enableSumbitBtn()"></select>
                 		</li> 
 
                 		<li style="width: 160px">
@@ -66,15 +66,15 @@
 
                 		<li style="width: 160px">
                 			<label >Case Media Status:</label>
-        					<select kendo-drop-down-list style="width: 160px" k-ng-delay="rfsSourceDataSource" ng-model="searchCriteria.rfsSource" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsSourceDataSource" k-on-change="enableSumbitBtn()" ></select>
+        					<select kendo-drop-down-list style="width: 160px" k-ng-delay="frmSrchCaseMediaStatusDataSource" ng-model="casesearch.frmSrchCaseMediaStatus" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchCaseMediaStatusDataSource" k-on-change="enableSumbitBtn()" ></select>
                 		</li>
-                		<li style="width: 140px">
+                		<li style="width: 160px">
                 			<label >Distributon Status:</label>
-        					<select kendo-drop-down-list style="width: 140px" k-ng-delay="rfsSourceDataSource" ng-model="searchCriteria.rfsSource" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsSourceDataSource" k-on-change="enableSumbitBtn()" ></select>
+        					<select kendo-drop-down-list style="width: 160px" k-ng-delay="frmSrchCaseDistributedStatusDataSource" ng-model="casesearch.frmSrchCaseMediaDistributedStatus" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchCaseDistributedStatusDataSource" k-on-change="enableSumbitBtn()" ></select>
                 		</li>
                 		<li style="width: 160px">
                 			<label >Recipients:</label>
-        					<select kendo-drop-down-list style="width: 160px" k-ng-delay="rfsSourceDataSource" ng-model="searchCriteria.rfsSource" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsSourceDataSource" k-on-change="enableSumbitBtn()" ></select>
+        					<select kendo-drop-down-list style="width: 160px" k-ng-delay="frmSrchRecipientDataSource" ng-model="casesearch.frmSrchCaseMediaDistributedTo" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchRecipientDataSource" k-on-change="enableSumbitBtn()" ></select>
                 		</li>
 
                 		<li  class="submit-btn" style="padding-top:25px">
@@ -111,21 +111,22 @@
 </div>
 
 <!--  GRID DETAIL TEMPLATE /////////////////////////////////////////////////////////////////-->
-<script id="detail-template" type="text/x-kendo-template" >
+
+<script id="detail-template-Med-Cer-Dist" type="text/x-kendo-template" >
 	<div class="spacer" style="height: 10px"><br></div>
-	<detail-row></detail-row>
+	<div id="gridDetail-MCD"></div>
+	<div id="narrative-MCD"></div>
+	<div class="spacer" style="height: 10px"><br></div>	
 </script>
 
 <!--  NARRATIVE ROW TEMPLATE /////////////////////////////////////////////////////////////////-->
-<script id="row-template" type="text/x-kendo-template" >
-
-	<div id="detailRowTest">
+<script id="row-template-Med-Cer-Dist" type="text/x-kendo-template" >
+	<div id="detailRowMCD">
 		<ul data-uid="#: uid #" class="row-detail-info" >
 			<li class="name" >Narrative Type: <span>#: narrativeType#</span></li>
 			<li >Author:  <span>#: narrativeAuthor#</span> </li>
 			<li >Narrative Date:  <span>#: narrativeDate#</span></li>
 		</ul>
 	</div>
-	
 	<textarea  class="narrative-text-box" readonly >#: narrativeText#</textarea >
 </script>

@@ -6,13 +6,14 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
 	var todayDate		= new Date();
-	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 2 DAYS 
+	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 1 DAYS 
 	var startingDate	= new Date(todayDate.getTime() - dateOffset);
 	var endingDate		= todayDate;
 	$scope.startingDate	= startingDate;
 	$scope.endingDate	= endingDate;
 	$scope.isUnassignedCases = 0;
-	$scope.submitSearch = 0; //
+	//$scope.submitSearch = 0; //
+	$scope.submissionCount = 0; //
 	$scope.disabled		= true; // DISABLES THE SUBMIT BUTTON
 	$scope.datePickerDisable = false; // ENABLES THE DATE PICKER
 		
@@ -22,26 +23,91 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 		var year	= new Date().getFullYear();
 		return   month  + "/" + date + "/" +  year ;
 	}
-	function formatStartingDate(){
+	function formatcaseCreateStartDate(){
 		var stDate	= $scope.startingDate.getDate();
 		var stMonth	= $scope.startingDate.getMonth() + 1;
 		var stYear	= $scope.startingDate.getFullYear();
 		return stYear + "-" + stMonth  + "-" + stDate;
 	}
 
-	function formatEndingDate(){
+	function formatcaseCreateEndDate(){
 		var enDate	= $scope.endingDate.getDate();
 		var enMonth	= $scope.endingDate.getMonth() + 1;
 		var enYear	= $scope.endingDate.getFullYear();
 		return enYear + "-" + enMonth  + "-" + enDate;
 	}
 	
+// QUERY OPTIONS ///////////////////////////////////////////////////////////////////////
+
+	$scope.casesearch = {
+		// caseCreateStartDate: startingDate,
+		// caseCreateEndDate: endingDate,
+		caseCertifiedStartDate: startingDate,
+		caseCertifiedEndDate: endingDate,
+
+		isUncertifiedUnrestrictedCases: "-1",
+		//frmSrchCaseMediaStatus: "-1", //set default value to ALL for drop-down list
+		frmSrchCaseHasPoliceReport: "-1", //set default value to ALL for drop-down list
+		//frmSrchCaseDistributedStatus: "-1", //set default value to ALL for drop-down list
+		frmSrchCaseMediaDistributedStatus: "-1", //set default value to ALL for drop-down list
+	
+		frmSrchCaseMediaDistributedTo: "-1" //set default value to ALL for drop-down list
+	};
+
+	$scope.submitSearch = function(){
+
+		console.log("FROM SUBMIT SEARCH")
+
+		// $scope.casesearch.caseCreateStartDate = formatcaseCreateStartDate();
+		// $scope.casesearch.caseCreateEndDate = formatcaseCreateEndDate();
+		$scope.casesearch.caseCertifiedStartDate = formatcaseCreateStartDate();
+		$scope.casesearch.caseCertifiedEndDate = formatcaseCreateEndDate();
+		
+		//handle null and  convert to string array into comma-separated string
+		if ($scope.casesearch.frmSrchCaseType === null){
+			// console.log('assigning -1');
+			$scope.casesearch.frmSrchCaseType = "-1";
+		}
+
+		if ($scope.casesearch.frmSrchCaseHasPoliceReport === null){
+			// console.log('assigning -1');
+			$scope.casesearch.frmSrchCaseHasPoliceReport = "-1";
+		}
+
+		if ($scope.casesearch.frmSrchCaseMediaStatus === null){
+			// console.log('assigning -1');
+			$scope.casesearch.frmSrchCaseMediaStatus = "-1";
+		}
+		
+		if ($scope.casesearch.frmSrchCaseDistributedStatus === null){
+			// console.log('assigning -1');
+			$scope.casesearch.frmSrchCaseDistributedStatus = "-1";
+		}
+
+		if ($scope.casesearch.frmSrchCaseMediaDistributedTo === null){
+			// console.log('assigning -1');
+			$scope.casesearch.frmSrchCaseMediaDistributedTo = "-1";
+		}
+		
+		//$scope.casesearch.frmSrchCaseType = $scope.casesearch.frmSrchCaseType.toString();
+		$scope.casesearch.frmSrchCaseHasPoliceReport = $scope.casesearch.frmSrchCaseHasPoliceReport.toString();
+		//$scope.casesearch.frmSrchCaseMediaStatus = $scope.casesearch.frmSrchCaseMediaStatus.toString();
+		$scope.casesearch.frmSrchCaseMediaDistributedStatus = $scope.casesearch.frmSrchCaseMediaDistributedStatus.toString(); 
+		$scope.casesearch.frmSrchCaseMediaDistributedTo = $scope.casesearch.frmSrchCaseMediaDistributedTo.toString(); 
+		
+		$scope.submissionCount ++;
+	};
 
 	// QUERY DROPDOWN ENDPOINTS /////////////////////////////////////////////////////////////
 	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseHasPoliceReport")
 		.success( function(result) {
 			$scope.frmSrchCaseHasPoliceReportDataSource = result.content;
 		});
+
+	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseDistributedStatus")
+		.success( function(result) {
+			$scope.frmSrchCaseDistributedStatusDataSource = result.content;
+	});
 
 	$scope.handleRadioSelection = function(ev) {
 		$scope.disabled = false;
@@ -52,18 +118,18 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 		$scope.disabled = false;
 	};
 	
-	// WHEN DATE RANGE CHANGES //////////////////////////////////////////////////
-	$scope.reloadData = function(){
-		//console.log("reloadData");
-			$scope.submitSearch++;
-	};
+	$scope.submitSearch();
 
 	// WATCH FOR A DATE RANGE CHANGE
-	$scope.$watch('submitSearch', function(newValue, oldValue) {
+	$scope.$watch('submissionCount', function(newValue, oldValue) {
 		// console.log("Calling submitSearch:" + $scope.submitSearch);
 		$scope.mainGridOptions.dataSource.data = [];
-		DataFtry.getCasesForAssignment(formatStartingDate(), formatEndingDate(), $scope.isUnassignedCases).then(function(result){
+
+		// console.log($scope.casesearch);
+		DataFtry.getCasesForMediaCertDist($scope.casesearch).then(function(result){
+		//DataFtry.getCasesForAssignment(formatcaseCreateStartDate(), formatcaseCreateEndDate(), $scope.isUnassignedCases).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;
+
 			if(result.data.content.length >= 500){
 				$scope.warningClass = "inline-err";
 			} else {
@@ -75,7 +141,6 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 		//var divgrid = angular.element('#datagrid').data("kendo-grid").dataSource.read(); 
 	});
 	
-	
     // MAIN GRID SETTINGS //////////////////////////////////////////////////////////////////////////////////////	
 	var result = {};
 	
@@ -86,22 +151,21 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 				schema: {
 					model: {
 						fields: {
-								caseAlerts			: { type: "string" },
-								caseNumber			: { type: "string" },
-								caseSource			: { type: "string" },
-								caseTypeAbbr		: { type: "string" },
-								caseChildrenCount	: { type: "number" },
-								caseDateTimeReceived: { type: "date"	},
-								caseIncidentDate	: { type: "date"	},
-								caseManager			: { type: "string" },
-								selectedID			: {editable: false, nullable: true }
+								
+								caseNumber				: { type: "string" },
+								caseSource				: { type: "string" },
+								caseType				: { type: "string" },
+								caseHasPoliceReport		: { type: "string" },
+								caseChildrenCount		: { type: "number" },
+								caseManager				: { type: "string" },
+								caseMediaStatus			: { type: "string" },
+								caseCertifiedDate		: { type: "date" },
+								caseRestrictedDate		: { type: "date" },
+								recipientSend			: { type: "string" }
 								},
 							}
 						},
 					},
-		//height		: 550,
-        //dataBound	: onDataBound,
-		//toolbar		: ["create"],
 		sortable	: true,
 		scrollable	: false,
 		filterable	: {
@@ -135,30 +199,17 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 						pageSizes: true,
 						buttonCount: 5,
 						pageSize: 15
-                        },
-		detailTemplate: kendo.template($("#detail-template").html()),
-		/*detailExpand: function(e) {
-			this.collapseRow(this.tbody.find(' > tr.k-master-row').not(e.masterRow));
-		},*/
-		// detailExpand:detailIExpand,
+						},
+		detailTemplate: kendo.template($("#detail-template-Med-Cer-Dist").html()),
 		detailInit: detailInit,
-			/*detailInit: function(e) {
-			// without this line, detail template bindings will not work
-			kendo.bind(e.detailRow, e.data);
-		},*/
-						
-      //dataBound: function() {
-                           // this.expandRow(this.tbody.find("tr.k-master-row").first());
-                        //},
-
 		columns		: [{
-						field	: "caseAlerts",
-						title	: "Alerts",
+						field	: "caseNumber",
+						title	: "Case",
 						width	: "10%"
 						},{
 						field	: "caseSource",
 						title	: "Source",
-						width	: "15%",
+						width	: "10%",
 						filterable: {
 							ui			: caseSourceFilter,
 							operators	: {
@@ -168,30 +219,13 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 								}
 							}
 						},{
-							
-						field	: "caseNumber",
-						title	: "Case",
-						width	: "15%"
-						},
-						{
-						field	: "caseDateTimeReceived",
-						title	: "Date Rcvd.",
-						format	:"{0:MM/dd/yyyy}" ,
-						width	: "15%",
-						filterable: false,
-						},{
-						
-						field	: "caseTypeAbbr",
+						field	: "caseType",
 						title	: "Type",
-						width	: "5%",
-						filterable: {
-							ui			: typeFilter,
-							operators	: {
-								string	: {
-								eq		: "Equal to",
-									}
-								}
-							}
+						width	: "15%"
+						},{
+						field	: "caseHasPoliceReport",
+						title	: "Pol. Rep.",
+						width	: "10%"
 						},{
 						field	: "caseChildrenCount",
 						title	: "# of Vict.",
@@ -210,22 +244,53 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 								}
 							}
 						},{
-						field	: "caseIncidentDate",
-						title	: "Incid. Date",
-						format	:"{0:MM/dd/yyyy}" ,
+						field	: "caseManager",
+						title	: "CM Assigned",
 						width	: "15%"
 						},{
-						field	: "caseManager",
-						title	: "Assignee",
-						width	: "20%"
-						}]
-				};
+						field	: "caseMediaStatus",
+						title	: "Case Media Status",
+						width	: "10%"
+						},{
+						field	: "caseCertifiedDate",
+						title	: "Certified D/T",
+						format	:"{0:MM/dd/yyyy}" ,
+						width	: "15%",
+						filterable: false,
+						},{
+						field	: "caseRestrictedDate",
+						title	: "Restricted D/T",
+						format	:"{0:MM/dd/yyyy}" ,
+						width	: "15%",
+						filterable: false,
+						},{
+						field	: "recipientSend",
+						title	: "Recipient- D/T Sent",
+						width	: "15%",
+						filterable: false,
+						},{
+						field	: "View",
+						title	: "Poster",
+						filterable: false,
+						sortable: false,
+						template: "<span><a href='' ng-click='getPDF($event)' class='baseLinkText'>View</a></span>",
+						width	: "5%"
+						},{
+						width	: "5%",
+						filterable: false,
+						sortable: false,
+						template: "<input type='checkbox' ng-model='dataItem.selected' ng-click='caseSelected($event)' />",
+						title: "<input type='checkbox' title='Select all' ng-click='toggleSelectAll($event)'/>",
+						attributes: {
+						style: "text-align: center"
+						}
+					}
+				]
+			};
 			
 	// GRID DETAIL SETTINGS /////////////////////////////////////////////////////////////////////////////////////
 
 	function detailInit(e) {
-		/*var grid = e.detailRow.find("[data-role=grid]").data("kendoGrid");
-		grid.dataSource.read();*/
 
 		var detailRow = e.detailRow;
 			kendo.bind(detailRow, e.data);
@@ -241,23 +306,21 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 
 			getNarrative(e, caseNumber, caseManager);
 
-			detailRow.find(".gridDetail").kendoGrid({
+			detailRow.find("#gridDetail-MCD").kendoGrid({
 
 				dataSource:{
-						data: result.data.content,	
+						data: result.data.content,
 							},
 				scrollable: false,
 				sortable: false,
 				pageable: false,
 				columns: [
-					{ field: "childRecoveryStatus", title: "Recovery Status", width: "12%" },
-					{ field: "incidentType", title: "Child Case Type", width: "17%" },
-					{ field: "incidentState", title: "Inc. State", width: "45px" },
-					{ field: "parentRelationship", title: "P/G Relationship", width: "15%" },
-					{ field: "foreignLanguage", title: "Foreign Lang.", width: "10%" },
+					{ field: "childCaseStatus", title: "Child Case Type", width: "20%" },
+					{ field: "childRecoveryStatus", title: "Recovery Status", width: "20%" },
 					{ field: "childName", title:"Child Name", width: "20%" },
-					{ field: "childAge", title:"Child Age", width: "45px" },
-					{ field: "criticalEndangerements", title: "Endangerments", width: "20%" }
+					{ field: "incidAge", title:"Incid. Age", width: "10%" },
+					{ field: "childMediaStatus", title: "Child Media Status", width: "20%" },
+					{ field: "childID", title: "Child ID", width: "10%" }
 					]
 				});
 			});
@@ -272,7 +335,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 		$scope.urlNarrative = "/rest/caseadmin/narratives?caseNumber=" + caseNumber;
 		DataFtry.getData($scope.urlNarrative).then(function(result){
 
-			grid = detailRow.find(".gridNarrative").kendoGrid({
+			grid = detailRow.find("#narrative-MCD").kendoGrid({
 
 				dataSource:{
 						data: result.data.content,
@@ -284,9 +347,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 				pageable: true,
 				height	: 300,
 
-				rowTemplate: kendo.template($("#row-template").html()),
-				//dataBound: changeNarrative,
-				// toolbar: kendo.template($("#toolbar-template").html()),
+				rowTemplate: kendo.template($("#row-template-Med-Cer-Dist").html()),
 				columns: [
 					{ field: "", width: "100%" , height: "100%",
 
@@ -296,10 +357,9 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 						},
 					]
 				});
-			
-			// getCaseManagers(caseManager);
-		});
-	}
+		
+			});
+		}
 			
 	// FILTERING WITH DROPDOWN MENU 
 	var victim	= ["1", "2", "3", "4", "5", "6"],

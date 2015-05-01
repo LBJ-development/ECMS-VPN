@@ -4,6 +4,7 @@ angular.module('ECMSapp.assignCM', [])
 
 .controller('AssignCMCtrl', [ '$scope', 'DataFtry', '$http', function( $scope, DataFtry, $http, $q){
 
+	console.log("FROM ASSIGNCASEMANAGER");
 	// DAILY ASSIGNMENT WORKSHEET WINDOW //////////////////////////////////////////////////
 
 	$scope.dawsOptions = {
@@ -171,7 +172,7 @@ angular.module('ECMSapp.assignCM', [])
 
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
 	var todayDate		= new Date();
-	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 2 DAYS 
+	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 1 DAYS 
 	var startingDate	= new Date(todayDate.getTime() - dateOffset);
 	var endingDate		= todayDate;
 	$scope.startingDate	= startingDate;
@@ -411,7 +412,7 @@ angular.module('ECMSapp.assignCM', [])
 
 			getNarrative(e, caseNumber, caseManager);
 
-			detailRow.find(".gridDetail").kendoGrid({
+			detailRow.find("#gridDetail-CM").kendoGrid({
 
 				dataSource:{
 						data: result.data.content,	
@@ -442,7 +443,7 @@ angular.module('ECMSapp.assignCM', [])
 		$scope.urlNarrative = "/rest/caseadmin/narratives?caseNumber=" + caseNumber;
 		DataFtry.getData($scope.urlNarrative).then(function(result){
 
-			grid = detailRow.find(".gridNarrative").kendoGrid({
+			grid = detailRow.find("#narrative-CM").kendoGrid({
 
 				dataSource:{
 						data: result.data.content,
@@ -551,7 +552,7 @@ angular.module('ECMSapp.assignCM', [])
 
 						scope.caseManagersList.select(function(dataItem) {
 
-							console.log("FROM CASE MANAGER LIST: " + dataItem.name + " / " + scope.caseManager + "ARE THEY THE SAME? " + (dataItem.name == scope.caseManager));
+							//console.log("FROM CASE MANAGER LIST: " + dataItem.name + " / " + scope.caseManager + "ARE THEY THE SAME? " + (dataItem.name == scope.caseManager));
 
 							// console.log(dataItem.name == scope.caseManager);
 
