@@ -50,9 +50,9 @@
       	<div class="row-holder title-small" style="padding: 0px 0 0px 0px">
 			<span ng-class="warningClass"> {{warning}} </span>
 			<ul ng-show="hasPermission('caseadmin:edit:main')" >
-				<li class="linkButton toEmail"><a href=""  ng-click="openEmailWindow()" >Email</a></li>
+				<li class="linkButton toEmail"><a href=""  ng-click="openEmailWindow('teamHope')" >Email</a></li>
 				<li class="linkButton toPrint"><a href=""  ng-click="" >Print</a></li>
-				<li class="linkButton toPDF"><a href=""  ng-click="">Export</a></li>
+				<li class="linkButton toPDF"><a href=""  ng-click="exportRFSes()">Export</a></li>
 			</ul>
 		</div>
 		<div role="datagrid" class="grid-holder" >
@@ -65,27 +65,27 @@
 		 	<span class="title-small full-width" style="width: 90%; padding-left:15px">
 		 		Please provide email info:
 		 	</span>
-		 	<form name="customEmail" role="form">
+		 	<form name="mailMessage" role="form">
 		 		<div class="filter-holder" style="margin: 0 10px 0px 15px; padding:20px; width: 600px">
 		 			<ul style="float:left">
 		 				<li>
 		 					<span class="labelClass" style="width: 130px">Enter Recipient(s):</span>
-		 					<input class="k-textbox" style="width: 300px" id="quicksearch" type="text" name="recipients">
+		 					<input class="k-textbox" ng-model="mailMessage.to" style="width: 300px" id="quicksearch" type="text" name="recipients">
             				<span class="search-btn"  style="float:left"><a href="" ></a></span>
             				<input   id="includeMyself" type="checkbox" name="copyMyself" style="float:left; margin-top:7px">
             				<label  class="labelClass"  for="includeMyself"> Copy Myself</label>
             			</li>
             			<li >
 		 					<span  class="labelClass" style="width: 130px" >Subject Text:</span>
-		 					<input class="k-textbox" style="width: 300px" id="" type="text" name="">
+		 					<input class="k-textbox" ng-model="mailMessage.subject" style="width: 300px" id="" type="text" name="">
             			</li>
             			<li >
 		 					<span class="labelClass" style="width: 130px">Body Text:</span>
-		 					<textarea class="k-textbox" style="width: 450px; max-width: 440px; min-width:440px; height: 250px" id="" type="text" name=""></textarea>
+		 					<textarea class="k-textbox" ng-model="mailMessage.text" style="width: 450px; max-width: 440px; min-width:440px; height: 250px" id="" type="text" name=""></textarea>
             			</li>
             			<li style="padding-bottom:0">
 		 					<span class="labelClass" style="width: 130px">Attachement(s):</span>
-		 					<span class="linkButton toXLS" style="padding-top:6px"><a  href=""  >{{Placeholder}}*</a></span>
+		 					<span class="linkButton toXLS" style="padding-top:6px"><a  href=""  >{{mailMessage.attachmentFileNames}}*</a></span>
             			</li>
             		</ul>
 		 		</div>

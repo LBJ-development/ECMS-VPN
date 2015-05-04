@@ -80,6 +80,8 @@ angular.module('ECMSapp.adminMain', [])
 	$scope.searchCriteria.startDate = formatstartDate();
 	$scope.searchCriteria.endDate = formatendDate();
 	$scope.submissionCount = 0;
+	$scope.checkedIds =[];
+	$scope.selectedCasesCount=0;
 	
 	//Initial Load
 	$scope.submitSearch();
@@ -287,7 +289,7 @@ angular.module('ECMSapp.adminMain', [])
 						width	: "2%",
 						filterable: false,
 						sortable: false,
-						template: "<input type='checkbox' ng-model='dataItem.selected' />",
+						template: "<input type='checkbox' class='checkbox' ng-click='caseSelected($event)' />",
 						title: "<input type='checkbox' title='Select all' ng-click='toggleSelectAll($event)'/>",
 						attributes: {
 							style: "text-align: center"
@@ -296,6 +298,42 @@ angular.module('ECMSapp.adminMain', [])
 				};
 	// MAKE THE CHECK BOX PERSISTING
 	var checkedIds = {};
+	
+	$scope.caseSelected = function(ev){
+		console.log("Select Event");
+		console.log(ev);
+		//console.log($scope.dataItem.selected);
+		var element =$(ev.currentTarget);
+        var checked = element.is(':checked');
+		console.log('checked or not');
+        console.log(checked);
+		
+        var row = element.closest("tr");
+		console.log('row');
+		console.log(row);
+        var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+		console.log('grid');
+		console.log(grid);
+        var dataItem = grid.dataItem(row);
+		
+		//remove from selection list if unchecked
+		if (!checked) {
+			 $scope.checkedIds.splice($.inArray(dataItem.caseNumber, $scope.checkedIds),1);
+		} else {
+			$scope.checkedIds.push(dataItem.caseNumber);
+		}
+		
+		console.log("checkedIds");
+		console.log($scope.checkedIds);
+        
+        if (checked) {
+            row.addClass("k-state-selected");
+        } else {
+            row.removeClass("k-state-selected");
+        }
+
+		!ev.currentTarget.checked ?  $scope.selectedCasesCount -- :$scope.selectedCasesCount ++; 
+	};
 	
 	function selectRow(){
 		var checked		= this.checked,
@@ -382,15 +420,43 @@ angular.module('ECMSapp.adminMain', [])
 		// },
 	};
 
-	$scope.openEmailWindow = function(e) {
-	
+	$scope.openEmailWindow = function(templateName) {
+
+		var prepareEmailURL = "/rest/email/preparemail?templateName=" + templateName + "&caseNumbers=" + $scope.checkedIds.toString();
+		DataFtry.getData(prepareEmailURL).then(function(result){
+			console.log("Prepare Email output");
+			console.log(result.data.content);
+			$scope.mailMessage = result.data.content;
+		});
+
 		$scope.emailWindow.center().open();
-		$scope.Placeholder = "1232323.xls";
 	};
 
+	
+	$scope.exportRFSes = function() {
+		var exportRFsURL = "/rest/document/export?fileName=clearingHouse_test.xls&caseNumbers="+$scope.checkedIds.toString();
+	
+		$http({
+			method: 'GET',
+			url: exportRFsURL,
+			//headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/pdf' }, 
+			headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'plain/text' }, 
+			responseType: 'arraybuffer' 
+			}).success(function (response) {
+				//var file_pdf = new Blob([response], {type: 'application/pdf'});
+				//var blob_xls = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+				var file_txt = new Blob([response], {type: 'plain/text'});
+				saveAs(file_txt, 'RFSesExport' + '.txt');
+			});
+	}
+	
 	$scope.sendEmail = function(){
+		DataFtry.sendEmail($scope.mailMessage).then(function(result){
+			console.log("SENT EMAIL !!!");
+			console.log(result);
+		});
 		$scope.emailWindow.close();
-		console.log("SEND EMAIL");
-
+		
 	};
+
 }]);

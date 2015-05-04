@@ -103,7 +103,13 @@ angular.module('ECMSapp.services', [])
 		console.log(casesearch);
 		return executeHttpJSONPost("/rest/caseadmin/activeCaseSearch", casesearch);
 	};
-
+	
+	var sendEmail = function (mailMessage) {
+		console.log("sending email criteria");
+		console.log(mailMessage);
+		return executeHttpJSONPost("/rest/email/sendmail", mailMessage);
+	}
+	
 	var getCasesForMediaCertDist = function (casesearch){
 		console.log("search criteria");
 		console.log(casesearch);
@@ -112,12 +118,13 @@ angular.module('ECMSapp.services', [])
 
 
 	return {
-		getData					: getData,
-		getRFSes				: getRFSes,
-		getCasesForAssignment	: getCasesForAssignment,
-		getCasesForIntakeDist	: getCasesForIntakeDist,
+		getData: getData,
+		getRFSes: getRFSes,
+		getCasesForAssignment: getCasesForAssignment,
+		getCasesForIntakeDist: getCasesForIntakeDist,
+		assignCaseManager: assignCaseManager,
+		submitUpdatedSchedules: submitUpdatedSchedules,
 		getCasesForMediaCertDist: getCasesForMediaCertDist,
-		assignCaseManager		: assignCaseManager,
-		submitUpdatedSchedules	: submitUpdatedSchedules
+		sendEmail: sendEmail
 		};
 });

@@ -45,12 +45,9 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 		caseCertifiedStartDate: startingDate,
 		caseCertifiedEndDate: endingDate,
 
-		isUncertifiedUnrestrictedCases: "-1",
-		//frmSrchCaseMediaStatus: "-1", //set default value to ALL for drop-down list
+		isUncertifiedUnrestrictedCases : "0",
 		frmSrchCaseHasPoliceReport: "-1", //set default value to ALL for drop-down list
-		//frmSrchCaseDistributedStatus: "-1", //set default value to ALL for drop-down list
 		frmSrchCaseMediaDistributedStatus: "-1", //set default value to ALL for drop-down list
-	
 		frmSrchCaseMediaDistributedTo: "-1" //set default value to ALL for drop-down list
 	};
 
@@ -122,12 +119,12 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 
 	// WATCH FOR A DATE RANGE CHANGE
 	$scope.$watch('submissionCount', function(newValue, oldValue) {
-		// console.log("Calling submitSearch:" + $scope.submitSearch);
+
 		$scope.mainGridOptions.dataSource.data = [];
 
 		// console.log($scope.casesearch);
 		DataFtry.getCasesForMediaCertDist($scope.casesearch).then(function(result){
-		//DataFtry.getCasesForAssignment(formatcaseCreateStartDate(), formatcaseCreateEndDate(), $scope.isUnassignedCases).then(function(result){
+	
 			$scope.mainGridOptions.dataSource.data = result.data.content;
 
 			if(result.data.content.length >= 500){
@@ -138,7 +135,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 			$scope.warning = result.data.messages.CASES_LIST;
 			$scope.disabled = true;
 		});
-		//var divgrid = angular.element('#datagrid').data("kendo-grid").dataSource.read(); 
+
 	});
 	
     // MAIN GRID SETTINGS //////////////////////////////////////////////////////////////////////////////////////	
@@ -406,7 +403,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 		});
 	}
 
-}])
+}]);
 
 
 
