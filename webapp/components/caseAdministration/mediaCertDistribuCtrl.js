@@ -132,7 +132,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 			} else {
 				$scope.warningClass = "inline-msg";
 			}
-			$scope.warning = result.data.messages.CASES_LIST;
+			$scope.warning = result.data.messages.RESULTS_LIST;
 			$scope.disabled = true;
 		});
 

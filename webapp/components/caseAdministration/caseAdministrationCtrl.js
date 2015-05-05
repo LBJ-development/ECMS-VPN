@@ -102,7 +102,7 @@ angular.module('ECMSapp.adminMain', [])
 			} else {
 				$scope.warningClass = "inline-msg";
 			}
-			$scope.warning = result.data.messages.CASES_LIST;
+			$scope.warning = result.data.messages.RESULTS_LIST;
 			$scope.disabled = true;
 			setTimeout(function(){
 				// DELAY THE INITIALIZATION FOR THE TABLE CLICK ENVENT (CHECK IF CHECKBOX IS CLICKED)

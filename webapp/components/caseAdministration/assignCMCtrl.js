@@ -240,7 +240,7 @@ angular.module('ECMSapp.assignCM', [])
 			} else {
 				$scope.warningClass = "inline-msg";
 			}
-			$scope.warning = result.data.messages.CASES_LIST;
+			$scope.warning = result.data.messages.RESULTS_LIST;
 			$scope.disabled = true;
 		});
 		//var divgrid = angular.element('#datagrid').data("kendo-grid").dataSource.read(); 
