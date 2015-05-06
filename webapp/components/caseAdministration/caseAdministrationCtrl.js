@@ -2,7 +2,7 @@
 
 angular.module('ECMSapp.adminMain', [])
 
-.controller('MainCaseAdminCtrl', ['$scope', 'DataFtry', '$http', function($scope, DataFtry, $http){
+.controller('MainCaseAdminCtrl', ['$rootScope', '$scope', 'DataFtry', '$http', function($rootScope, $scope, DataFtry, $http){
 	
 	$scope.searchCriteria = {
 		startDate: null,
@@ -81,7 +81,6 @@ angular.module('ECMSapp.adminMain', [])
 	$scope.searchCriteria.endDate = formatendDate();
 	$scope.submissionCount = 0;
 	$scope.checkedIds =[];
-	$scope.selectedCasesCount=0;
 	
 	//Initial Load
 	$scope.submitSearch();
@@ -116,23 +115,12 @@ angular.module('ECMSapp.adminMain', [])
 	};
 	
 	$scope.toggleSelectAll = function(ev) {
-                    var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
-                    var items = grid.dataSource.data();
-                    items.forEach(function(item){
-                        item.selected = ev.target.checked;
-                    });
-                };
-				
-	/*$scope.displaySelectedItems = function(){
-		var items = $("#gridId").data("kendoGrid").dataSource().data();
-		var selectedItems = '';
-		items.forEach(function(item){
-			if (item.selected){
-				selectedItems += item.caseNumber; 
-			}
-		});
-		alert(seletedItems);
-	}*/
+        var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+        var items = grid.dataSource.data();
+        items.forEach(function(item){
+			item.selected = ev.target.checked;
+        });
+    };
 	
 	// GRID SETTINGS 
 	$scope.mainGridOptions =  {
@@ -300,57 +288,33 @@ angular.module('ECMSapp.adminMain', [])
 	var checkedIds = {};
 	
 	$scope.caseSelected = function(ev){
-		console.log("Select Event");
-		console.log(ev);
-		//console.log($scope.dataItem.selected);
 		var element =$(ev.currentTarget);
         var checked = element.is(':checked');
-		console.log('checked or not');
-        console.log(checked);
-		
         var row = element.closest("tr");
-		console.log('row');
-		console.log(row);
         var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
-		console.log('grid');
-		console.log(grid);
         var dataItem = grid.dataItem(row);
 		
 		//remove from selection list if unchecked
 		if (!checked) {
-			 $scope.checkedIds.splice($.inArray(dataItem.caseNumber, $scope.checkedIds),1);
+			 $scope.checkedIds.splice($.inArray(dataItem.rfsNumber, $scope.checkedIds),1);
 		} else {
-			$scope.checkedIds.push(dataItem.caseNumber);
+			$scope.checkedIds.push(dataItem.rfsNumber);
 		}
-		
-		console.log("checkedIds");
-		console.log($scope.checkedIds);
         
         if (checked) {
             row.addClass("k-state-selected");
         } else {
             row.removeClass("k-state-selected");
         }
-
-		!ev.currentTarget.checked ?  $scope.selectedCasesCount -- :$scope.selectedCasesCount ++; 
+ 
 	};
 	
-	function selectRow(){
-		var checked		= this.checked,
-			row			= $(this).closest("tr"),
-			grid		= $("#grid").data("kendoGrid"),
-			dataItem	= grid.dataItem(row);
-
-			checkedIds[dataItem.caseNumber] = checked;
-			//console.log(dataItem.caseNumber)	
-	}
-
 	// ON DATABOUND EVENT (WHEN PAGING) RESTORE PREVIOUSLY SELECTED ROWS
 	function onDataBound(e) {
 
 		var view = this.dataSource.view();
 		for(var i = 0; i < view.length;i++){
-			if(checkedIds[view[i].caseNumber]){
+			if(checkedIds[view[i].rfsNumber]){
 				this.tbody.find("tr[data-uid='" + view[i].uid + "']")
 				//.addClass("k-state-selected")
                 .find(".checkbox")
@@ -411,19 +375,17 @@ angular.module('ECMSapp.adminMain', [])
 		height:550,
 		visible: false,	
 		modal: true,
-		scrollable : false,
-		// title: "Daily Assignment Worksheet",
-		// open: getDAWSdata
-		// position: {
-		// top: 400,
-		// left: "center"
-		// },
+		scrollable : false
 	};
 
-	$scope.openEmailWindow = function(templateName) {
-
-		var prepareEmailURL = "/rest/email/preparemail?templateName=" + templateName + "&caseNumbers=" + $scope.checkedIds.toString();
-		DataFtry.getData(prepareEmailURL).then(function(result){
+	$scope.openEmailWindowWithPreparation = function() {
+		var emailTemplateName = "RFSes";
+		var attachment = {
+                "template": "RFSes",
+                "mediaType": "application/pdf"
+              };
+		
+		DataFtry.prepareEmail(templateName,$scope.checkedIds.toString()).then(function(result){
 			console.log("Prepare Email output");
 			console.log(result.data.content);
 			$scope.mailMessage = result.data.content;
@@ -432,9 +394,51 @@ angular.module('ECMSapp.adminMain', [])
 		$scope.emailWindow.center().open();
 	};
 
+	$scope.openEmailWindow = function() {
+		$scope.mailMessage = {
+			from:  $rootScope.userId + "@ncmec.org",
+			replyTo:null,
+			to: $rootScope.userId + "@ncmec.org",
+			cc: [],
+			bcc: null,
+			subject: "Attention: New RFSes",
+			text: "Please find attached RFS Cases: " + $scope.checkedIds.toString(),
+			emailMetadata: {
+				template: "RFSes",
+				subject: $scope.checkedIds.toString()
+			},
+			attachments : [
+				{
+					template: "RFSes",
+					mediaType: "application/pdf",
+					rfses: $scope.checkedIds.toString()
+				
+				}
+			]
+		};
+		$scope.attachmentFileName = "RFSes.pdf";
+			
+		$scope.emailWindow.center().open();
+	};
+	
+	$scope.ccMyself = function() {
+		$scope.mailMessage.cc = ($rootScope.userId + "@ncmec.org").split(",");
+	}
+	
+	$scope.sendEmail = function(){
+		$scope.mailMessage.to = $scope.mailMessage.to.split(',');
+	
+		DataFtry.sendEmail($scope.mailMessage).then(function(result){
+			console.log("SENT EMAIL !!!");
+			console.log(result);
+		});
+		$scope.emailWindow.close();
+		
+	};
 	
 	$scope.exportRFSes = function() {
-		var exportRFsURL = "/rest/document/export?fileName=clearingHouse_test.xls&caseNumbers="+$scope.checkedIds.toString();
+		var exportRFsURL = "/rest/document/export/rfses?fileName=rfses.xlsx&rfsNumbers=" + $scope.checkedIds.toString();
+		//var exportRFsURL = "http://reportsdevapp1.ncmecad.net:8080/rest_v2/reports/ncmec/sandbox/RfsReport.pdf?rfsNumbers=" + $scope.checkedIds.toString();
 	
 		$http({
 			method: 'GET',
@@ -444,19 +448,10 @@ angular.module('ECMSapp.adminMain', [])
 			responseType: 'arraybuffer' 
 			}).success(function (response) {
 				//var file_pdf = new Blob([response], {type: 'application/pdf'});
-				//var blob_xls = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-				var file_txt = new Blob([response], {type: 'plain/text'});
-				saveAs(file_txt, 'RFSesExport' + '.txt');
+				var blob_xls = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+				//var file_txt = new Blob([response], {type: 'plain/text'});
+				saveAs(file_pdf, 'RFSesExport' + '.xls');
 			});
 	}
-	
-	$scope.sendEmail = function(){
-		DataFtry.sendEmail($scope.mailMessage).then(function(result){
-			console.log("SENT EMAIL !!!");
-			console.log(result);
-		});
-		$scope.emailWindow.close();
-		
-	};
 
 }]);

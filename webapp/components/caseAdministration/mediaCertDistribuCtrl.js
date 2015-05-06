@@ -14,8 +14,8 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 	$scope.isUnassignedCases = 0;
 	//$scope.submitSearch = 0; //
 	$scope.submissionCount = 0; //
-	$scope.disabled		= true; // DISABLES THE SUBMIT BUTTON
-	$scope.datePickerDisable = false; // ENABLES THE DATE PICKER
+	$scope.disableSubmit	= true; // DISABLES THE SUBMIT BUTTON
+	$scope.disableDatePicker= false; // ENABLES THE DATE PICKER
 		
 	function formatDate(){
 		var date	= new Date().getDate();
@@ -40,25 +40,22 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 // QUERY OPTIONS ///////////////////////////////////////////////////////////////////////
 
 	$scope.casesearch = {
-		// caseCreateStartDate: startingDate,
-		// caseCreateEndDate: endingDate,
-		caseCertifiedStartDate: startingDate,
-		caseCertifiedEndDate: endingDate,
-
-		isUncertifiedUnrestrictedCases : "0",
+		caseMediaSearchStartDate: startingDate,
+		caseMediaSearchEndDate: endingDate,
+		frmSrchCaseType: "-1",
+		frmSrchCaseMediaStatus: "-1",
 		frmSrchCaseHasPoliceReport: "-1", //set default value to ALL for drop-down list
 		frmSrchCaseMediaDistributedStatus: "-1", //set default value to ALL for drop-down list
-		frmSrchCaseMediaDistributedTo: "-1" //set default value to ALL for drop-down list
+		frmSrchCaseMediaDistributedTo: "-1", //set default value to ALL for drop-down list
+		caseMediaSearchRadioOption : "certifiedDate"
 	};
 
 	$scope.submitSearch = function(){
 
 		console.log("FROM SUBMIT SEARCH")
 
-		// $scope.casesearch.caseCreateStartDate = formatcaseCreateStartDate();
-		// $scope.casesearch.caseCreateEndDate = formatcaseCreateEndDate();
-		$scope.casesearch.caseCertifiedStartDate = formatcaseCreateStartDate();
-		$scope.casesearch.caseCertifiedEndDate = formatcaseCreateEndDate();
+		$scope.casesearch.caseMediaSearchStartDate = formatcaseCreateStartDate();
+		$scope.casesearch.caseMediaSearchEndDate = formatcaseCreateEndDate();
 		
 		//handle null and  convert to string array into comma-separated string
 		if ($scope.casesearch.frmSrchCaseType === null){
@@ -86,33 +83,52 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 			$scope.casesearch.frmSrchCaseMediaDistributedTo = "-1";
 		}
 		
-		//$scope.casesearch.frmSrchCaseType = $scope.casesearch.frmSrchCaseType.toString();
+		/*$scope.casesearch.frmSrchCaseType = $scope.casesearch.frmSrchCaseType.toString();
 		$scope.casesearch.frmSrchCaseHasPoliceReport = $scope.casesearch.frmSrchCaseHasPoliceReport.toString();
-		//$scope.casesearch.frmSrchCaseMediaStatus = $scope.casesearch.frmSrchCaseMediaStatus.toString();
+		$scope.casesearch.frmSrchCaseMediaStatus = $scope.casesearch.frmSrchCaseMediaStatus.toString();
 		$scope.casesearch.frmSrchCaseMediaDistributedStatus = $scope.casesearch.frmSrchCaseMediaDistributedStatus.toString(); 
 		$scope.casesearch.frmSrchCaseMediaDistributedTo = $scope.casesearch.frmSrchCaseMediaDistributedTo.toString(); 
+		*/
 		
 		$scope.submissionCount ++;
 	};
 
 	// QUERY DROPDOWN ENDPOINTS /////////////////////////////////////////////////////////////
+	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseType")
+		.success( function(result) {
+			$scope.frmSrchCaseTypeDataSource = result.content;
+	});
+	
+	
 	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseHasPoliceReport")
 		.success( function(result) {
 			$scope.frmSrchCaseHasPoliceReportDataSource = result.content;
 		});
 
-	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseDistributedStatus")
+	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseMediaStatus")
 		.success( function(result) {
-			$scope.frmSrchCaseDistributedStatusDataSource = result.content;
+			$scope.frmSrchCaseMediaStatusDataSource = result.content;
 	});
+	
+	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseMediaDistributedStatus")
+		.success( function(result) {
+			$scope.frmSrchCaseMediaDistributedStatusDataSource = result.content;
+	});
+	
+	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseMediaDistributedTo")
+		.success( function(result) {
+			$scope.frmSrchCaseMediaDistributedToDataSource = result.content;
+	});
+	
+	
 
 	$scope.handleRadioSelection = function(ev) {
-		$scope.disabled = false;
-		ev == 2? $scope.datePickerDisable = true : $scope.datePickerDisable = false;
+		$scope.disableSubmit = false;
+		ev == 2? $scope.disableDatePicker = true : $scope.disableDatePicker = false;
 	};
 	
 	$scope.enableSumbitBtn = function() {
-		$scope.disabled = false;
+		$scope.disableSubmit = false;
 	};
 	
 	$scope.submitSearch();
@@ -133,7 +149,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 				$scope.warningClass = "inline-msg";
 			}
 			$scope.warning = result.data.messages.RESULTS_LIST;
-			$scope.disabled = true;
+			$scope.disableSubmit = true;
 		});
 
 	});
@@ -329,34 +345,45 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 		kendo.bind(detailRow, e.data);
 
 		var grid = {};
-		$scope.urlNarrative = "/rest/caseadmin/narratives?caseNumber=" + caseNumber;
+		$scope.urlNarrative = "/rest/caseadmin/mediaNarratives?caseNumber=" + caseNumber;
 		DataFtry.getData($scope.urlNarrative).then(function(result){
 
-			grid = detailRow.find("#narrative-MCD").kendoGrid({
+		
 
-				dataSource:{
+			if(!result.data.content.length == 0){
+
+				// console.log("FROM GET NARRATIVE (HAS NARRATIVE):");
+				// console.log( result.data.content.length);
+
+				grid = detailRow.find("#narrative-MCD").kendoGrid({
+
+					dataSource:{
 						data: result.data.content,
 						pageSize: 1
+							},
+					scrollable: false,
+					sortable: false,
+					pageable: true,
+					height	: 300,
 
-						},
-				scrollable: false,
-				sortable: false,
-				pageable: true,
-				height	: 300,
+					rowTemplate: kendo.template($("#row-template-Med-Cer-Dist").html()),
+					columns: [
+						{ field: "", width: "100%" , height: "100%",
 
-				rowTemplate: kendo.template($("#row-template-Med-Cer-Dist").html()),
-				columns: [
-					{ field: "", width: "100%" , height: "100%",
-
-					headerAttributes: {
-						style: "display: none"
+						headerAttributes: {
+							style: "display: none"
 							}
 						},
 					]
 				});
+			} else {
+				// console.log("FROM GET NARRATIVE (DONT HAVE NARRATIVE):");
+				// console.log( result.data.content.length);
+				$("#narrative-MCD").css("display" , "none");
+			}
 		
-			});
-		}
+		});
+	}
 			
 	// FILTERING WITH DROPDOWN MENU 
 	var victim	= ["1", "2", "3", "4", "5", "6"],
@@ -404,8 +431,4 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 	}
 
 }]);
-
-
-
-
 
