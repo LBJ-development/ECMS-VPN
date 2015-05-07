@@ -89,12 +89,12 @@
 		<div  class="row-holder title-small" style="padding: 0px 0 0px 0px">
 			<span ng-class="warningClass"> {{warning}} </span>
 			<ul ng-show="hasPermission('caseadmin:edit:intakedistribution')">
-					<li class="linkButton toEmail"><a href=""  ng-click="confirmEmail()">Custom Email</a></li>
+					<li class="linkButton toEmail"><a href=""  ng-class="buttonDisabledClass"  ng-click="confirmEmail()">Custom Email</a></li>
 				<li class="linkButton"><img src="assets/images/darkPipe.png" ></li>
 			
-				<li class="linkButton toLEA"><a href=""  ng-click="confirmLEA()">Send to LEA</a></li>
-				<li class="linkButton toPG"><a href="" id="clearinghouse" ng-click="confirmPG()">Send to Parent/Guardian</a></li>
-				<li class="linkButton">Select Email Template/Recipient:</li>
+				<li class="linkButton toLEA"><a href=""  ng-class="buttonDisabledClass" ng-click="confirmLEA()">Send to LEA</a></li>
+				<li class="linkButton toPG"><a href=""  ng-class="buttonDisabledClass" id="clearinghouse" ng-click="confirmPG()">Send to Parent/Guardian</a></li>
+			
 			</ul>
 		</div>
 		

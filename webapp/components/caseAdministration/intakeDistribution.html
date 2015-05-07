@@ -9,8 +9,8 @@
 			<form name="dateRange-frm" ng-submit="submitSearch()" role="form">
 				<div class="filter-row-holder" style="padding-top:20px">
 					<ul>
-						<li class="title-small" style="width: 330px; padding-top:0">
-							Select another Intake Date Range:
+						<li style="width: 185px; padding-top:0">
+							<label >Intake Date Range:</label>
 						</li>
 						<li style="padding-right: 0px">
 							<label >From:</label> 
@@ -25,15 +25,15 @@
 	<!--  SEARCH OPTIONS ////////////////////////////////////////////////////////////////////////////-->
 				<div class="filter-row-holder">
 					<ul >
-						<li style="width: 223px">
+						<li style="width: 213px">
 							<label >Police Report:</label>
 							<select kendo-drop-down-list style="width: 200px"  k-ng-delay="frmSrchCaseHasPoliceReportDataSource" ng-model="casesearch.frmSrchCaseHasPoliceReport" k-placeholder="'Select Police Report'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchCaseHasPoliceReportDataSource" k-on-change="enableSumbitBtn()"></select>
 						</li> 
-                		<li style="width: 223px">
+                		<li style="width: 213px">
                 			<label  >Distributed To:</label>
         					<select kendo-drop-down-list style="width: 200px" k-ng-delay="frmSrchCaseDistributedToDataSource" ng-model="casesearch.frmSrchCaseDistributedTo" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchCaseDistributedToDataSource" k-on-change="enableSumbitBtn()"></select>
 						</li>
-                		<li style="width: 223px">
+                		<li style="width: 213px">
 							<label >Distributed Status:</label>
         					<select kendo-drop-down-list style="width: 200px" k-ng-delay="frmSrchCaseDistributedStatusDataSource" ng-model="casesearch.frmSrchCaseDistributedStatus" k-placeholder="'Select Recipient'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="frmSrchCaseDistributedStatusDataSource" k-on-change="enableSumbitBtn()"> </select>
                 		</li>
@@ -48,12 +48,12 @@
 		<div  class="row-holder title-small" style="padding: 0px 0 0px 0px">
 			<span ng-class="warningClass"> {{warning}} </span>
 			<ul ng-show="hasPermission('caseadmin:edit:intakedistribution')">
-				<li class="linkButton toPrint" style="opacity: 0.5"><a>Print Labels</a></li>
+				<li class="linkButton toPrint"><a class="linkButtonDisabled">Print Labels</a></li>
 				<li class="linkButton"><img src="assets/images/darkPipe.png" ></li>
-				<li class="linkButton toEmail"><a href=""  ng-click="confirmEmail()" >Custom Email</a>
+				<li class="linkButton toEmail"><a href="" ng-class="buttonDisabledClass" ng-click="confirmEmail()" >Custom Email</a>
 				<li class="linkButton"><img src="assets/images/darkPipe.png" ></li></li>
-				<li class="linkButton teamHope"><a href=""  ng-click="confirmTeamHope()">Send to Team Hope</a></li>
-				<li class="linkButton clearinghouse"><a href="" id="clearinghouse" ng-click="confirmClearinghouse()">Send to Clearinghouses</a></li>
+				<li class="linkButton teamHope"><a href=""  ng-class="buttonDisabledClass" ng-click="confirmTeamHope()">Send to Team Hope</a></li>
+				<li class="linkButton clearinghouse"><a href="" ng-class="buttonDisabledClass" id="clearinghouse" ng-click="confirmClearinghouse()">Send to Clearinghouses</a></li>
 				
 			</ul>
 		</div>

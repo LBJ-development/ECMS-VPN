@@ -2,8 +2,8 @@
 
 angular.module('ECMSapp.intakeDistribution', [])
 
-.controller('IntakeDistributionCtrl', [ '$scope', 'DataFtry', '$http',  function( $scope, DataFtry, $http){
-	
+.controller('IntakeDistributionCtrl', [ '$scope', 'DataFtry', '$http', '$location',  function( $scope, DataFtry, $http, $location){
+
 	// QUERY OPTIONS ///////////////////////////////////////////////////////////////////////
 
 	$scope.casesearch = {
@@ -190,7 +190,8 @@ angular.module('ECMSapp.intakeDistribution', [])
 		columns		: [{
 						field	: "caseNumber",
 						title	: "Case",
-						width	: "10%"
+						width	: "10%",
+						template: "<a href='' ng-click='selectCase($event)' class='baseLinkText' >#=caseNumber#</a>"
 						},{
 
 						field	: "caseDateTimeReceived",
@@ -329,7 +330,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 
 		var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
 		var items = grid.dataSource.data();
-		items.forEach(function(item){
+			items.forEach(function(item){
 		item.selected = ev.target.checked;
 		});
 
@@ -339,7 +340,17 @@ angular.module('ECMSapp.intakeDistribution', [])
 	$scope.caseSelected = function(ev){
 
 		!ev.currentTarget.checked ?  $scope.caseNum -- :$scope.caseNum ++; 
+	
 	};
+	// DISABLE/ENABLE BUTTON WHEN CASE ARE SELECTED /////////////
+	$scope.buttonDisabledClass = "linkButtonDisabled";
+
+	$scope.$watch('caseNum', function() {
+
+		$scope.caseNum == 0? $scope.buttonDisabledClass = "linkButtonDisabled" : $scope.buttonDisabledClass = "";
+		// console.log("Number of case selected: " + $scope.caseNum);
+
+	});
 
 	// DISTRIBUTE INTAKES MESSAGES //////////////////////////////////////////////////
 
@@ -388,8 +399,13 @@ angular.module('ECMSapp.intakeDistribution', [])
 
 	$scope.getPDF = function(e){
 
-
 		$scope.PDFPreview.center().open();
+	};
+
+	$scope.selectCase = function(e){
+
+		console.log("FROM CASE SELECTED...");
+		 $location.path('/casemanagement');
 	};
 
 /*
@@ -473,6 +489,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 		}
 
 	// FILTERING WITH DROPDOWN MENU 
+
 	var victim	= ["1", "2", "3", "4", "5", "6"],
 		bool	= ["Yes", "No"],
 		status	= ["Active", "Recovered", "Closed"],

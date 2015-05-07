@@ -9,8 +9,8 @@
 			<form name="dateRange-frm" ng-submit="submitSearch()" role="form">
         		<div class="filter-row-holder" style="padding-top:20px">
         			<ul>
-        				<li class=" title-small" style="width: 330px; padding-top:0">
-        					Select another Received Date Range:
+        				<li style="width: 188px; padding-top:0">
+        					<label>Received Date Range:</label>
         				</li>
         				<li style="padding-right: 0px">
 							<label>From:</label> 
@@ -24,17 +24,17 @@
         		</div>
 				<div class="filter-row-holder">
 					<ul >
-						<li style="width: 223px">
+						<li style="width: 215px">
                 			<label >RFS Type:</label>
         					<select kendo-drop-down-list style="width: 200px" k-ng-delay="rfsPrimaryTypeDataSource" ng-model="searchCriteria.rfsPrimaryType" k-placeholder="'Select Type'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsPrimaryTypeDataSource" k-on-change="enableSumbitBtn()"></select>
                 		</li> 
 
-                		<li style="width: 223px">
+                		<li style="width: 215px">
 							<label>RFS Status:</label>
         					<select kendo-drop-down-list style="width: 200px" k-ng-delay="rfsStatusDataSource" ng-model="searchCriteria.rfsStatus" k-placeholder="'Select Status'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsStatusDataSource" k-on-change="enableSumbitBtn()"></select>
                 		</li>
 
-                		<li style="width: 223px">
+                		<li style="width: 215px">
                 			<label>RFS Source:</label>
         					<select kendo-drop-down-list style="width: 200px" k-ng-delay="rfsSourceDataSource" ng-model="searchCriteria.rfsSource" k-placeholder="'Select Source'" k-data-text-field="'value'" k-data-value-field="'id'" k-auto-bind="false" k-data-source="rfsSourceDataSource" k-on-change="enableSumbitBtn()" ></select>
                 		</li>
@@ -50,9 +50,10 @@
       	<div class="row-holder title-small" style="padding: 0px 0 0px 0px">
 			<span ng-class="warningClass"> {{warning}} </span>
 			<ul ng-show="hasPermission('caseadmin:edit:main')" >
-				<li class="linkButton toEmail"><a href=""  ng-click="openEmailWindow('teamHope')" >Email</a></li>
-				<li class="linkButton toPrint"><a href=""  ng-click="" >Print</a></li>
-				<li class="linkButton toPDF"><a href=""  ng-click="exportRFSes()">Export</a></li>
+				<li class="linkButton toEmail" ><a href="" ng-class="buttonDisabledClass" ng-click="openEmailWindow('teamHope')" >Email</a></li>
+				<li class="linkButton toPrint"><a href="" ng-class="buttonDisabledClass" ng-click="">Print</a></li>
+				<li class="linkButton toPDF"><a href="" ng-class="buttonDisabledClass" ng-click="exportRFSes()">Export</a></li>
+				
 			</ul>
 		</div>
 		<div role="datagrid" class="grid-holder" >
@@ -84,7 +85,7 @@
 		 					<textarea class="k-textbox" ng-model="mailMessage.text" style="width: 450px; max-width: 440px; min-width:440px; height: 250px" id="" type="text" name=""></textarea>
             			</li>
             			<li style="padding-bottom:0">
-		 					<span class="labelClass" style="width: 130px">Attachement(s):</span>
+		 					<span class="labelClass" style="width: 130px">Attachment(s):</span>
 		 					<span class="linkButton toXLS" style="padding-top:6px"><a  href=""  >{{mailMessage.attachmentFileNames}}*</a></span>
             			</li>
             		</ul>

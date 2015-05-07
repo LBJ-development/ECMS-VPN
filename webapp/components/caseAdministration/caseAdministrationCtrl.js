@@ -102,11 +102,8 @@ angular.module('ECMSapp.adminMain', [])
 				$scope.warningClass = "inline-msg";
 			}
 			$scope.warning = result.data.messages.RESULTS_LIST;
+			$scope.caseNum = 0; // KEEP TRACK OF THE NUMBER OF SELECTED CASES
 			$scope.disabled = true;
-			setTimeout(function(){
-				// DELAY THE INITIALIZATION FOR THE TABLE CLICK ENVENT (CHECK IF CHECKBOX IS CLICKED)
-				//$scope.mainGrid.table.on("click", ".checkbox" , selectRow);
-			}, 1000);
 		});
 	});
 	
@@ -277,17 +274,30 @@ angular.module('ECMSapp.adminMain', [])
 						width	: "2%",
 						filterable: false,
 						sortable: false,
-						template: "<input type='checkbox' class='checkbox' ng-click='caseSelected($event)' />",
+						template: "<input type='checkbox' ng-model='dataItem.selected' ng-click='caseSelected($event)' />",
 						title: "<input type='checkbox' title='Select all' ng-click='toggleSelectAll($event)'/>",
 						attributes: {
 							style: "text-align: center"
 							}
 						}]
 				};
-	// MAKE THE CHECK BOX PERSISTING
+	$scope.toggleSelectAll = function(ev) {
+
+		var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+		var items = grid.dataSource.data();
+			items.forEach(function(item){
+			item.selected = ev.target.checked;
+		});
+		ev.currentTarget.checked ? $scope.caseNum = grid.dataSource.total() : $scope.caseNum = 0; 
+		console.log($scope.caseNum);
+	};
+
 	var checkedIds = {};
 	
 	$scope.caseSelected = function(ev){
+
+		!ev.currentTarget.checked ?  $scope.caseNum -- :$scope.caseNum ++; 
+
 		var element =$(ev.currentTarget);
         var checked = element.is(':checked');
         var row = element.closest("tr");
@@ -300,14 +310,18 @@ angular.module('ECMSapp.adminMain', [])
 		} else {
 			$scope.checkedIds.push(dataItem.rfsNumber);
 		}
-        
-        if (checked) {
-            row.addClass("k-state-selected");
-        } else {
-            row.removeClass("k-state-selected");
-        }
- 
 	};
+
+	// DISABLE/ENABLE BUTTON WHEN CASE ARE SELECTED /////////////
+	$scope.buttonDisabledClass = "linkButtonDisabled"
+
+	$scope.$watch('caseNum', function() {
+
+		$scope.caseNum == 0? $scope.buttonDisabledClass = "linkButtonDisabled" : $scope.buttonDisabledClass = ""
+
+
+	});
+	
 	
 	// ON DATABOUND EVENT (WHEN PAGING) RESTORE PREVIOUSLY SELECTED ROWS
 	function onDataBound(e) {

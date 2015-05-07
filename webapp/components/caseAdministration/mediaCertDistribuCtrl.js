@@ -150,6 +150,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 			}
 			$scope.warning = result.data.messages.RESULTS_LIST;
 			$scope.disableSubmit = true;
+			$scope.caseNum = 0; // KEEP TRACK OF THE NUMBER OF SELECTED CASES
 		});
 
 	});
@@ -300,7 +301,33 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 					}
 				]
 			};
-			
+
+	$scope.toggleSelectAll = function(ev) {
+
+		var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+		var items = grid.dataSource.data();
+			items.forEach(function(item){
+		item.selected = ev.target.checked;
+		});
+
+		ev.currentTarget.checked ? $scope.caseNum = grid.dataSource.total() : $scope.caseNum = 0; 
+	};
+
+	$scope.caseSelected = function(ev){
+
+		!ev.currentTarget.checked ?  $scope.caseNum -- :$scope.caseNum ++; 
+	
+	};
+	// DISABLE/ENABLE BUTTON WHEN CASE ARE SELECTED /////////////
+	$scope.buttonDisabledClass = "linkButtonDisabled";
+
+	$scope.$watch('caseNum', function() {
+
+		$scope.caseNum == 0? $scope.buttonDisabledClass = "linkButtonDisabled" : $scope.buttonDisabledClass = "";
+		// console.log("Number of case selected: " + $scope.caseNum);
+
+	});
+
 	// GRID DETAIL SETTINGS /////////////////////////////////////////////////////////////////////////////////////
 
 	function detailInit(e) {
