@@ -34,7 +34,7 @@ angular.module('ECMSapp.caseManagement', [])
 	templateUrl: 'components/caseManagement/caseHeader.html',
 	link: function (scope, element, attrs){
 
-		console.log("FROM DIRECTIVE");
+		//console.log("FROM DIRECTIVE");
 
 		}
 	};

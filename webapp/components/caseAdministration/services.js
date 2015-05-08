@@ -25,7 +25,6 @@ angular.module('ECMSapp.services', [])
 		$promise.then(function(result){
 			if(result.data.status == 'SUCCESS'){
 				deferred.resolve(result);
-				
 			} else {
 				alert("Something better is coming!");
 			}
@@ -101,20 +100,79 @@ angular.module('ECMSapp.services', [])
 	var getCasesForIntakeDist = function (casesearch){
 		console.log("search criteria");
 		console.log(casesearch);
-		return executeHttpJSONPost("/rest/caseadmin/activeCaseSearch", casesearch);
+		return executeHttpJSONPost("/rest/caseadmin/intakeDistCaseSearch", casesearch);
 	};
+	
+
+	var getCasesForMediaCertDist = function (casesearch){
+		console.log("search criteria");
+		console.log(casesearch);
+		return executeHttpJSONPost("/rest/caseadmin/mediaDistCaseSearch", casesearch);
+	};
+	
+	// Email Functionality (Will be refactored into Email Global Services) 
+	var prepareEmail = function (emailTemplateName, checkedIds, attachments) {
+		var requestPayload = {
+			emailMetadata : {
+				template: emailTemplateName,
+				subject: checkedIds
+			},
+			attachments : {}
+		};
+		
+		if ( "undefined"!=typeof attachments && attachments !== null) {
+			requestPayload.attachments = attachments;
+		}
+		
+		console.log("preparing email for :" + emailTemplateName + " with " + checkedIds);
+		console.log(requestPayload.attachements);
+		return executeHttpJSONPost("/rest/email/preparemail", requestPayload);
+	}
+		
+	var exportDocument = function(exportURL,targetFormat, fileName){
+		
+		var headers = {};
+		var blobType = {};
+		
+		switch (targetFormat){
+			case '.pdf': 
+					headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/pdf' };
+					blobType = {'type': 'application/pdf'};
+					break;
+			case '.xlsx': 
+					headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' };
+					blobType = {'type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'};
+					break;
+			case '.docx': 
+					headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/octet-stream' };
+					blobType = {'type': 'application/octet-stream'};
+					break;
+			default:  
+					headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'plain/text' };
+					blobType = {'type': 'plain/text'};
+		}
+						
+		$http({
+			method: 'GET',
+			url: exportURL,
+			headers: headers, 
+			responseType: 'arraybuffer' 
+			}).success(function (response) {
+				var blobFile = new Blob([response], blobType);
+				saveAs(blobFile, fileName + targetFormat);
+			}).error(function(response) {
+				console.log(response);
+			});
+		
+		return ;
+	}
+	
 	
 	var sendEmail = function (mailMessage) {
 		console.log("sending email criteria");
 		console.log(mailMessage);
 		return executeHttpJSONPost("/rest/email/sendmail", mailMessage);
 	}
-	
-	var getCasesForMediaCertDist = function (casesearch){
-		console.log("search criteria");
-		console.log(casesearch);
-		return executeHttpJSONPost("/rest/caseadmin/mediaCaseSearch", casesearch);
-	};
 
 
 	return {
@@ -125,6 +183,8 @@ angular.module('ECMSapp.services', [])
 		assignCaseManager: assignCaseManager,
 		submitUpdatedSchedules: submitUpdatedSchedules,
 		getCasesForMediaCertDist: getCasesForMediaCertDist,
-		sendEmail: sendEmail
+		prepareEmail: prepareEmail,
+		sendEmail: sendEmail,
+		exportDocument: exportDocument
 		};
 });

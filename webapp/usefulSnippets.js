@@ -33,3 +33,9 @@ function onDataBound(e) {
 setTimeout(function(){
 	// DO SOMETHING...
 }, 1000);
+
+// FIND AN OBJECT //////////////////
+ $("#mainMenu").find(".head-menu")
+
+ // CHECK IF IT HAS A CLASS //////////////////
+$(event.item).hasClass("sub-menu")

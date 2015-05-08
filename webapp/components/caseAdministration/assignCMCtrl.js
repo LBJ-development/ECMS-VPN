@@ -2,9 +2,18 @@
 
 angular.module('ECMSapp.assignCM', [])
 
-.controller('AssignCMCtrl', [ '$scope', 'DataFtry', '$http', function( $scope, DataFtry, $http, $q){
+.controller('AssignCMCtrl', [ '$scope', 'DataFtry', '$http', '$location', function( $scope, DataFtry, $http, $location){
 
-	console.log("FROM ASSIGNCASEMANAGER");
+	console.log("FROM ASSIGN CM");
+	console.log($location);
+
+		// SELECT A CASE AND REDIRECT TO THE CASE MANAGMENT //////////////////////////////////////////////////
+	$scope.selectCase = function(e){
+		
+		// OPEN A CASE IN THE CASE MANAGEMENT SECTION
+		 $location.path('/casemanagement');
+	};
+
 	// DAILY ASSIGNMENT WORKSHEET WINDOW //////////////////////////////////////////////////
 
 	$scope.dawsOptions = {
@@ -229,6 +238,7 @@ angular.module('ECMSapp.assignCM', [])
 			$scope.submitSearch++;
 	};
 
+
 	// WATCH FOR A DATE RANGE CHANGE
 	$scope.$watch('submitSearch', function(newValue, oldValue) {
 		// console.log("Calling submitSearch:" + $scope.submitSearch);
@@ -342,6 +352,7 @@ angular.module('ECMSapp.assignCM', [])
 							
 						field	: "caseNumber",
 						title	: "Case",
+						template: "<a href='' ng-click='selectCase($event)' class='baseLinkText' >#=caseNumber#</a>",
 						width	: "15%"
 						},
 						{
@@ -471,6 +482,8 @@ angular.module('ECMSapp.assignCM', [])
 			// getCaseManagers(caseManager);
 		});
 	}
+
+
 			
 	// FILTERING WITH DROPDOWN MENU 
 	var victim	= ["1", "2", "3", "4", "5", "6"],
@@ -527,8 +540,6 @@ angular.module('ECMSapp.assignCM', [])
 	controller: 'AssignCMCtrl',
 	templateUrl: 'components/caseAdministration/detailRow.html',
 	link: function (scope, element, attrs){
-
-		console.log("FROM DIRECTIVE");
 
 		// GET THE GROUP LIST 
 		$http.get( "/rest/casemanager/groups/list/all")

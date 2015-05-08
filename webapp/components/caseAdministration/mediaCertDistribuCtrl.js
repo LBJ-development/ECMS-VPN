@@ -2,7 +2,7 @@
 
 angular.module('ECMSapp.mediaCertDistribu', [])
 
-.controller('mediaCertDistribuCtrl', [ '$scope', 'DataFtry', '$http', function( $scope, DataFtry, $http, $q){
+.controller('mediaCertDistribuCtrl', [ '$scope', 'DataFtry', '$http', '$location',  function( $scope, DataFtry, $http, $location){
 
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
 	var todayDate		= new Date();
@@ -73,9 +73,9 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 			$scope.casesearch.frmSrchCaseMediaStatus = "-1";
 		}
 		
-		if ($scope.casesearch.frmSrchCaseDistributedStatus === null){
+		if ($scope.casesearch.frmSrchCaseMediaDistributedStatus === null){
 			// console.log('assigning -1');
-			$scope.casesearch.frmSrchCaseDistributedStatus = "-1";
+			$scope.casesearch.frmSrchCaseMediaDistributedStatus = "-1";
 		}
 
 		if ($scope.casesearch.frmSrchCaseMediaDistributedTo === null){
@@ -94,28 +94,28 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 	};
 
 	// QUERY DROPDOWN ENDPOINTS /////////////////////////////////////////////////////////////
-	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseType")
+	$http.get("/rest/common/lookup?lookupName=frmSrchCaseType")
 		.success( function(result) {
 			$scope.frmSrchCaseTypeDataSource = result.content;
 	});
 	
 	
-	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseHasPoliceReport")
+	$http.get("/rest/common/lookup?lookupName=frmSrchCaseHasPoliceReport")
 		.success( function(result) {
 			$scope.frmSrchCaseHasPoliceReportDataSource = result.content;
-		});
+	});
 
-	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseMediaStatus")
+	$http.get("/rest/common/lookup?lookupName=frmSrchCaseMediaStatus")
 		.success( function(result) {
 			$scope.frmSrchCaseMediaStatusDataSource = result.content;
 	});
 	
-	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseMediaDistributedStatus")
+	$http.get("/rest/common/lookup?lookupName=frmSrchCaseMediaDistributedStatus")
 		.success( function(result) {
 			$scope.frmSrchCaseMediaDistributedStatusDataSource = result.content;
 	});
 	
-	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseMediaDistributedTo")
+	$http.get("/rest/common/lookup?lookupName=frmSrchCaseMediaDistributedTo")
 		.success( function(result) {
 			$scope.frmSrchCaseMediaDistributedToDataSource = result.content;
 	});
@@ -219,7 +219,8 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 		columns		: [{
 						field	: "caseNumber",
 						title	: "Case",
-						width	: "10%"
+						width	: "10%",
+						template: "<a href='' ng-click='selectCase($event)' class='baseLinkText' >#=caseNumber#</a>"
 						},{
 						field	: "caseSource",
 						title	: "Source",
@@ -328,6 +329,14 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 
 	});
 
+	// SELECT A CASE AND REDIRECT TO THE CASE MANAGMENT //////////////////////////////////////////////////
+	$scope.selectCase = function(e){
+		
+		// OPEN A CASE IN THE CASE MANAGEMENT SECTION
+		 $location.path('/casemanagement');
+	};
+
+
 	// GRID DETAIL SETTINGS /////////////////////////////////////////////////////////////////////////////////////
 
 	function detailInit(e) {
@@ -375,8 +384,6 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 		$scope.urlNarrative = "/rest/caseadmin/mediaNarratives?caseNumber=" + caseNumber;
 		DataFtry.getData($scope.urlNarrative).then(function(result){
 
-		
-
 			if(!result.data.content.length == 0){
 
 				// console.log("FROM GET NARRATIVE (HAS NARRATIVE):");
@@ -411,6 +418,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 		
 		});
 	}
+		
 			
 	// FILTERING WITH DROPDOWN MENU 
 	var victim	= ["1", "2", "3", "4", "5", "6"],
@@ -458,4 +466,8 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 	}
 
 }]);
+
+
+
+
 

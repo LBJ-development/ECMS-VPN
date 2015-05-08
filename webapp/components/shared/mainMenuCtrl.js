@@ -7,8 +7,6 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
 
     .config(['$routeProvider', function($routeProvider) {
 
-
-
         $routeProvider.when('/login', {
             templateUrl: 'components/login/login.html'
         });
@@ -91,6 +89,7 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
             },
             {
                 text: "Case Management",
+                cssClass: "casemanagement-menu", // EMPTY CLASS ONLY FOR SELECTION PURPOSES
                 url: "#/casemanagement",
                 permission: "menu:view:casemgmt"
             },
@@ -122,6 +121,20 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
         controller: 'MainMenuCtrl',
         templateUrl: 'components/shared/mainMenu.html',
         link: function (scope, element, attrs){
+
+        // WHEN A CASE HAS BEEN SELECTED AND REDIRECT TO CASE MANAGEMENT
+            scope.$on('$routeChangeStart', function(next, current) { 
+
+                // console.log("ROUTE CHANGES:");
+                // console.log($location.path());
+
+                if($location.path() == "/casemanagement" ){
+
+                    // CHANGE THE ITEM MENU CLASS
+                    $("#mainMenu").find(".k-state-selected").removeClass("k-state-selected");
+                    $("#mainMenu").find(".casemanagement-menu").addClass("k-state-selected");
+                }
+            });
 
             if(!StorageService.getToken()) $location.path('/login');
             //
@@ -159,42 +172,11 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
 								k--;
 							}
                         }
-						
 						//console.log(scope.menuSource[i]['permission'] + ' will be enabled because:' + ($.inArray(scope.menuSource[i]['permission'], permissions) >0));
                         $rootScope.menuWithPermissions.push(scope.menuSource[i]);
                     }
                 }
             }
-/*
-            $('#mainMenu').mouseenter(function(event) {
-
-                    console.log(event.currentTarget);
-            });*/
-
-   
-/*
-        var headMenu =   $('#mainMenu').find(".head-menu");
-
-        headMenu.mouseleave(function(event) {
-            console.log("MOUSE LEAVE");
-        });
-
-
-        console.log("FROM");
-        console.log(headMenu);
-    
-
-
-          $('.mainMenu').mouseenter(function(event) {
-
-           
-            var headMenu =  $("#mainMenu").find(".head-menu");
-
-              if($(event.item).hasClass("sub-menu")) {
-
-                console.log("FROM ROLLOVER MENU");
-                
-            });*/
 
             var CASelected = false;
 
@@ -209,11 +191,8 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
                if(CASelected){
                      // console.log(CASelected);
                       $("#mainMenu").find(".head-menu").addClass("k-state-selected");
-
-               } 
-               
+               }   
             };
-
 
             // HIDE THE MENU WHEN LOGIN OUT
             scope.logout = function() {
@@ -224,6 +203,7 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
 
             // DISPLAY THE NAME OF THE PAGE THAT HAS BEEN CLICKED
             scope.onSelect = function(ev) {
+
                 $rootScope.pageToBuild = $(ev.item.firstChild).text();
 
                 // console.log($("#mainMenu")[0].firstChild);

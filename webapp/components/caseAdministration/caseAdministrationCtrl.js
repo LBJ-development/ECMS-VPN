@@ -54,17 +54,17 @@ angular.module('ECMSapp.adminMain', [])
 		return enYear + "-" + enMonth  + "-" + enDate;
 	}
 
-	$http.get("/rest/caseadmin/lookup?lookupName=rfsSource")
+	$http.get("/rest/common/lookup?lookupName=rfsSource")
 		.success( function(result) {
 			$scope.rfsSourceDataSource = result.content;
 		});
 			 
-	$http.get("/rest/caseadmin/lookup?lookupName=rfsPrimaryType")
+	$http.get("/rest/common/lookup?lookupName=rfsPrimaryType")
 		.success( function(result) {
 			$scope.rfsPrimaryTypeDataSource = result.content;
 	});
 	
-	$http.get("/rest/caseadmin/lookup?lookupName=rfsStatus")
+	$http.get("/rest/common/lookup?lookupName=rfsStatus")
 		.success( function(result) {
 			$scope.rfsStatusDataSource = result.content;
 	});

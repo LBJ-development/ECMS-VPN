@@ -6,6 +6,8 @@ angular.module('ECMSapp.intakeDistribution', [])
 
 	// QUERY OPTIONS ///////////////////////////////////////////////////////////////////////
 
+	console.log("FROM INTAKE DISTRIBUTION");
+	console.log($location);
 	$scope.casesearch = {
 		caseCreateStartDate: startingDate,
 		caseCreateEndDate: endingDate,
@@ -63,17 +65,17 @@ angular.module('ECMSapp.intakeDistribution', [])
 		return enYear + "-" + enMonth  + "-" + enDate;
 	}
 
-	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseHasPoliceReport")
+	$http.get("/rest/common/lookup?lookupName=frmSrchCaseHasPoliceReport")
 		.success( function(result) {
 			$scope.frmSrchCaseHasPoliceReportDataSource = result.content;
 		});
 		 
-	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseDistributedStatus")
+	$http.get("/rest/common/lookup?lookupName=frmSrchCaseDistributedStatus")
 		.success( function(result) {
 			$scope.frmSrchCaseDistributedStatusDataSource = result.content;
 	});
 	
-	$http.get("/rest/caseadmin/lookup?lookupName=frmSrchCaseDistributedTo")
+	$http.get("/rest/common/lookup?lookupName=frmSrchCaseDistributedTo")
 		.success( function(result) {
 			$scope.frmSrchCaseDistributedToDataSource = result.content;
 	});
@@ -293,12 +295,13 @@ angular.module('ECMSapp.intakeDistribution', [])
 
 						field	: "caseAssignmentDateTime",
 						title	: "CM Assigned D/T",
-						width	: "10%"
+						width	: "15%",
+						format	:"{0:MM/dd/yyyy hh:mm tt}"
 						},{
 
 						field	: "caseDistributionMehtod",
 						title	: "Recip/D Sent/Method",
-						width	: "30%",
+						width	: "25%",
 						filterable: false,
 						},{
 
@@ -402,9 +405,10 @@ angular.module('ECMSapp.intakeDistribution', [])
 		$scope.PDFPreview.center().open();
 	};
 
+	// SELECT A CASE AND REDIRECT TO THE CASE MANAGMENT //////////////////////////////////////////////////
 	$scope.selectCase = function(e){
-
-		console.log("FROM CASE SELECTED...");
+		
+		// OPEN A CASE IN THE CASE MANAGEMENT SECTION
 		 $location.path('/casemanagement');
 	};
 
