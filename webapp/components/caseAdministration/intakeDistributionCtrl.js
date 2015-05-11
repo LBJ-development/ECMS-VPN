@@ -2,7 +2,7 @@
 
 angular.module('ECMSapp.intakeDistribution', [])
 
-.controller('IntakeDistributionCtrl', [ '$scope', 'DataFtry', '$http', '$location',  function( $scope, DataFtry, $http, $location){
+.controller('IntakeDistributionCtrl', [ '$scope', 'DataFtry', '$http', '$location', 'ECMSConfig',  function( $scope, DataFtry, $http, $location,  ECMSConfig){
 
 	// QUERY OPTIONS ///////////////////////////////////////////////////////////////////////
 
@@ -351,8 +351,6 @@ angular.module('ECMSapp.intakeDistribution', [])
 	$scope.$watch('caseNum', function() {
 
 		$scope.caseNum == 0? $scope.buttonDisabledClass = "linkButtonDisabled" : $scope.buttonDisabledClass = "";
-		// console.log("Number of case selected: " + $scope.caseNum);
-
 	});
 
 	// DISTRIBUTE INTAKES MESSAGES //////////////////////////////////////////////////
@@ -384,25 +382,30 @@ angular.module('ECMSapp.intakeDistribution', [])
 		$scope.confirmMessage.center().open();
 	};
 
-	// PDF WIDOW //////////////////////////////////////////////////
-
+	// PDF WINDOW //////////////////////////////////////////////////
 	$scope.PDFPreviewOptions = {
 		width: "80%",
 		visible: false,
 		maxWidth: 1200,
 		height: "80%",
 		modal: true,
-		// title: "Daily Assignment Worksheet",
-		// open: getPDF
-		// position: {
-		// top: 400,
-		// left: "center"
-		// },
+		content: {
+			iframe: false,
+			template:  '<embed src=' + ECMSConfig.restServicesURI + '/rest/document/export/intake?template=Intake_Report_ECMS.pdf&ids='  + $scope.caseID + '" width="100%" height="100%" type="application/pdf"></embed>'
+		}
 	};
+	
+	$scope.getPDF = function(ev){
+		var element	= $(ev.currentTarget);
+		var row 	= element.closest("tr");
+		var grid 	= $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+		var dataItem 	= grid.dataItem(row);
+		$scope.caseID  = dataItem.caseNumber;
 
-	$scope.getPDF = function(e){
-
-		$scope.PDFPreview.center().open();
+		setTimeout(function(){
+			$scope.PDFPreview.center().open();
+		}, 300);
+		//console.log($scope.caseID);
 	};
 
 	// SELECT A CASE AND REDIRECT TO THE CASE MANAGMENT //////////////////////////////////////////////////
