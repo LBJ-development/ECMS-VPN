@@ -259,10 +259,13 @@ html, body {
 }
 
 // CASE HEADER INFO /////////////////////////////////////////////////////
+.full-width-row {
+	display: inline-block ;
+	width: 100% ;
+}
 .case-header-info {
-	display: inline-block !important;
-	width: 98% !important;
-	padding:20px 0 0 5px !important;
+	.full-width-row;
+	padding:10px 0 0 5px ;
 }
 
 .case-header-info li {
@@ -270,14 +273,22 @@ html, body {
 	float: left ;
 	font-family: @basefont ;
 	font-size:1.0em ;
-	padding: 0 20px 0 5px;
+	padding: 0 25px 5px 0;
 	text-align: left;
+	list-style-type: none;
 }
 
 .case-header-info li span {
 	color: @mediumblue;
 	//font-weight: bold;
-
+}
+.h-sep {
+	display:inline-block ;
+	width: 92%;
+	margin-top: 5px;
+	float: left;
+	height: 1px;
+	background-color: @bordergray;
 }
 
 // MODAL WINDOW /////////////////////////////////////////////////////
@@ -304,6 +315,12 @@ html, body {
 
 	display: inline-block;
 	width: 100%;
+}
+
+// DEBUGGING /////////////////////////////////////////////////////
+.debugging{
+
+	border: solid 1px red;
 }
 
 
