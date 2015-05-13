@@ -9,44 +9,29 @@
 			<form name="dateRange-frm" ng-submit="submitSearch()" role="form" >
 				<div class="filter-row-holder" style="padding-top:20px">
 					<ul>
-						<li style="width: 210px" ng-init="certDistribution=0">
-						 	<input type="radio" style="float: left; margin:6px" name="certDistribution" ng-model="certDistribution" ng-change="handleRadioSelection(certDistribution)"  value="0" id="certDateRange"/>
+						<li style="width: 210px">
+						 	<input type="radio" style="float: left; margin:6px" name="caseMediaSearchRadioOption" ng-model="casesearch.caseMediaSearchRadioOption" ng-change="handleRadioSelection()"  value="certifiedDate" id="certDateRange"/>
 						 	<label for="certDateRange">Certitfied Date Range</label>
 						</li>
 						<li style="width: 220px">
-						 	<input type="radio" style="float: left; margin:6px" name="certDistribution" ng-model="certDistribution" ng-change="handleRadioSelection(certDistribution)"  value="1" id="restrictedDateRange"/>
+						 	<input type="radio" style="float: left; margin:6px" name="caseMediaSearchRadioOption" ng-model="casesearch.caseMediaSearchRadioOption" ng-change="handleRadioSelection()"  value="restrictedDate" id="restrictedDateRange"/>
 						 	<label for="restrictedDateRange">Restricted Date Range</label>
 						</li>
 						<li style="padding-right: 0px">
 							<label >From:</label> 
-							<input kendo-date-picker id="startingDate" k-on-change="enableSumbitBtn()" k-ng-model="startingDate" ng-disabled="datePickerDisable" style="width: 180px"/> 
+							<input kendo-date-picker id="startingDate" k-on-change="enableSumbitBtn()" k-ng-model="startingDate" ng-disabled="disableDatePicker" style="width: 180px"/> 
 						</li>
 						<li style="padding-right: 0px">
 							<label >To:</label> 
-							<input kendo-date-picker id="endingDate" ng-disabled="datePickerDisable"  k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
+							<input kendo-date-picker id="endingDate" ng-disabled="disableDatePicker"  k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
 						</li>
 					</ul>
 				</div>
-				<!-- <div class="filter-row-holder">
-					<ul>
-						<li style="width: 250px">
-						 	<input type="radio" style="float: left; margin:6px" name="certDistribution" ng-model="certDistribution" ng-change="handleRadioSelection(certDistribution)"  value="1" id="restrictedDateRange"/>
-						 	<label for="restrictedDateRange">Restricted Date Range</label>
-						</li>
-						<li style="padding-right: 0px">
-							<label >From:</label> 
-							<input kendo-date-picker id="startingDate" k-on-change="enableSumbitBtn()" k-ng-model="startingDate" ng-disabled="datePickerDisable" style="width: 180px"/> 
-						</li>
-						<li style="padding-right: 0px">
-							<label  >to:</label> 
-							<input kendo-date-picker id="endingDate" ng-disabled="datePickerDisable"  k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
-						</li>
-					</ul>
-				</div> -->
+
 				<div class="filter-row-holder">
 					<ul>
 						<li style="width: 500px">
-						 	<input type="radio" style="float: left; margin:6px" name="certDistribution" ng-model="certDistribution" ng-change="handleRadioSelection(certDistribution)"  value="2" id="allCasesWithoutDate"/>
+						 	<input type="radio" style="float: left; margin:6px" name="caseMediaSearchRadioOption" ng-model="casesearch.caseMediaSearchRadioOption" ng-change="handleRadioSelection()"  value="allUncertifiedAndUnrestricted" id="allCasesWithoutDate"/>
 						 	<label for="allCasesWithoutDate">All Cases without Certified Date or Restricted Date</label>
 						</li>
 				
@@ -78,7 +63,7 @@
                 		</li>
 
                 		<li  class="submit-btn" style="padding-top:25px">
-                			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
+                			<kendo-button ng-disabled="disableSubmit" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
                 		</li>
             		</ul>
                	</div> 	
