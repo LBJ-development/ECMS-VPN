@@ -90,5 +90,7 @@
 <file name="CC-wingdings-2.png" server="Z:/UIDesigns/ECMS/app/" local="130748832771849024" remote="130748832770000000" Dst="2" />
 <file name="CC-wingdings-2.psd" server="Z:/UIDesigns/ECMS/app/" local="130748832702472087" remote="130748832700000000" Dst="2" />
 <file name="darkPipe.png" server="Z:/UIDesigns/ECMS/app/" local="130723659449902000" remote="130723659440000000" Dst="2" />
-<file name="checkbox.png" server="Z:/UIDesigns/ECMS/app/" local="130749003877730356" remote="130749003870000000" Dst="2" />
+<file name="checkbox.png" server="Z:/UIDesigns/ECMS/app/" local="130754962042989424" remote="130754962040000000" Dst="2" />
+<file name="checkbox-off.png" server="Z:/UIDesigns/ECMS/app/" local="130754944367839424" remote="130754944360000000" Dst="2" />
+<file name="checkbox-on.png" server="Z:/UIDesigns/ECMS/app/" local="130754945473329424" remote="130754945470000000" Dst="2" />
 </dwsync>

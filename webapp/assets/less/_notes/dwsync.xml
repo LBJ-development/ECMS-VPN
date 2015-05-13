@@ -81,8 +81,8 @@
 <file name="ng-Animation.less" server="Z:/UIDesigns/ECMS/" local="130688388332088081" remote="130688388330000000" Dst="1" />
 <file name="reset.less" server="Z:/UIDesigns/ECMS/" local="130681431642460936" remote="130681431640000000" Dst="1" />
 <file name="variables.less" server="Z:/UIDesigns/ECMS/" local="130681431642470936" remote="130681431640000000" Dst="1" />
-<file name="CC-forms.less" server="Z:/UIDesigns/ECMS/app/" local="130749009797520356" remote="130749009790000000" Dst="2" />
-<file name="CC-general.less" server="Z:/UIDesigns/ECMS/app/" local="130753903246416000" remote="130753903240000000" Dst="2" />
+<file name="CC-forms.less" server="Z:/UIDesigns/ECMS/app/" local="130754987349249424" remote="130754987340000000" Dst="2" />
+<file name="CC-general.less" server="Z:/UIDesigns/ECMS/app/" local="130755848525200986" remote="130755848520000000" Dst="2" />
 <file name="CC-masthead.less" server="Z:/UIDesigns/ECMS/app/" local="130705524323130000" remote="130705524320000000" Dst="2" />
 <file name="CC-styles.less" server="Z:/UIDesigns/ECMS/app/" local="130699506021196000" remote="130699506020000000" Dst="1" />
 <file name="CC-typography.less" server="Z:/UIDesigns/ECMS/app/" local="130748986843550356" remote="130748986840000000" Dst="2" />
@@ -91,6 +91,6 @@
 <file name="CC-variables.less" server="Z:/UIDesigns/ECMS/app/" local="130748987512390356" remote="130748987510000000" Dst="2" />
 <file name="ng-Animation.less" server="Z:/ECMS/app/" local="130711982047995872" remote="130711982040000000" Dst="2" />
 <file name="CC-buttons.less" server="Z:/ECMS/app/" local="130747234260758239" remote="130747234260000000" Dst="2" />
-<file name="CC-buttons.less" server="Z:/UIDesigns/ECMS/app/" local="130748826221724077" remote="130748826220000000" Dst="2" />
+<file name="CC-buttons.less" server="Z:/UIDesigns/ECMS/app/" local="130754828931034390" remote="130754828930000000" Dst="2" />
 <file name="JQX-redefined.less" server="Z:/ECMS/app/" local="130711982047845864" remote="130711982040000000" Dst="2" />
 </dwsync>
