@@ -75,8 +75,7 @@
 			</div>	
 		</div>
 		<!-- PDF PREVIEW  /////////////////////////////////////////////////////////////////-->
-		 <div kendo-window="PDFPreview" k-options="PDFPreviewOptions" style="text-align: center">
-			<embed src="http://www.jablonski.info/pdfSample.pdf" width="100%" height="100%" type='application/pdf'></embed>
+		 <div kendo-window="PDFPreview" k-options="PDFPreviewOptions"  k-rebind="PDFPreviewOptions"  k-ng-delay="PDFPreviewOptions" style="text-align: center">	
 		</div>
         <!-- DATA GRID /////////////////////////////////////////////////////////////////-->
 		<div role="datagrid" class="grid-holder" >

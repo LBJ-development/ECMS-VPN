@@ -299,10 +299,10 @@ angular.module('ECMSapp.adminMain', [])
 		!ev.currentTarget.checked ?  $scope.caseNum -- :$scope.caseNum ++; 
 
 		var element =$(ev.currentTarget);
-        var checked = element.is(':checked');
-        var row = element.closest("tr");
-        var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
-        var dataItem = grid.dataItem(row);
+		var checked = element.is(':checked');
+		var row = element.closest("tr");
+		var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+		var dataItem = grid.dataItem(row);
 		
 		//remove from selection list if unchecked
 		if (!checked) {

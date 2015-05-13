@@ -88,7 +88,7 @@ angular.module('ECMSapp.home', [])
 						},*/{
 						field	: "type",
 						title	: "Type",
-						width	: "15%"
+						width	: "25%"
 						},{
 						field	: "details",
 						title	: "Details",
