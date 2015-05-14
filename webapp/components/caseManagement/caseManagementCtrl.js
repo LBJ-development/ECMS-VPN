@@ -2,7 +2,7 @@
 
 angular.module('ECMSapp.caseManagement', [])
 
-.controller('CaseManagementCtrl', ['$scope', '$http', function($scope,  $http){
+.controller('CaseManagementCtrl', function($scope){
 
 	$scope.CMtabstripOptions = {
 		dataTextField: 'Name',
@@ -24,22 +24,20 @@ angular.module('ECMSapp.caseManagement', [])
 	};
 
 	setTimeout(function(){ $scope.CMtabstrip.select(0) }, 500)
-}])
+})
 
-.controller('CaseHeaderCtrl', ['$scope', '$http', function($scope,  $http){
+.controller('CaseHeaderCtrl', function($scope){
 	// console.log("FROM CASE HEADER");
 	// console.log($scope);
-}])
+})
 
-.directive ('caseHeader', ['DataFtry', '$http', function (DataFtry, $http) {
+.directive ('caseHeader' , function () {
 	return {
 	restrict: 'E',
 	scope :{},
 	controller: 'CaseHeaderCtrl',
 	templateUrl: 'components/caseManagement/caseHeader.html',
 	link: function (scope, element, attrs){
-
-		console.log(scope);
 
 		$("#moreBtn").css("display", "none");
 
@@ -66,15 +64,15 @@ angular.module('ECMSapp.caseManagement', [])
 			}
 		}
 	};
-}])
+})
 
-.controller('CaseMenuCtrl', ['$scope', '$http', function($scope,  $http){
+.controller('CaseMenuCtrl', function($scope){
 	$scope.caseMenuOptions = {
 		contentUrls: [ null, null, "" ]
 		};
-}])
+})
 
-.directive ('caseMenu', ['DataFtry', '$http', function (DataFtry, $http) {
+.directive ('caseMenu', function () {
 	return {
 	restrict: 'E',
 	scope :{},
@@ -84,12 +82,12 @@ angular.module('ECMSapp.caseManagement', [])
 
 		}
 	};
-}])
+})
 
-.controller('CaseSummaryCtrl', ['$scope', '$http', function($scope,  $http){
+.controller('CaseSummaryCtrl', function($scope){
 	// console.log("FROM CASE HEADER");
 	// console.log($scope);
-}])
+})
 
 .directive ('caseSummary',function ($interval, $window) {
 	return {
@@ -99,18 +97,16 @@ angular.module('ECMSapp.caseManagement', [])
 	templateUrl: 'components/caseManagement/caseSummary.html',
 	link: function (scope, element, attrs){
 
+		var offset = 310;
+		var infoWidth = $("#caseSummaryHolder").width() - offset;
+		$("#info-holder").css('width', infoWidth);
+
 		$window.addEventListener('resize', function() {
 
-			if( window.innerWidth < 1650) {
+			infoWidth = $("#caseSummaryHolder").width() - offset;
+			$("#info-holder").css('width', infoWidth);
 
-				$("#info-holder").css('width', (window.innerHeight - 400));
-			}
-
-
-			
-			console.log( window.innerWidth)
 			}, false);
-
 		}
 	};
 });

@@ -6,15 +6,21 @@
 @import "CC-mixins.less";
 
 // MAIN MENU ////////////////////////////////////////////////////
- #mainMenu .k-state-selected{
+ #mainMenu .k-state-selected, #caseMenu .k-state-selected  {
 	color: @veryverylightblue;
-	.vertical(@darkgradientstartcolor, @darkgradientendcolor);
+	.vertical(@darkgradientstartcolor, @darkgradientendcolor)!important;
 }
 
- #mainMenu .k-state-hover >.k-link{
+ #mainMenu .k-state-hover >.k-link, #caseMenu .k-state-hover{
 	color: @veryverylightblue;
 	.vertical(#375d94, #2e74d7);
+	border: none !important;
 }
+
+
+ .k-state-focused {
+ 	box-shadow: none  !important;
+ }
 
 .home-menu-btn{
 	background-image: url(../images/new-home-icn.png);
