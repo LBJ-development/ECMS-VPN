@@ -2,15 +2,30 @@
 
 angular.module('ECMSapp.caseManagement', [])
 
+// GENERAL TAPSTRIP CONTROLLER //////////////////////////////////////////
 .controller('CaseManagementCtrl', function($scope){
 
 	$scope.CMtabstripOptions = {
 		dataTextField: 'Name',
 		dataContentUrlField: 'ContentUrl',
+		dataImageUrlField: "imageUrl",
 		dataSource: [
-         			{ Name: 'Case 12346', ContentUrl: 'components/caseManagement/caseTemplate.html' },
-          			{ Name: 'Tab2', ContentUrl: '' }
-       			 ],
+			{
+				Name: 'Case 12346',
+				imageUrl: "assets/images/TS-case-icn.png",
+				ContentUrl: 'components/caseManagement/caseTemplate.html'
+			},
+			{
+				Name: 'Jane Doe',
+				imageUrl: "assets/images/TS-person-icn.png",
+				ContentUrl: 'components/caseManagement/personTemplate.html'
+			},
+			{
+				Name: 'RFS 789456',
+				imageUrl: "assets/images/TS-rfs-icn.png",
+				ContentUrl: 'components/caseManagement/rfsTemplate.html'
+			}
+		],
 		animation: {
 			close: {
 				duration: 200,
@@ -22,9 +37,27 @@ angular.module('ECMSapp.caseManagement', [])
 			}
 		},
 	};
-
 	setTimeout(function(){ $scope.CMtabstrip.select(0) }, 500)
 })
+
+// CASE CONTROLLER /////////////////////////////////////////////////////////
+
+.controller('CaseTemplateCtrl', function($scope){
+
+	$("#test").css("display", "none");
+
+	$scope.$on('myCustomEvent', function (event, data) {
+		console.log(data); // 'Data to send'
+
+		$("#summary").animate(
+					{opacity: "0"}, 300, function(){
+						$("#summary").css("display", "none");
+						$("#test").css("display", "block");
+					});
+	});
+})
+
+// CASE HEADER CONTROLLER & DIRECTIVE /////////////////////////////////////////////////////////
 
 .controller('CaseHeaderCtrl', function($scope){
 	// console.log("FROM CASE HEADER");
@@ -66,10 +99,12 @@ angular.module('ECMSapp.caseManagement', [])
 	};
 })
 
+// CASE LEFT MENU CONTROLLER & DIRECTIVE /////////////////////////////////////////////////////////
+
 .controller('CaseMenuCtrl', function($scope){
 	$scope.caseMenuOptions = {
 		contentUrls: [ null, null, "" ]
-		};
+	};
 })
 
 .directive ('caseMenu', function () {
@@ -80,13 +115,25 @@ angular.module('ECMSapp.caseManagement', [])
 	templateUrl: 'components/caseManagement/caseMenu.html',
 	link: function (scope, element, attrs){
 
+		var menuSelect = function(e) {
+			// BROADCASTING THE SELECTION
+			scope.$parent.$broadcast('myCustomEvent', e.item.id);
+		};
+
+		var menu = $("#caseMenu").kendoPanelBar({
+					expand: menuSelect
+				}).data("kendoPanelBar");
+			menu.select("#caseSummaryMen")
 		}
 	};
 })
 
+// CASE SUMMARRY CONTROLLER & DIRECTIVE /////////////////////////////////////////////////////////
+
 .controller('CaseSummaryCtrl', function($scope){
 	// console.log("FROM CASE HEADER");
 	// console.log($scope);
+	
 })
 
 .directive ('caseSummary',function ($interval, $window) {
@@ -107,6 +154,18 @@ angular.module('ECMSapp.caseManagement', [])
 			$("#info-holder").css('width', infoWidth);
 
 			}, false);
+		}
+	};
+})
+
+// CASE TEST DIRECTIVE /////////////////////////////////////////////////////////
+
+.directive ('caseTest',function () {
+	return {
+	restrict: 'E',
+	scope :{},
+	templateUrl: 'components/caseManagement/caseTest.html',
+	link: function (scope, element, attrs){
 		}
 	};
 });

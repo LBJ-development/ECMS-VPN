@@ -6,7 +6,7 @@ angular.module('ECMSapp.home', [])
 
 	var getData = function(URL) {	
 	
-	console.log("FROM GET DATA: "  + URL);
+	//console.log("FROM GET DATA: "  + URL);
 
 		var $promise = $http.get(URL);
 		var deferred = $q.defer();

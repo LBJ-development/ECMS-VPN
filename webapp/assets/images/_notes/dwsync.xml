@@ -87,10 +87,18 @@
 <file name="whitePipe.png" server="Z:/ECMS/app/" local="130711982047035818" remote="130711982040000000" Dst="2" />
 <file name="CC-wingdings-2.png" server="Z:/ECMS/app/" local="130747238491252511" remote="130747238490000000" Dst="2" />
 <file name="CC-wingdings-2.psd" server="Z:/ECMS/app/" local="130747238414043339" remote="130747238410000000" Dst="2" />
-<file name="CC-wingdings-2.png" server="Z:/UIDesigns/ECMS/app/" local="130748832771849024" remote="130748832770000000" Dst="2" />
-<file name="CC-wingdings-2.psd" server="Z:/UIDesigns/ECMS/app/" local="130748832702472087" remote="130748832700000000" Dst="2" />
+<file name="CC-wingdings-2.png" server="Z:/UIDesigns/ECMS/app/" local="130759972864260000" remote="130759972860000000" Dst="2" />
+<file name="CC-wingdings-2.psd" server="Z:/UIDesigns/ECMS/app/" local="130759972797460000" remote="130759972790000000" Dst="2" />
 <file name="darkPipe.png" server="Z:/UIDesigns/ECMS/app/" local="130723659449902000" remote="130723659440000000" Dst="2" />
 <file name="checkbox.png" server="Z:/UIDesigns/ECMS/app/" local="130754962042989424" remote="130754962040000000" Dst="2" />
 <file name="checkbox-off.png" server="Z:/UIDesigns/ECMS/app/" local="130754944367839424" remote="130754944360000000" Dst="2" />
 <file name="checkbox-on.png" server="Z:/UIDesigns/ECMS/app/" local="130754945473329424" remote="130754945470000000" Dst="2" />
+<file name="ECMS-icons.psd" server="Z:/UIDesigns/ECMS/app/" local="130761834985016308" remote="130761834980000000" Dst="2" />
+<file name="hr-sep.png" server="Z:/UIDesigns/ECMS/app/" local="130760982784313837" remote="130760982780000000" Dst="2" />
+<file name="sample1.jpg" server="Z:/UIDesigns/ECMS/app/" local="130759958358640000" remote="130759958350000000" Dst="2" />
+<file name="sample1.png" server="Z:/UIDesigns/ECMS/app/" local="130759958358650000" remote="130759958350000000" Dst="2" />
+<file name="sample2.jpg" server="Z:/UIDesigns/ECMS/app/" local="130759958358670000" remote="130759958350000000" Dst="2" />
+<file name="TS-case-icn.png" server="Z:/UIDesigns/ECMS/app/" local="130761773805708049" remote="130761773800000000" Dst="2" />
+<file name="TS-person-icn.png" server="Z:/UIDesigns/ECMS/app/" local="130761782577622060" remote="130761782570000000" Dst="2" />
+<file name="TS-rfs-icn.png" server="Z:/UIDesigns/ECMS/app/" local="130761783142731574" remote="130761783140000000" Dst="2" />
 </dwsync>
