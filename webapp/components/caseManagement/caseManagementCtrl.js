@@ -46,14 +46,24 @@ angular.module('ECMSapp.caseManagement', [])
 
 	$("#test").css("display", "none");
 
-	$scope.$on('myCustomEvent', function (event, data) {
-		console.log(data); // 'Data to send'
+	$scope.$on('caseMenuSelect', function (event, data) {
 
-		$("#summary").animate(
-					{opacity: "0"}, 300, function(){
-						$("#summary").css("display", "none");
-						$("#test").css("display", "block");
-					});
+		//console.log("FROM MENU CASE TEMPLATE CONTROLLER");
+		
+		if(data == "caseSummary"){
+			
+			//$("#summary").animate(
+			//{opacity: "0"}, 300, function(){
+				$("#summary").css("display", "block");
+				$("#test").css("display", "none");
+			//});
+		} else {
+			//$("#summary").animate(
+			//{opacity: "0"}, 300, function(){
+				$("#summary").css("display", "none");
+				$("#test").css("display", "block");
+			//});
+		}
 	});
 })
 
@@ -115,20 +125,40 @@ angular.module('ECMSapp.caseManagement', [])
 	templateUrl: 'components/caseManagement/caseMenu.html',
 	link: function (scope, element, attrs){
 
-		var menuSelect = function(e) {
-			// BROADCASTING THE SELECTION
-			scope.$parent.$broadcast('myCustomEvent', e.item.id);
-		};
-
 		var menu = $("#caseMenu").kendoPanelBar({
-					expand: menuSelect
+					expand: menuExpand,
+					select: menuSelect,
+					collapse: menuCollapse,
+					activate: menuActivate
 				}).data("kendoPanelBar");
-			menu.select("#caseSummaryMen")
+			menu.select("#caseSummary");
+	
+		function menuSelect(e) {
+		
+			console.log("FROM MENU SELECT");
+			// BROADCASTING THE SELECTION
+			scope.$parent.$broadcast('caseMenuSelect', e.item.id);
+			}
+		
+		function menuExpand(e){
+
+			console.log("FROM MENU EXPAND");
+			}
+
+		function menuCollapse(e){
+
+			console.log("FROM MENU COLLAPSE");
+			}
+
+		function menuActivate(e){
+
+			console.log("FROM MENU ACTIVATE");
+			}
 		}
 	};
 })
 
-// CASE SUMMARRY CONTROLLER & DIRECTIVE /////////////////////////////////////////////////////////
+// CASE SUMMARY CONTROLLER & DIRECTIVE /////////////////////////////////////////////////////////
 
 .controller('CaseSummaryCtrl', function($scope){
 	// console.log("FROM CASE HEADER");
@@ -144,15 +174,13 @@ angular.module('ECMSapp.caseManagement', [])
 	templateUrl: 'components/caseManagement/caseSummary.html',
 	link: function (scope, element, attrs){
 
+		// RESIZE THE INFO HOLDER WHEN ONE RESIZE WINDOW
 		var offset = 310;
 		var infoWidth = $("#caseSummaryHolder").width() - offset;
 		$("#info-holder").css('width', infoWidth);
-
 		$window.addEventListener('resize', function() {
-
 			infoWidth = $("#caseSummaryHolder").width() - offset;
 			$("#info-holder").css('width', infoWidth);
-
 			}, false);
 		}
 	};
@@ -166,6 +194,17 @@ angular.module('ECMSapp.caseManagement', [])
 	scope :{},
 	templateUrl: 'components/caseManagement/caseTest.html',
 	link: function (scope, element, attrs){
+
+		var menuTitle;
+
+		scope.$on('caseMenuSelect', function (event, data) {
+			//console.log("FROM CASE TEST");
+			element.sectionTitle =  data;
+			menuTitle  = data == "caseMenu_pb_active"? data = "Submenu" : data = data;
+			scope.$apply(scope.sectionTitle = menuTitle);
+
+			//console.log("FROM MENU CASE TEST DIRECTIVE");
+			});
 		}
 	};
 });

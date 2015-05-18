@@ -1,6 +1,6 @@
 <div id="caseMenuHolder" role="caseMenu">
-	<ul kendo-panel-bar k-options="caseMenuOptions" id="caseMenu">
-		<li id="caseSummaryMen">
+	<ul kendo-panel-bar k-options="caseMenuOptions" k-rebind="caseMenuOptions"  k-ng-delay="caseMenuOptions"  id="caseMenu">
+		<li id="caseSummary">
 			Case Summary
 		</li>
 		<li id="RFSes">
@@ -61,11 +61,7 @@
 		</li>
 		<li id="History">
 			History
-			<ul>
-				<li>Submenu...</li>
-				<li>Submenu...</li>
-				<li>Submenu...</li>
-			</ul>
+			
 		</li>
 	</ul>
 </div>
