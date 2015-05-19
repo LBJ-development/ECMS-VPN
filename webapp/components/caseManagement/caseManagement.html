@@ -1,11 +1,13 @@
 
-<div authorized ng-show="hasPermission('casemgmt:view:basic')" class="main-tab-wrapper ">
+<!-- <div authorized ng-show="hasPermission('casemgmt:view:basic')" class="main-tab-wrapper "> -->
+<div  class="main-tab-wrapper">	
 	<div role="" class="" ng-controller="CaseManagementCtrl">
-		<div id="CMtabstrip" kendo-tab-strip="CMtabstrip" k-options="CMtabstripOptions" k-rebind="CMtabstripOptions"  k-ng-delay="CMtabstripOptions" >
+		<div id="CMtabstrip" kendo-tab-strip="CMtabstrip" k-options="CMtabstripOptions" k-rebind="CMtabstripOptions"  k-ng-delay="CMtabstripOptions" ></div>
 	</div>
-</div>
+</div> 
 
 <!-- NO PERMISSION! ////////////////////////////////////// -->
-<div ng-show="!hasPermission('casemgmt:view:basic')" class="content-wrapper">
+<!-- <div ng-show="!hasPermission('casemgmt:view:basic')" class="content-wrapper">
 	 You do not have permission to view this page. Please check with administrator
 </div>
+ -->

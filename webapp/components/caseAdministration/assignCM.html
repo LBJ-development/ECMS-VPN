@@ -9,9 +9,9 @@
 			<form name="dateRange-frm" ng-submit="reloadData()" role="form" >
 				<div class="filter-row-holder" style="padding-top:20px">
 					<ul>
-						<li style="width: 250px" ng-init="isUnassignedCases=0">
+						<li style="width: 188px" ng-init="isUnassignedCases=0">
 						 	<input type="radio" style="float: left; margin:6px" name="isUnassignedCases" ng-model="isUnassignedCases" ng-change="handleRadioSelection(isUnassignedCases)"  value="0" id="bydate"/>
-						 	<label for="bydate">Case Creation Date Range</label>
+						 	<label for="bydate">Intake Date Range</label>
 						</li>
 						<li style="padding-right: 0px">
 							<label >From:</label> 
@@ -25,7 +25,7 @@
 				</div>
 				<div class="filter-row-holder" >
 					<ul>
-						<li style="width: 627px">
+						<li style="width: 565px">
 							<input type="radio"  style="float: left; margin:6px" name="isUnassignedCases" value="1" ng-model="isUnassignedCases" ng-change="handleRadioSelection(isUnassignedCases)" id="unassignedcases"/>
 							<label for="unassignedcases">All Unassigned Cases</label>
 						</li>

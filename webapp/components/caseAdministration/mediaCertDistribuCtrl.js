@@ -354,7 +354,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 						title	: "Poster",
 						filterable: false,
 						sortable: false,
-						template: "<span><a href='' ng-click='getPDF($event)' class='baseLinkText'>View</a></span>",
+						template: "<span><a href='' ng-click='getPoster($event)' class='baseLinkText'>View</a></span>",
 						width	: "5%"
 						},{
 						width	: "5%",
@@ -400,6 +400,18 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 		
 		// OPEN A CASE IN THE CASE MANAGEMENT SECTION
 		 $location.path('/casemanagement');
+	};
+
+	// GET POSTER /////////////////////////////////////////////////////////////////////////////////////////
+	$scope.getPoster = function(ev){
+		var element	= $(ev.currentTarget);
+		var row 	= element.closest("tr");
+		var grid 	= $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+		var dataItem 	= grid.dataItem(row);
+		$scope.caseID  = dataItem.caseNumber;
+
+		 window.open("http://www.missingkids.com/poster/NCMC/" + $scope.caseID + "/1/screen");
+
 	};
 
 

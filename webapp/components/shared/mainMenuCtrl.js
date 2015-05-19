@@ -81,7 +81,7 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
                         permission: "caseadmin:view:basic"
                     },*/
                     {
-                        text: "Media Cert. Distribu.",
+                        text: "Media Doc Distribution",
                         cssClass: "sub-menu",
                         url: "#/caseadministration/mediacertdistribu",
                         permission: "caseadmin:view:basic"

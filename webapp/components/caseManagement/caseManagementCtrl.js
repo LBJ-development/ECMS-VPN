@@ -11,7 +11,7 @@ angular.module('ECMSapp.caseManagement', [])
 		dataImageUrlField: "imageUrl",
 		dataSource: [
 			{
-				Name: 'Case 12346',
+				Name: 'Case 1247010',
 				imageUrl: "assets/images/TS-case-icn.png",
 				ContentUrl: 'components/caseManagement/caseTemplate.html'
 			},
