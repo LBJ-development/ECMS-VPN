@@ -2,7 +2,7 @@
 
 angular.module('ECMSapp.intakeDistribution', [])
 
-.controller('IntakeDistributionCtrl', [ '$scope', 'DataFtry', '$http', '$location', 'ECMSConfig',  function( $scope, DataFtry, $http, $location,  ECMSConfig){
+.controller('IntakeDistributionCtrl', [ '$scope', 'DataFtry', '$http', '$location', 'ECMSConfig', 'StorageService',  function( $scope, DataFtry, $http, $location,  ECMSConfig, StorageService){
 
 	// QUERY OPTIONS ///////////////////////////////////////////////////////////////////////
 
@@ -99,9 +99,63 @@ angular.module('ECMSapp.intakeDistribution', [])
 		if (newValue === 0){
 			return;
 		}
+		$scope.filterSourcesList = [];
+		$scope.filterCaseTypeList = [];
+		$scope.filterCaseIncidentStateList= [];
+		$scope.filterCaseStatusList = [];
+		
+		var tempSource = "";
+		var tempCaseType= "";
+		var tempIncidentState= "";
+		var filterCaseStatus = "";
+		
+		
 		DataFtry.getCasesForIntakeDist($scope.casesearch).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;
 
+			//console.log(result.data.content);
+			$.each(result.data.content, function(idx, currentCase){ 
+				
+					//source filter
+					tempSource 	= currentCase['caseSource'];
+					if ('undefined' != typeof tempSource ) {
+						//console.log('adding '+ tempSource);
+						if ($.inArray(tempSource, $scope.filterSourcesList) < 0) {
+							$scope.filterSourcesList.push(tempSource);
+						}
+					}
+					
+					//type filter
+					tempCaseType	= currentCase['caseTypeAbbr'];
+					if ('undefined' != typeof tempCaseType ) {
+						//console.log('adding '+ tempCaseType);
+						if ($.inArray(tempCaseType, $scope.filterCaseTypeList) < 0) {
+							$scope.filterCaseTypeList.push(tempCaseType);
+						}
+					}
+					
+					//state filter
+					tempIncidentState	= currentCase['caseIncidentState'];
+					if ('undefined' != typeof tempIncidentState ) {
+						//console.log('adding '+ tempIncidentState);
+						if ($.inArray(tempIncidentState, $scope.filterCaseIncidentStateList) < 0) {
+							$scope.filterCaseIncidentStateList.push(tempIncidentState);
+						}
+					}
+					
+					//status
+					filterCaseStatus	= currentCase['caseStatus'];
+					if ('undefined' != typeof filterCaseStatus ) {
+						//console.log('adding '+ filterCaseStatus);
+						if ($.inArray(filterCaseStatus, $scope.filterCaseStatusList) < 0) {
+							$scope.filterCaseStatusList.push(filterCaseStatus);
+						}
+					}
+
+			});
+			
+			
+			
 			// console.log(result.data.content.length)
 			if(result.data.content.length >= 500){
 				$scope.warningClass = "inline-err";
@@ -391,7 +445,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 		modal: true,
 		content: {
 			iframe: false,
-			template:  '<embed src=' + ECMSConfig.restServicesURI + '/rest/document/export/intake?template=Intake_Report_ECMS.pdf&ids='  + $scope.caseID + '" width="100%" height="100%" type="application/pdf"></embed>'
+			template:  '<embed src=' + ECMSConfig.restServicesURI + '/rest/document/export/intake?X-Auth-Token=' + StorageService.getToken() + 'reportFilename=Intake_Report_ECMS.pdf&ids='  + $scope.caseID + '" width="100%" height="100%" type="application/pdf"></embed>'
 		}
 	};
 	
@@ -405,7 +459,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 		setTimeout(function(){
 			$scope.PDFPreview.center().open();
 		}, 300);
-		//console.log($scope.caseID);
+		console.log($scope.caseID);
 	};
 
 	// SELECT A CASE AND REDIRECT TO THE CASE MANAGMENT //////////////////////////////////////////////////
@@ -498,16 +552,12 @@ angular.module('ECMSapp.intakeDistribution', [])
 	// FILTERING WITH DROPDOWN MENU 
 
 	var victim	= ["1", "2", "3", "4", "5", "6"],
-		bool	= ["Yes", "No"],
-		status	= ["Active", "Recovered", "Closed"],
-		types	= ["ERU", "FA", "NFA", "LIM", "5779", "UHR", "DECC", "RCST", "ATT", "UMR"],
-		sources	= ["Call", "Email", "Internet", "WebService", "Online Sighting Form"],
-		states	= ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'];
+		bool	= ["Yes", "No"];
 			
 	function typeFilter(element) {
 		//element.kendoMultiSelect({
 		element.kendoDropDownList({
-			dataSource: types,
+			dataSource: $scope.filterCaseTypeList.sort(),
 			//multiple: "multiple",
 			optionLabel: "--Select Value--"
 		});
@@ -515,14 +565,21 @@ angular.module('ECMSapp.intakeDistribution', [])
 		
 	function statusFilter(element) {
 		element.kendoDropDownList({
-			dataSource: status,
+			dataSource: $scope.filterCaseStatusList.sort(),
 			optionLabel: "--Select Value--"
 		});
 	}
 		
 	function sourceFilter(element) {
 		element.kendoDropDownList({
-			dataSource: sources,
+			dataSource: $scope.filterSourcesList.sort(),
+			optionLabel: "--Select Value--"
+		});
+	}
+	
+	function stateFilter(element) {
+		element.kendoDropDownList({
+			dataSource: $scope.filterCaseIncidentStateList.sort(),
 			optionLabel: "--Select Value--"
 		});
 	}
@@ -541,13 +598,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 		});
 	}
 
-	function stateFilter(element) {
-		element.kendoDropDownList({
-			dataSource: states,
-			optionLabel: "--Select Value--"
-		});
-	}
-		
 
+		
 }]);
 

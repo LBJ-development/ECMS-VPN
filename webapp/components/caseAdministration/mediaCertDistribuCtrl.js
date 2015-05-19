@@ -132,17 +132,67 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 	};
 	
 	$scope.submitSearch();
+	
 
 	// WATCH FOR A DATE RANGE CHANGE
 	$scope.$watch('submissionCount', function(newValue, oldValue) {
 
 		$scope.mainGridOptions.dataSource.data = [];
+		$scope.filterSourcesList = [];
+		$scope.filterCaseTypeList = [];
+		$scope.filterCaseIncidentStateList= [];
+		$scope.filterCaseStatusList = [];
+		
+		var tempSource = "";
+		var tempCaseType= "";
+		var tempIncidentState= "";
+		var filterCaseStatus = "";
 
 		// console.log($scope.casesearch);
 		DataFtry.getCasesForMediaCertDist($scope.casesearch).then(function(result){
 	
 			$scope.mainGridOptions.dataSource.data = result.data.content;
-
+			
+			//console.log(result.data.content);
+			$.each(result.data.content, function(idx, currentCase){ 
+			
+				//source filter
+				tempSource 	= currentCase['caseSource'];
+				if ('undefined' != typeof tempSource ) {
+					//console.log('adding '+ tempSource);
+					if ($.inArray(tempSource, $scope.filterSourcesList) < 0) {
+						$scope.filterSourcesList.push(tempSource);
+					}
+				}
+				
+				//type filter
+				tempCaseType	= currentCase['caseTypeAbbr'];
+				if ('undefined' != typeof tempCaseType ) {
+					//console.log('adding '+ tempCaseType);
+					if ($.inArray(tempCaseType, $scope.filterCaseTypeList) < 0) {
+						$scope.filterCaseTypeList.push(tempCaseType);
+					}
+				}
+				
+				//state filter
+				tempIncidentState	= currentCase['caseIncidentState'];
+				if ('undefined' != typeof tempIncidentState ) {
+					//console.log('adding '+ tempIncidentState);
+					if ($.inArray(tempIncidentState, $scope.filterCaseIncidentStateList) < 0) {
+						$scope.filterCaseIncidentStateList.push(tempIncidentState);
+					}
+				}
+				
+				//status
+				filterCaseStatus	= currentCase['caseMediaStatus'];
+				if ('undefined' != typeof filterCaseStatus ) {
+					//console.log('adding '+ filterCaseStatus);
+					if ($.inArray(filterCaseStatus, $scope.filterCaseStatusList) < 0) {
+						$scope.filterCaseStatusList.push(filterCaseStatus);
+					}
+				}
+			});
+			
 			if(result.data.content.length >= 500){
 				$scope.warningClass = "inline-err";
 			} else {
@@ -168,7 +218,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 								
 								caseNumber				: { type: "string" },
 								caseSource				: { type: "string" },
-								caseType				: { type: "string" },
+								caseTypeAbbr			: { type: "string" },
 								caseHasPoliceReport		: { type: "string" },
 								caseChildrenCount		: { type: "number" },
 								caseManager				: { type: "string" },
@@ -226,7 +276,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 						title	: "Source",
 						width	: "10%",
 						filterable: {
-							ui			: caseSourceFilter,
+							ui			: sourceFilter,
 							operators	: {
 								string	: {
 								eq		: "Equal to",
@@ -234,9 +284,17 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 								}
 							}
 						},{
-						field	: "caseType",
+						field	: "caseTypeAbbr",
 						title	: "Type",
-						width	: "15%"
+						width	: "15%",
+						filterable: {
+							ui			: typeFilter,
+							operators	: {
+								string	: {
+								eq		: "Equal to",
+									}
+								}
+							}
 						},{
 						field	: "caseHasPoliceReport",
 						title	: "Pol. Rep.",
@@ -265,7 +323,15 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 						},{
 						field	: "caseMediaStatus",
 						title	: "Case Media Status",
-						width	: "10%"
+						width	: "10%",
+						filterable: {
+							ui			: statusFilter,
+							operators	: {
+								string	: {
+								eq		: "Equal to",
+									}
+								}
+							}
 						},{
 						field	: "caseCertifiedDate",
 						title	: "Certified D/T",
@@ -431,11 +497,33 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 	function typeFilter(element) {
 		//element.kendoMultiSelect({
 		element.kendoDropDownList({
-			dataSource: types,
+			dataSource: $scope.filterCaseTypeList.sort(),
 			//multiple: "multiple",
 			optionLabel: "--Select Value--"
 		});
 	}
+		
+	function statusFilter(element) {
+		element.kendoDropDownList({
+			dataSource: $scope.filterCaseStatusList.sort(),
+			optionLabel: "--Select Value--"
+		});
+	}
+		
+	function sourceFilter(element) {
+		element.kendoDropDownList({
+			dataSource: $scope.filterSourcesList.sort(),
+			optionLabel: "--Select Value--"
+		});
+	}
+	
+	function stateFilter(element) {
+		element.kendoDropDownList({
+			dataSource: $scope.filterCaseIncidentStateList.sort(),
+			optionLabel: "--Select Value--"
+		});
+	}
+
 		
 	function victimFilter(element) {
 		element.kendoDropDownList({
@@ -443,24 +531,10 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 			optionLabel: "--Select Value--"
 		});
 	}
-		
-	function caseSourceFilter(element) {
-		element.kendoDropDownList({
-			dataSource: caseSources,
-			optionLabel: "--Select Value--"
-		});
-	}
 
 	function boolFilter(element) {
 		element.kendoDropDownList({
 			dataSource: bool,
-			optionLabel: "--Select Value--"
-		});
-	}
-
-	function stateFilter(element) {
-		element.kendoDropDownList({
-			dataSource: states,
 			optionLabel: "--Select Value--"
 		});
 	}

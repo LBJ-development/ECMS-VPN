@@ -50,10 +50,10 @@
       	<div class="row-holder title-small" style="padding: 0px 0 0px 0px">
 			<span ng-class="warningClass"> {{warning}} </span>
 			<ul ng-show="hasPermission('caseadmin:edit:main')" >
-				<li class="linkButton toEmail" ><a href="" ng-class="buttonDisabledClass" ng-click="openEmailWindow('teamHope')" >Email</a></li>
-				<li class="linkButton toPrint"><a href="" ng-class="buttonDisabledClass" ng-click="">Print</a></li>
-				<li class="linkButton toPDF"><a href="" ng-class="buttonDisabledClass" ng-click="exportRFSes()">Export</a></li>
-				
+				<li class="linkButton toEmail"><a href="" ng-class="buttonDisabledClass" ng-click="openEmailWindow()" >Email</a></li>
+				<li class="linkButton toPrint"><a href="" ng-class="buttonDisabledClass" ng-click="" >Print</a></li>
+				<li class="linkButton toPDF"><a target="_blank" ng-class="buttonDisabledClass" href ng-click="exportRFSes()">Export</a></li>
+				<!--li class="linkButton toPDF"><a target="_blank"  href="http://reportsdevapp1.ncmecad.net:8080/rest_v2/reports/ncmec/sandbox/RfsReport.pdf?rfsNumbers={{checkedIds.toString()}}">Export</a></li-->
 			</ul>
 		</div>
 		<div role="datagrid" class="grid-holder" >
@@ -73,7 +73,7 @@
 		 					<span class="labelClass" style="width: 130px">Enter Recipient(s):</span>
 		 					<input class="k-textbox" ng-model="mailMessage.to" style="width: 300px" id="quicksearch" type="text" name="recipients">
             				<span class="search-btn"  style="float:left"><a href="" ></a></span>
-            				<input   id="includeMyself" type="checkbox" name="copyMyself" style="float:left; margin-top:7px">
+            				<input   id="includeMyself" type="checkbox" name="copyMyself" ng-click="ccMyself()" style="float:left; margin-top:7px">
             				<label  class="labelClass"  for="includeMyself"> Copy Myself</label>
             			</li>
             			<li >
@@ -82,11 +82,11 @@
             			</li>
             			<li >
 		 					<span class="labelClass" style="width: 130px">Body Text:</span>
-		 					<textarea class="k-textbox" ng-model="mailMessage.text" style="width: 450px; max-width: 440px; min-width:440px; height: 250px" id="" type="text" name=""></textarea>
+		 					<textarea class="narrative-text-box" ng-model="mailMessage.text" style="width: 450px; max-width: 440px; min-width:440px; height: 250px" id="" type="text" name=""></textarea>
             			</li>
             			<li style="padding-bottom:0">
 		 					<span class="labelClass" style="width: 130px">Attachment(s):</span>
-		 					<span class="linkButton toXLS" style="padding-top:6px"><a  href=""  >{{mailMessage.attachmentFileNames}}*</a></span>
+		 					<span class="linkButton toXLS" style="padding-top:6px"><a target="_blank" href ng-click="exportRFSes()" >{{attachmentFileName}}*</a></span>
             			</li>
             		</ul>
 		 		</div>

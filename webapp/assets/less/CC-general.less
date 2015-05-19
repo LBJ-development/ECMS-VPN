@@ -21,6 +21,14 @@ html, body {
 	display: block;
 }
 
+.hr-sep{
+	display: inline-block;
+	width: 100%;
+	height: 3px;
+	background-image:url(../images/hr-sep.png);
+	background-repeat:repeat-x;
+}
+
 #wrapper {
 	display: block;
 	position: relative;
@@ -28,8 +36,8 @@ html, body {
 	border-collapse: collapse;
 	width: 97%;
 	text-align: center;
-	min-width: 1050px;
-	max-width:1600px;
+	min-width: 1200px;
+	max-width:1700px;
 	margin: 0 auto 0 auto;
 	margin-top:0px;
 }
@@ -48,7 +56,7 @@ html, body {
 	display: block;
 	text-align: center;
 	width: 100%;
-	margin-top: 20px;
+	margin-top: 40px;
 	// min-height: 700px;
 	// border:solid 1px @bordergray;
 	background-color: @white;
@@ -63,8 +71,6 @@ html, body {
 	display: block;
 	float:left;
 	width: 100%;
-
-	
 }
 
 .panel {
@@ -226,11 +232,11 @@ html, body {
 	display: inline-block;
 	background-color: @white;
 	border:none;	
-	 outline: none;
-   	 -moz-box-shadow: none;
-   	 -webkit-box-shadow: none;
-    	box-shadow: none;
-    	-ms-box-shadow: none;
+	outline: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	-ms-box-shadow: none;
 }
 
 .text-box span  {
@@ -256,39 +262,6 @@ html, body {
 
 .row-detail-info li span {
 	color: @regblue !important;	
-}
-
-// CASE HEADER INFO /////////////////////////////////////////////////////
-.full-width-row {
-	display: inline-block ;
-	width: 100% ;
-}
-.case-header-info {
-	.full-width-row;
-	padding:10px 0 0 5px ;
-}
-
-.case-header-info li {
-	display: inline-block ;
-	float: left ;
-	font-family: @basefont ;
-	font-size:1.0em ;
-	padding: 0 25px 5px 0;
-	text-align: left;
-	list-style-type: none;
-}
-
-.case-header-info li span {
-	color: @mediumblue;
-	//font-weight: bold;
-}
-.h-sep {
-	display:inline-block ;
-	width: 92%;
-	margin-top: 5px;
-	float: left;
-	height: 1px;
-	background-color: @bordergray;
 }
 
 // MODAL WINDOW /////////////////////////////////////////////////////

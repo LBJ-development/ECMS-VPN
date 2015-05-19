@@ -80,7 +80,6 @@ angular.module('ECMSapp.adminMain', [])
 	$scope.searchCriteria.startDate = formatstartDate();
 	$scope.searchCriteria.endDate = formatendDate();
 	$scope.submissionCount = 0;
-	$scope.checkedIds =[];
 	
 	//Initial Load
 	$scope.submitSearch();
@@ -94,8 +93,99 @@ angular.module('ECMSapp.adminMain', [])
 			return;
 		}
 
+		$scope.filterSourcesList = [];
+		$scope.filterRFSTypeList = [];
+		$scope.filterRFSIncidentStateList= [];
+		$scope.filterRFSStatusList = [];
+		$scope.filterCaseManagerList = [];
+		
+		var tempSource = "";
+		var tempRFSType= "";
+		var tempIncidentState= "";
+		var tempRFSStatus = "";
+		var tempCaseManager = "";
 		DataFtry.getRFSes($scope.searchCriteria).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;
+			//console.log(result.data.content);
+			$.each(result.data.content, function(idx, rfs){ 
+				
+					//rfs source filter
+					tempSource 	= rfs['rfsSource'];
+					if ('undefined' != typeof tempSource ) {
+						//console.log('adding '+ tempSource);
+						if ($.inArray(tempSource, $scope.filterSourcesList) < 0) {
+							$scope.filterSourcesList.push(tempSource);
+						}
+					}
+					
+					//rfstype filter
+					tempRFSType	= rfs['rfsTypeDisplay'];
+					if ('undefined' != typeof tempRFSType ) {
+						//console.log('adding '+ tempRFSType);
+						if ($.inArray(tempRFSType, $scope.filterRFSTypeList) < 0) {
+							$scope.filterRFSTypeList.push(tempRFSType);
+						}
+					}
+					
+					//rfstate filter
+					tempIncidentState	= rfs['rfsIncidentState'];
+					if ('undefined' != typeof tempIncidentState ) {
+						//console.log('adding '+ tempIncidentState);
+						if ($.inArray(tempIncidentState, $scope.filterRFSIncidentStateList) < 0) {
+							$scope.filterRFSIncidentStateList.push(tempIncidentState);
+						}
+					}
+					
+					//rfs status
+					tempRFSStatus	= rfs['rfsStatus'];
+					if ('undefined' != typeof tempRFSStatus ) {
+						//console.log('adding '+ tempRFSStatus);
+						if ($.inArray(tempRFSStatus, $scope.filterRFSStatusList) < 0) {
+							$scope.filterRFSStatusList.push(tempRFSStatus);
+						}
+					}
+					
+					//rfs assignee list caseManager=(null)
+					tempCaseManager	= rfs['caseManager'];
+					if ('undefined' != typeof tempCaseManager ) {
+						//console.log('adding '+ tempCaseManager);
+						if ($.inArray(tempCaseManager, $scope.filterCaseManagerList) < 0) {
+							$scope.filterCaseManagerList.push(tempCaseManager);
+						}
+					}
+				
+			});
+			//console.log($scope.filterSourcesList);
+			//console.log($scope.filterRFSTypeList);
+			//console.log($scope.filterRFSIncidentStateList);
+			
+/**************************/
+var grid = angular.element('#grid').data("kendoGrid");// the grid
+		 
+// Find the Role filter menu.
+/*
+var filterMenu = grid.thead.find("th[data-field='rfsSource']").data("kendoFilterMenu");
+filterMenu.form.find("div.k-filter-help-text").text("Select an item from the list:");
+filterMenu.form.find("span.k-dropdown:first").css("display", "none");
+
+// Change the text field to a dropdownlist in the Role filter menu.
+
+filterMenu.form.find(".k-textbox:first")
+    .removeClass("k-textbox")
+    .kendoDropDownList({
+        dataSource: new kendo.data.DataSource({
+            data: [
+                { title: "Software Engineer" },
+                { title: "Quality Assurance Engineer" },
+                { title: "Team Lead" }
+            ]
+        }),
+        dataTextField: "title",
+        dataValueField: "title"
+    });
+/**************************/
+	
+			
 			if(result.data.content.length >= 500){
 				$scope.warningClass = "inline-err";
 			} else {
@@ -111,11 +201,40 @@ angular.module('ECMSapp.adminMain', [])
 		$scope.disabled = false;
 	};
 	
+	// MAKE THE CHECK BOX PERSISTING
+	$scope.checkedIds =[];
+	$scope.selectItem = function(item){
+		//remove from selection list if unchecked
+		if (!item.selected) {
+			 $scope.checkedIds.splice($.inArray(item.rfsNumber, $scope.checkedIds),1);
+		} else {
+			$scope.checkedIds.push(item.rfsNumber);
+		}
+        
+	}
+	
+	$scope.caseSelected = function(ev){
+		var element =$(ev.currentTarget);
+        var checked = element.is(':checked');
+        var row = element.closest("tr");
+        var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+        var item = grid.dataItem(row);
+		
+		$scope.selectItem(item);
+
+        if (checked) {
+            row.addClass("k-state-selected");
+        } else {
+            row.removeClass("k-state-selected");
+        }
+	};
+	
 	$scope.toggleSelectAll = function(ev) {
         var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
         var items = grid.dataSource.data();
         items.forEach(function(item){
 			item.selected = ev.target.checked;
+			$scope.selectItem(item);
         });
     };
 	
@@ -215,7 +334,8 @@ angular.module('ECMSapp.adminMain', [])
 						},{
 						field	: "rfsSource",
 						title	: "Source",
-						width	: "6%",
+						width	: "6%"
+						,
 						filterable: {
 							ui			: sourceFilter,
 							operators	: {
@@ -269,7 +389,15 @@ angular.module('ECMSapp.adminMain', [])
 							
 						field	: "caseManager",
 						title	: "Assignee",
-						width	: "14%"
+						width	: "14%",
+						filterable: {
+							ui			: caseManagerFilter,
+							operators	: {
+								string	: {
+								eq		: "Equal to"
+									}
+								}
+							}
 						},{
 						width	: "2%",
 						filterable: false,
@@ -328,7 +456,7 @@ angular.module('ECMSapp.adminMain', [])
 
 		var view = this.dataSource.view();
 		for(var i = 0; i < view.length;i++){
-			if(checkedIds[view[i].rfsNumber]){
+			if($scope.checkedIds[view[i].rfsNumber]){
 				this.tbody.find("tr[data-uid='" + view[i].uid + "']")
 				//.addClass("k-state-selected")
                 .find(".checkbox")
@@ -339,16 +467,12 @@ angular.module('ECMSapp.adminMain', [])
 		
 	// FILTERING WITH DROPDOWN MENU 
 	var victim	= ["1", "2", "3", "4", "5", "6"],
-		bool	= ["Yes", "No"],
-		status	= ["Active", "Recovered", "Closed"],
-		types	= ["ERU", "FA", "NFA", "LIM", "5779", "UHR", "DECC", "RCST", "ATT", "UMR"],
-		sources	= ["Call", "Email", "Internet", "WebService", "Online Sighting Form"],
-		states	= ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'];
+		bool	= ["Yes", "No"];
 			
 	function typeFilter(element) {
 		//element.kendoMultiSelect({
 		element.kendoDropDownList({
-			dataSource: types,
+			dataSource: $scope.filterRFSTypeList.sort(),
 			//multiple: "multiple",
 			optionLabel: "--Select Value--"
 		});
@@ -356,14 +480,14 @@ angular.module('ECMSapp.adminMain', [])
 		
 	function statusFilter(element) {
 		element.kendoDropDownList({
-			dataSource: status,
+			dataSource: $scope.filterRFSStatusList.sort(),
 			optionLabel: "--Select Value--"
 		});
 	}
 		
 	function sourceFilter(element) {
 		element.kendoDropDownList({
-			dataSource: sources,
+			dataSource: $scope.filterSourcesList.sort(),
 			optionLabel: "--Select Value--"
 		});
 	}
@@ -377,13 +501,19 @@ angular.module('ECMSapp.adminMain', [])
 
 	function stateFilter(element) {
 		element.kendoDropDownList({
-			dataSource: states,
+			dataSource: $scope.filterRFSIncidentStateList.sort(),
+			optionLabel: "--Select Value--"
+		});
+	}
+	
+	function caseManagerFilter(element) {
+		element.kendoDropDownList({
+			dataSource: $scope.filterCaseManagerList.sort(),
 			optionLabel: "--Select Value--"
 		});
 	}
 
 	// CUSTOM EMAIL WINDOW //////////////////////////////////////////////////
-
 	$scope.emailWindowOptions = {
 		width: 690,
 		height:550,
@@ -392,45 +522,21 @@ angular.module('ECMSapp.adminMain', [])
 		scrollable : false
 	};
 
-	$scope.openEmailWindowWithPreparation = function() {
-		var emailTemplateName = "RFSes";
-		var attachment = {
-                "template": "RFSes",
-                "mediaType": "application/pdf"
-              };
-		
-		DataFtry.prepareEmail(templateName,$scope.checkedIds.toString()).then(function(result){
-			console.log("Prepare Email output");
-			console.log(result.data.content);
-			$scope.mailMessage = result.data.content;
-		});
-
-		$scope.emailWindow.center().open();
-	};
-
 	$scope.openEmailWindow = function() {
 		$scope.mailMessage = {
 			from:  $rootScope.userId + "@ncmec.org",
-			replyTo:null,
 			to: $rootScope.userId + "@ncmec.org",
-			cc: [],
-			bcc: null,
 			subject: "Attention: New RFSes",
 			text: "Please find attached RFS Cases: " + $scope.checkedIds.toString(),
-			emailMetadata: {
-				template: "RFSes",
-				subject: $scope.checkedIds.toString()
-			},
 			attachments : [
 				{
-					template: "RFSes",
-					mediaType: "application/pdf",
-					rfses: $scope.checkedIds.toString()
-				
+					template: "RfsReport",
+					format: "xlsx",
+					ids: $scope.checkedIds.toString()
 				}
 			]
 		};
-		$scope.attachmentFileName = "RFSes.pdf";
+		$scope.attachmentFileName = "RfsReport.xls";
 			
 		$scope.emailWindow.center().open();
 	};
@@ -450,22 +556,16 @@ angular.module('ECMSapp.adminMain', [])
 		
 	};
 	
+	//Export
 	$scope.exportRFSes = function() {
-		var exportRFsURL = "/rest/document/export/rfses?fileName=rfses.xlsx&rfsNumbers=" + $scope.checkedIds.toString();
-		//var exportRFsURL = "http://reportsdevapp1.ncmecad.net:8080/rest_v2/reports/ncmec/sandbox/RfsReport.pdf?rfsNumbers=" + $scope.checkedIds.toString();
-	
-		$http({
-			method: 'GET',
-			url: exportRFsURL,
-			//headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/pdf' }, 
-			headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'plain/text' }, 
-			responseType: 'arraybuffer' 
-			}).success(function (response) {
-				//var file_pdf = new Blob([response], {type: 'application/pdf'});
-				var blob_xls = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-				//var file_txt = new Blob([response], {type: 'plain/text'});
-				saveAs(file_pdf, 'RFSesExport' + '.xls');
-			});
+		if ($scope.checkedIds.length <= 0)
+		{
+			alert ('Please select one or more RFSes before exporting..');
+			return;
+		} else {
+			var exportURL = '/rest/document/export/rfses?reportFilename=RfsReport.xlsx&ids=' +$scope.checkedIds.toString();
+			DataFtry.exportDocument(exportURL, '.xlsx', 'SelectedRFSes.xlsx');
+	}
 	}
 
 }]);
