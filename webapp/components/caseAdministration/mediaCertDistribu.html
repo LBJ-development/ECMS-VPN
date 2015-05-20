@@ -19,11 +19,11 @@
 						</li>
 						<li style="padding-right: 0px">
 							<label >From:</label> 
-							<input kendo-date-picker id="startingDate" k-on-change="enableSumbitBtn()" k-ng-model="startingDate" ng-disabled="disableDatePicker" style="width: 180px"/> 
+							<input kendo-date-picker id="startingDate" k-max={{today}} k-on-change="enableSumbitBtn()" k-ng-model="startingDate" ng-disabled="disableDatePicker" style="width: 180px"/> 
 						</li>
 						<li style="padding-right: 0px">
 							<label >To:</label> 
-							<input kendo-date-picker id="endingDate" ng-disabled="disableDatePicker"  k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
+							<input kendo-date-picker id="endingDate" k-max={{today}} ng-disabled="disableDatePicker"  k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
 						</li>
 					</ul>
 				</div>
@@ -74,20 +74,83 @@
 		<div  class="row-holder title-small" style="padding: 0px 0 0px 0px">
 			<span ng-class="warningClass"> {{warning}} </span>
 			<ul ng-show="hasPermission('caseadmin:edit:intakedistribution')">
-					<li class="linkButton toEmail"><a href=""  ng-class="buttonDisabledClass"  ng-click="confirmEmail()">Custom Email</a></li>
+					<li class="linkButton toEmail"><a href=""  ng-class="buttonDisabledClass"  ng-click="openEmailWindow()">Custom Email</a></li>
 				<li class="linkButton"><img src="assets/images/darkPipe.png" ></li>
 			
-				<li class="linkButton toLEA"><a href=""  ng-class="buttonDisabledClass" ng-click="confirmLEA()">Send to LEA</a></li>
-				<li class="linkButton toPG"><a href=""  ng-class="buttonDisabledClass" id="clearinghouse" ng-click="confirmPG()">Send to Parent/Guardian</a></li>
+				<li class="linkButton toLEA"><a href=""  ng-class="buttonDisabledClass" ng-click="confirmSendToLEA()">Send to LEA</a></li>
+				<li class="linkButton toPG"><a href=""  ng-class="buttonDisabledClass"  ng-click="confirmSendToParent()">Send to Parent/Guardian</a></li>
 			
 			</ul>
 		</div>
+		
+		<!-- CONFIRM MESSAGES  /////////////////////////////////////////////////////////////////-->
+		 <div kendo-window="confirmMessage" k-options="confirmMessageOptions" style="text-align: center">
+		 	<div class="large-window-title ">
+				<span class="title-small full-width" >Please confirm you want to distribute</span>
+				<span class="title-small" style="color:#0473df" >{{numCases}}</span><span class="title-small" >{{recipient}}</span>
+			</div>
+			<div class="bottom-window">
+				<ul>
+					<li  class="submit-btn">
+                		<kendo-button class="k-button" ng-click="sendEmailTo()">SEND</kendo-button>
+					</li>
+					<li  class="submit-btn">
+                		<kendo-button  class="k-button"  ng-click="confirmMessage.close()">CANCEL</kendo-button>
+					</li>	
+        		</ul>
+			</div>	
+		</div>
+
 		
         <!-- DATA GRID /////////////////////////////////////////////////////////////////-->
 		<div id="datagrid" role="datagrid" class="grid-holder" >
 			<kendo-grid k-options="mainGridOptions" k-rebind="mainGridOptions" id="grid"  k-ng-delay="mainGridOptions">
 			</kendo-grid >
 		</div>
+		
+				<!-- EMAIL WINDOW  /////////////////////////////////////////////////////////////////-->
+		 <div kendo-window="emailWindow" k-options="emailWindowOptions" >
+		 	<span class="title-small full-width" style="width: 90%; padding-left:15px">
+		 		Please provide email info:
+		 	</span>
+		 	<form name="mailMessage" role="form">
+		 		<div class="filter-holder" style="margin: 0 10px 0px 15px; padding:20px; width: 600px">
+		 			<ul style="float:left">
+		 				<li>
+		 					<span class="labelClass" style="width: 130px">Enter Recipient(s):</span>
+		 					<input class="k-textbox" ng-model="mailMessage.to" style="width: 300px" id="quicksearch" type="text" name="recipients">
+            				<span class="search-btn"  style="float:left"><a href="" ></a></span>
+            				<input   id="includeMyself" type="checkbox" name="copyMyself" ng-click="ccMyself()" style="float:left; margin-top:7px">
+            				<label  class="labelClass"  for="includeMyself"> Copy Myself</label>
+            			</li>
+            			<li >
+		 					<span  class="labelClass" style="width: 130px" >Subject Text:</span>
+		 					<input class="k-textbox" ng-model="mailMessage.subject" style="width: 300px" id="" type="text" name="">
+            			</li>
+            			<li >
+		 					<span class="labelClass" style="width: 130px">Body Text:</span>
+		 					<textarea class="narrative-text-box" ng-model="mailMessage.text" style="width: 450px; max-width: 440px; min-width:440px; height: 250px" id="" type="text" name=""></textarea>
+            			</li>
+            			<!--li style="padding-bottom:0">
+		 					<span class="labelClass" style="width: 130px">Attachment(s):</span>
+		 					<span class="linkButton toXLS" style="padding-top:6px"><a target="_blank" href ng-click="exportRFSes()" >{{attachmentFileName}}*</a></span>
+            			</li-->
+            		</ul>
+		 		</div>
+		 		<div class="bottom-window" style="padding: 0px 15px 0px 0">
+					<ul>
+						<li  class="submit-btn">
+                			<kendo-button class="k-button" ng-click="sendEmail()">SEND</kendo-button>
+						</li>
+						<li  class="submit-btn">
+                			<kendo-button  class="k-button"  ng-click="emailWindow.close()">CANCEL</kendo-button>
+						</li>	
+        			</ul>
+				</div>	
+			</form>
+		</div>
+		
+		
 	</div>
 </div>
 

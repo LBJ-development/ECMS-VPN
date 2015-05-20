@@ -52,40 +52,36 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
             cssClass: "k-state-selected",
             url: "#/home" ,
             permission: "menu:view:home"
-
         },{
             text: "Call Management",
             url: "#/callmanagement",
             permission: "menu:view:callmgmt"
         }, {
-                 text: "Case Administration",
-                url: "#/caseadministration",
-                cssClass: "head-menu", // EMPTY CLASS ONLY FOR SELECTION PURPOSES
-                permission: "menu:view:caseadmin",
-                items: [ {
-                    text: "Assign CM",
+            text: "Case Administration",
+            //url: "#",
+            cssClass: "head-menu", // EMPTY CLASS ONLY FOR SELECTION PURPOSES
+            permission: "menu:view:caseadmin",
+            items: [{
+                    text: "RFS Administration",
+                    cssClass: "sub-menu",
+                    url: "#/caseadministration",
+                    permission: "caseadmin:view:basic"
+                },{
+                    text: "Assign Case Manager",
                     cssClass: "sub-menu",
                     url: "#/caseadministration/assigncm",
                     permission: "caseadmin:view:basic"
-                },
-                    {
-                        text: "Intake Distribution",
-                        cssClass: "sub-menu",
-                        url: "#/caseadministration/intakedistribution",
-                        permission: "caseadmin:view:basic"
-                    },
-                   /* {
-                        text: "Manage Recoveries",
-                        cssClass: "sub-menu",
-                        url: "#/caseadministration/managerecoveries",
-                        permission: "caseadmin:view:basic"
-                    },*/
-                    {
-                        text: "Media Doc Distribution",
-                        cssClass: "sub-menu",
-                        url: "#/caseadministration/mediacertdistribu",
-                        permission: "caseadmin:view:basic"
-                    }]
+                },{
+                    text: "Intake Distribution",
+                    cssClass: "sub-menu",
+                    url: "#/caseadministration/intakedistribution",
+                    permission: "caseadmin:view:basic"
+                },{
+                    text: "Media Doc Distribution",
+                    cssClass: "sub-menu",
+                    url: "#/caseadministration/mediacertdistribu",
+                    permission: "caseadmin:view:basic"
+                }]
             },
             {
                 text: "Case Management",

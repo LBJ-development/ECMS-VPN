@@ -75,7 +75,7 @@ angular.module('ECMSapp.home', [])
 							}
 						},
 					},
-		height		: 240,
+		height		: 225,
 		sortable: true,
 		columns		: [/*{
 						field	: "id",

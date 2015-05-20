@@ -2,7 +2,7 @@
 
 angular.module('ECMSapp.mediaCertDistribu', [])
 
-.controller('mediaCertDistribuCtrl', [ '$scope', 'DataFtry', '$http', '$location',  function( $scope, DataFtry, $http, $location){
+.controller('mediaCertDistribuCtrl', [ '$rootScope', '$scope', 'DataFtry', '$http', '$location',  function( $rootScope, $scope, DataFtry, $http, $location){
 
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
 	var todayDate		= new Date();
@@ -51,6 +51,23 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 	};
 
 	$scope.submitSearch = function(){
+		
+		// data massaging
+		$scope.today = new Date();
+		if (!($scope.startingDate instanceof Date)){
+			alert("Error: Enter correct Start Date(mm/dd/yyyy) OR  Pick a date from DatePicker widget.");
+			return;
+		}
+		
+		if (!($scope.endingDate instanceof Date)){
+			alert("Error: Enter correct End Date(mm/dd/yyyy) OR  Pick a date from DatePicker widget.");
+			return;
+		}
+		
+		if ($scope.startingDate > $scope.endingDate) {
+			alert("Start Date can't be after End Date");
+			return;
+		}
 
 		console.log("FROM SUBMIT SEARCH")
 
@@ -345,7 +362,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 						width	: "15%",
 						filterable: false,
 						},{
-						field	: "recipientSend",
+						field	: "caseMediaSentHistory",
 						title	: "Recipient- D/T Sent",
 						width	: "15%",
 						filterable: false,
@@ -369,18 +386,60 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 				]
 			};
 
-	$scope.toggleSelectAll = function(ev) {
+////////
+// MAKE THE CHECK BOX PERSISTING
+	$scope.checkedIds =[];
+	$scope.selectItem = function(item){
+		//remove from selection list if unchecked
+		if (!item.selected) {
+			 $scope.checkedIds.splice($.inArray(item.caseNumber, $scope.checkedIds),1);
+		} else {
+			$scope.checkedIds.push(item.caseNumber);
+		}
+        
+	}
+	
+	$scope.caseSelected = function(ev){
+		var element =$(ev.currentTarget);
+        var checked = element.is(':checked');
+        var row = element.closest("tr");
+        var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+        var item = grid.dataItem(row);
+		
+		$scope.selectItem(item);
 
-		var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
-		var items = grid.dataSource.data();
-			items.forEach(function(item){
-		item.selected = ev.target.checked;
-		});
-
-		ev.currentTarget.checked ? $scope.caseNum = grid.dataSource.total() : $scope.caseNum = 0; 
+        if (checked) {
+            row.addClass("k-state-selected");
+        } else {
+            row.removeClass("k-state-selected");
+        }
 	};
+	
+	$scope.toggleSelectAll = function(ev) {
+        var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+        var items = grid.dataSource.data();
+        items.forEach(function(item){
+			item.selected = ev.target.checked;
+			$scope.selectItem(item);
+        });
+		
+		ev.currentTarget.checked ? $scope.caseNum = grid.dataSource.total() : $scope.caseNum = 0; 
+    };
 
 	$scope.caseSelected = function(ev){
+		var element =$(ev.currentTarget);
+        var checked = element.is(':checked');
+        var row = element.closest("tr");
+        var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+        var item = grid.dataItem(row);
+		
+		$scope.selectItem(item);
+
+      /*  if (checked) {
+            row.addClass("k-state-selected");
+        } else {
+            row.removeClass("k-state-selected");
+        }*/
 
 		!ev.currentTarget.checked ?  $scope.caseNum -- :$scope.caseNum ++; 
 	
@@ -391,9 +450,87 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 	$scope.$watch('caseNum', function() {
 
 		$scope.caseNum == 0? $scope.buttonDisabledClass = "linkButtonDisabled" : $scope.buttonDisabledClass = "";
-		// console.log("Number of case selected: " + $scope.caseNum);
-
 	});
+
+	// DISTRIBUTE INTAKES MESSAGES //////////////////////////////////////////////////
+
+	$scope.confirmMessageOptions = {
+		width: 380,
+		visible: false,
+		// height: 170,
+		modal: true,
+		scrollable : false,
+		// open: confirmMessage
+	};
+
+	$scope.confirmSendToLEA = function(e) {
+		$scope.numCases = $scope.caseNum + " cases";
+		$scope.recipient = "to LEA.";
+		$scope.targetGroup = "lea";
+		
+		$scope.confirmMessage.center().open();
+	};
+
+	$scope.confirmSendToParent = function(e) {
+		$scope.numCases = $scope.caseNum + " cases";
+		$scope.recipient = "to parent.";
+		$scope.targetGroup = "parent";
+		
+		$scope.confirmMessage.center().open();
+	};
+	
+	$scope.sendEmailTo = function(){
+		DataFtry.sendEmailTo($scope.targetGroup, $scope.checkedIds.toString(), 'case')
+				.then(function(result){
+					$scope.mailStatus = "Mail sent successfully";
+					console.log(result);
+				});
+				
+		$scope.confirmMessage.close();
+		
+	};
+	
+	// CUSTOM EMAIL WINDOW //////////////////////////////////////////////////
+	$scope.emailWindowOptions = {
+		width: 690,
+		height:550,
+		visible: false,	
+		modal: true,
+		scrollable : false
+	};
+
+	$scope.openEmailWindow = function() {
+		$scope.mailMessage = {
+			from:  $rootScope.userId + "@ncmec.org",
+			to: $rootScope.userId + "@ncmec.org",
+			subject: "Attention: Intakes",
+			extraInfo: 
+					{
+						entityType: "case"
+						},
+			text: "Please find attached Intakes: " + $scope.checkedIds.toString(),
+		};
+			
+		$scope.emailWindow.center().open();
+	};
+	
+	$scope.ccMyself = function() {
+		$scope.mailMessage.cc = ($rootScope.userId + "@ncmec.org").split(",");
+	}
+
+	$scope.sendEmail = function(){
+		$scope.mailMessage.to = $scope.mailMessage.to.split(',');
+	
+		DataFtry.sendEmail($scope.mailMessage).then(function(result){
+			console.log("SENT EMAIL !!!");
+			console.log(result);
+		});
+		$scope.emailWindow.close();
+		
+	};
+
+///////
+
 
 	// SELECT A CASE AND REDIRECT TO THE CASE MANAGMENT //////////////////////////////////////////////////
 	$scope.selectCase = function(e){
@@ -410,8 +547,11 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 		var dataItem 	= grid.dataItem(row);
 		$scope.caseID  = dataItem.caseNumber;
 
-		 window.open("http://www.missingkids.com/poster/NCMC/" + $scope.caseID + "/1/screen");
-
+		// FOR REAL DATA////////////////////////////////////////
+		window.open("http://www.missingkids.com/poster/NCMC/" + $scope.caseID + "/screen");
+		// HARD CODED FOR DEMO ////////////////////////////////////////
+		window.open("http://www.missingkids.com/poster/NCMC/" +  "1245036" + "/screen");
+		
 	};
 
 
@@ -442,10 +582,10 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 				sortable: false,
 				pageable: false,
 				columns: [
-					{ field: "childCaseStatus", title: "Child Case Type", width: "20%" },
+					{ field: "incidentType", title: "Child Case Type", width: "20%" },
 					{ field: "childRecoveryStatus", title: "Recovery Status", width: "20%" },
 					{ field: "childName", title:"Child Name", width: "20%" },
-					{ field: "incidAge", title:"Incid. Age", width: "10%" },
+					{ field: "childAge", title:"Incid. Age", width: "10%" },
 					{ field: "childMediaStatus", title: "Child Media Status", width: "20%" },
 					{ field: "childID", title: "Child ID", width: "10%" }
 					]
@@ -500,11 +640,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 			
 	// FILTERING WITH DROPDOWN MENU 
 	var victim	= ["1", "2", "3", "4", "5", "6"],
-		bool	= ["Yes", "No"],
-		status	= ["Active", "Recovered", "Closed"],
-		types	= ["ERU", "FA", "NFA", "LIM", "5779", "UHR", "DECC", "RCST", "ATT", "UMR"],
-		caseSources	= ["Call", "Email", "Internet", "WebService", "Online Sighting Form"],
-		states	= ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'];
+		bool	= ["Yes", "No"];
 		
 	function typeFilter(element) {
 		//element.kendoMultiSelect({

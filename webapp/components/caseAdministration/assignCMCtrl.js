@@ -19,7 +19,7 @@ angular.module('ECMSapp.assignCM', [])
 	$scope.dawsOptions = {
 		width: "80%",
 		visible: false,
-		maxWidth: 1200,
+		maxWidth: 1400,
 		height: "80%",
 		modal: true,
 		// title: "Daily Assignment Worksheet",
