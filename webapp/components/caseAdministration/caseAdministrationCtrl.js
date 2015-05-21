@@ -298,7 +298,7 @@ filterMenu.form.find(".k-textbox:first")
 							}
 						},
 		pageable	: {
-						refresh: true,
+						refresh: false,
 						pageSizes: true,
 						buttonCount: 5,
 						pageSize: 15
@@ -515,8 +515,9 @@ filterMenu.form.find(".k-textbox:first")
 
 	// CUSTOM EMAIL WINDOW //////////////////////////////////////////////////
 	$scope.emailWindowOptions = {
-		width: 690,
-		height:550,
+		title: "Please provide email info:",
+		width: 790,
+		height:600,
 		visible: false,	
 		modal: true,
 		scrollable : false

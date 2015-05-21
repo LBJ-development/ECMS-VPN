@@ -223,7 +223,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 							}
 						},
 		pageable	: {
-						refresh: true,
+						refresh: false,
 						pageSizes: true,
 						buttonCount: 5,
 						pageSize: 15

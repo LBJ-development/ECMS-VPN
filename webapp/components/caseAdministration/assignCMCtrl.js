@@ -14,34 +14,6 @@ angular.module('ECMSapp.assignCM', [])
 		 $location.path('/casemanagement');
 	};
 
-	// DAILY ASSIGNMENT WORKSHEET WINDOW //////////////////////////////////////////////////
-
-	$scope.dawsOptions = {
-		width: "80%",
-		visible: false,
-		maxWidth: 1400,
-		height: "80%",
-		modal: true,
-		// title: "Daily Assignment Worksheet",
-		open: getDAWSdata
-		// position: {
-		// top: 400,
-		// left: "center"
-		// },
-	};
-
-	$scope.todayDate = formatDate();
-
-	function getDAWSdata(){
-
-		var url = "/rest/casemanager/worksheet/current";
-
-		DataFtry.getData(url).then(function(result){
-
-			$scope.dawsGridOptions.dataSource.data = result.data.content;
-		});
-	};
-
 	$scope.dawsGridOptions =  { 
 		dataSource: {
 			data: result,
@@ -160,6 +132,39 @@ angular.module('ECMSapp.assignCM', [])
 		
 		//console.log("modified schedules:" + JSON.stringify($scope.modifiedSchedules) );                        
     };
+
+    // DAILY ASSIGNMENT WORKSHEET WINDOW //////////////////////////////////////////////////
+
+	$scope.dawsOptions = {
+		width: "80%",
+		visible: false,
+		maxWidth: 1400,
+		height: "80%",
+		modal: true,
+		// title: "Daily Assignment Worksheet",
+		open: getDAWSdata
+		// position: {
+		// top: 400,
+		// left: "center"
+		// },
+	};
+
+	$scope.todayDate = formatDate();
+
+	//var grid = $("#grid").data("kendoGrid");
+
+	function getDAWSdata(){
+
+		var url = "/rest/casemanager/worksheet/current";
+
+		DataFtry.getData(url).then(function(result){
+
+			$scope.dawsGridOptions.dataSource.data = result.data.content;
+
+			localStorage["kendo-grid-data"] = kendo.stringify(result.data.content);
+			console.log(localStorage);
+		});
+	};
 	
 	$scope.saveScheduleUpdates = function() {
 		var scheduleUpdatesAsArray = new Array();
@@ -175,8 +180,20 @@ angular.module('ECMSapp.assignCM', [])
 	$scope.saveAndCloseScheduleUpdates = function() {
 		$scope.saveScheduleUpdates();
 		// console.log("saveAndCloseScheduleUpdates");
-		$("#dawsid").data("kendoWindow").close();
+		$("#dawsWin").data("kendoWindow").close();
 		// console.log("saveAndCloseScheduleUpdates done");
+	}
+
+	$scope.cancelDAWSChanges = function() {
+		
+		var dawsData = localStorage["kendo-grid-data"];
+
+		console.log(dawsData);
+
+		if (dawsData) {
+			$scope.dawsGridOptions.dataSource.data = dawsData;
+			$("#dawsWin").data("kendoWindow").close();
+                        }
 	}
 
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
@@ -312,7 +329,7 @@ angular.module('ECMSapp.assignCM', [])
 							}
 						},
 		pageable	: {
-						refresh: true,
+						refresh: false,
 						pageSizes: true,
 						buttonCount: 5,
 						pageSize: 15

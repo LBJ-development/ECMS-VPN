@@ -46,13 +46,13 @@
 			</ul>
 		</div>
 
-		 <div id="dawsid" kendo-window="daws" k-options="dawsOptions" style="text-align: center">
+		 <div id="dawsWin" kendo-window="daws" k-options="dawsOptions" style="text-align: center">
 		 	<div class="large-window-title ">
 				<span class="title-reduced" >Daily Assignment Worksheet for:</span>
 				<span class="date-title-large">{{todayDate}}</span>
 			</div>
 			
-			<kendo-grid k-options="dawsGridOptions" k-rebind="dawsGridOptions" id="grid"  k-ng-delay="dawsGridOptions" k-on-save="trackChanges(kendoEvent)">
+			<kendo-grid k-options="dawsGridOptions" k-rebind="dawsGridOptions" id="dawsGrid"  k-ng-delay="dawsGridOptions" k-on-save="trackChanges(kendoEvent)">
 			</kendo-grid >
 
 			<div ng-show="hasPermission('caseadmin:edit:assignws')" class="bottom-window">
@@ -64,7 +64,7 @@
                 		<kendo-button class="k-button" ng-click="saveScheduleUpdates()">SAVE</kendo-button>
 					</li>
 					<li  class="submit-btn">
-                		<kendo-button  class="k-button"  ng-click="daws.close()">CANCEL</kendo-button>
+                		<kendo-button  class="k-button"  ng-click="cancelDAWSChanges()">CANCEL</kendo-button>
 					</li>	
         		</ul>
 			</div>	

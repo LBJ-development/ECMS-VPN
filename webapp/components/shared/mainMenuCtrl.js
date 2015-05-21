@@ -118,12 +118,16 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
         templateUrl: 'components/shared/mainMenu.html',
         link: function (scope, element, attrs){
 
+            var locations = [];
+
         // WHEN A CASE HAS BEEN SELECTED AND REDIRECT TO CASE MANAGEMENT
-            scope.$on('$routeChangeStart', function(next, current) { 
+                scope.$on('$routeChangeStart', function(next, current) { 
 
                 // console.log("ROUTE CHANGES:");
-                // console.log($location.path());
 
+                    // STORE THE LCCATIONS FOR THE BACK BUTTON //////////////////////////
+                    locations.push($location.path());
+                 
                 if($location.path() == "/casemanagement" ){
 
                     // CHANGE THE ITEM MENU CLASS
@@ -167,11 +171,21 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
 								}
 								k--;
 							}
-                        }
-						//console.log(scope.menuSource[i]['permission'] + ' will be enabled because:' + ($.inArray(scope.menuSource[i]['permission'], permissions) >0));
+                }
+                					//console.log(scope.menuSource[i]['permission'] + ' will be enabled because:' + ($.inArray(scope.menuSource[i]['permission'], permissions) >0));
                         $rootScope.menuWithPermissions.push(scope.menuSource[i]);
                     }
                 }
+            }
+
+            scope.goBack = function(ev) { 
+                   locations.pop();
+                var route = locations[locations.length - 1];
+                 
+                     console.log(route);
+                   $location.path(route);
+
+                  
             }
 
             var CASelected = false;

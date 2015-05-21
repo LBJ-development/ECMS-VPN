@@ -62,27 +62,24 @@
 			</div>  
 		</div>
 		<!-- EMAIL WINDOW  /////////////////////////////////////////////////////////////////-->
-		 <div kendo-window="emailWindow" k-options="emailWindowOptions" >
-		 	<span class="title-small full-width" style="width: 90%; padding-left:15px">
-		 		Please provide email info:
-		 	</span>
+		 <div kendo-window="emailWindow" k-options="emailWindowOptions">
 		 	<form name="mailMessage" role="form">
-		 		<div class="filter-holder" style="margin: 0 10px 0px 15px; padding:20px; width: 600px">
+		 		<div class="filter-holder" style="margin: 25px 10px 0px 15px; padding:20px; width: 700px">
 		 			<ul style="float:left">
 		 				<li>
 		 					<span class="labelClass" style="width: 130px">Enter Recipient(s):</span>
-		 					<input class="k-textbox" ng-model="mailMessage.to" style="width: 300px" id="quicksearch" type="text" name="recipients">
+		 					<input class="k-textbox" ng-model="mailMessage.to" style="width: 400px" id="quicksearch" type="text" name="recipients">
             				<span class="search-btn"  style="float:left"><a href="" ></a></span>
             				<input   id="includeMyself" type="checkbox" name="copyMyself" ng-click="ccMyself()" style="float:left; margin-top:7px">
             				<label  class="labelClass"  for="includeMyself"> Copy Myself</label>
             			</li>
             			<li >
 		 					<span  class="labelClass" style="width: 130px" >Subject Text:</span>
-		 					<input class="k-textbox" ng-model="mailMessage.subject" style="width: 300px" id="" type="text" name="">
+		 					<input class="k-textbox" ng-model="mailMessage.subject" style="width: 400px" id="" type="text" name="">
             			</li>
             			<li >
-		 					<span class="labelClass" style="width: 130px">Body Text:</span>
-		 					<textarea class="narrative-text-box" ng-model="mailMessage.text" style="width: 450px; max-width: 440px; min-width:440px; height: 250px" id="" type="text" name=""></textarea>
+		 					<!-- <span class="labelClass" style="width: 130px">Body Text:</span> -->
+		 					<textarea  kendo-editor   class="narrative-text-box" ng-model="mailMessage.text" style="width: 700px; height: 300px;" id="" type="text" name=""></textarea>
             			</li>
             			<li style="padding-bottom:0">
 		 					<span class="labelClass" style="width: 130px">Attachment(s):</span>

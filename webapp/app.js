@@ -18,7 +18,8 @@ var app = angular.module('ECMSapp', [
     'ECMSapp.intakeDistribution',
     'ECMSapp.mediaCertDistribu',
     'ECMSapp.caseManagement',
-	'kendo.directives'
+	'kendo.directives',
+    "ngSanitize" 
 	]);
 
 // BALLU /////////////////////////////////////////////////////////////////////////////////////////

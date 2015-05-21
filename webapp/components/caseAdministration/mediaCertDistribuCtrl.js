@@ -233,16 +233,18 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 					model: {
 						fields: {
 								
-								caseNumber				: { type: "string" },
-								caseSource				: { type: "string" },
+								caseNumber			: { type: "string" },
+								caseSource			: { type: "string" },
 								caseTypeAbbr			: { type: "string" },
 								caseHasPoliceReport		: { type: "string" },
 								caseChildrenCount		: { type: "number" },
-								caseManager				: { type: "string" },
-								caseMediaStatus			: { type: "string" },
+								caseManager			: { type: "string" },
+								caseMediaStatus		: { type: "string" },
 								caseCertifiedDate		: { type: "date" },
 								caseRestrictedDate		: { type: "date" },
-								recipientSend			: { type: "string" }
+								recipientSend			: { type: "string" },
+								casePosterFlag		: { type: "boolean" },
+								posterURL			: { type: "string" },
 								},
 							}
 						},
@@ -276,7 +278,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 							}
 						},
 		pageable	: {
-						refresh: true,
+						refresh: false,
 						pageSizes: true,
 						buttonCount: 5,
 						pageSize: 15
@@ -371,13 +373,15 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 						title	: "Poster",
 						filterable: false,
 						sortable: false,
-						template: "<span><a href='' ng-click='getPoster($event)' class='baseLinkText'>View</a></span>",
+						//template: "<span ><a href='' ng-click='getPoster($event)' class='baseLinkText'>View</a></span>",
+						template: '<span #= casePosterFlag ? \'style="display:block"\' :  \'style="display:none"\' #  ><a href=#= posterURL #  target="_blank" class="baseLinkText">View</a></span>',
 						width	: "5%"
 						},{
 						width	: "5%",
 						filterable: false,
 						sortable: false,
-						template: "<input type='checkbox' ng-model='dataItem.selected' ng-click='caseSelected($event)' />",
+						template: "<input type='checkbox'  ng-model='dataItem.selected' ng-click='caseSelected($event)' />",
+						//template:  '<input type="checkbox" #= casePosterFlag ? \'checked="checked"\' : "" # class="chkbx" />',
 						title: "<input type='checkbox' title='Select all' ng-click='toggleSelectAll($event)'/>",
 						attributes: {
 						style: "text-align: center"
@@ -492,8 +496,9 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 	
 	// CUSTOM EMAIL WINDOW //////////////////////////////////////////////////
 	$scope.emailWindowOptions = {
-		width: 690,
-		height:550,
+		title: "Please provide email info:",
+		width: 790,
+		height:600,
 		visible: false,	
 		modal: true,
 		scrollable : false
