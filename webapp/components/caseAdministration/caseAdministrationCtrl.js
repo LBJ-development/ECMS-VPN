@@ -210,7 +210,6 @@ filterMenu.form.find(".k-textbox:first")
 		} else {
 			$scope.checkedIds.push(item.rfsNumber);
 		}
-        
 	}
 	
 	$scope.caseSelected = function(ev){
@@ -544,7 +543,7 @@ filterMenu.form.find(".k-textbox:first")
 	
 	$scope.ccMyself = function() {
 		$scope.mailMessage.cc = ($rootScope.userId + "@ncmec.org").split(",");
-	}
+	};
 	
 	$scope.sendEmail = function(){
 		$scope.mailMessage.to = $scope.mailMessage.to.split(',');
@@ -556,17 +555,32 @@ filterMenu.form.find(".k-textbox:first")
 		$scope.emailWindow.close();
 		
 	};
+
+	//PRINT RFSs ////////////////////////////////
+	$scope.printRFSes = function() {
+
+		console.log("FROM PRINT RFSES");
+		if ($scope.checkedIds.length <= 0) {
+			alert ('Please select one or more RFSes before printing..');
+			return;
+		} else {
+			//var printURL = '/rest/document/export/cases?reportFileName=CaseReportWs.html&ids=' +$scope.checkedIds.toString();
+			DataFtry.printRFSes($scope.checkedIds.toString());
+		}
+	};
 	
-	//Export
+	//EXPORT RFSs ////////////////////////////////
 	$scope.exportRFSes = function() {
 		if ($scope.checkedIds.length <= 0)
 		{
 			alert ('Please select one or more RFSes before exporting..');
 			return;
 		} else {
-			var exportURL = '/rest/document/export/rfses?reportFilename=RfsReport.xlsx&ids=' +$scope.checkedIds.toString();
+
+
+			var exportURL = '/rest/document/export/cases?reportFileName=CaseReportWs.html&ids=' +$scope.checkedIds.toString();
 			DataFtry.exportDocument(exportURL, '.xlsx', 'SelectedRFSes.xlsx');
-	}
-	}
+		}
+	};
 
 }]);

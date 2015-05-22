@@ -54,7 +54,7 @@ app.factory("ECMSConfig", function($window, $rootScope) {
     };
 });
 */
-app.factory('httpRequestInterceptor', function (StorageService, ECMSConfig) {
+app.factory('httpRequestInterceptor', function ($q, $location, StorageService, ECMSConfig) {
     return {
         request: function (config) {
             //console.log("Inside interceptor:" )
@@ -64,9 +64,41 @@ app.factory('httpRequestInterceptor', function (StorageService, ECMSConfig) {
                 config.url = ECMSConfig.restServicesURI + config.url ;
             }
             return config;
+        },
+		response: function(response) {
+			
+			var deferred = $q.defer();
+			//Check transport level response is success AND make sure it's rest URI
+            if (response.status == 200 && response.config.url.indexOf("/rest/") > 0 ) {
+				//Check if user has session'ed out
+				if (response.data.status === 'FAIL' && 'undefined' != typeof response.messages && 'undefined' != typeof response.messages['ROOT'] && response.messages['ROOT'] === "Unauthorized: Authentication token was either missing or invalid.") {
+					//Redirect user to login page
+					console.log("ERROR: User is session timed out !!");
+					console.log(response);
+					$location.path('/login');
+				}
+			}
+			deferred.resolve(response);
+			return deferred.promise;
         }
     };
 });
+
+app.factory('timestampMarker', [function() {  
+    var timestampMarker = {
+        request: function(config) {
+            config.requestTimestamp = new Date().getTime();
+            return config;
+        },
+        response: function(response) {
+            response.config.responseTimestamp = new Date().getTime();
+			var timeTaken = response.config.responseTimestamp - response.config.requestTimestamp; 
+			//console.log("Time taken for "  + response.config.url + "="+ timeTaken/1000 + " seconds");
+            return response;
+        }
+    };
+    return timestampMarker;
+}]);
 
 app.factory('loginService', function( $http, StorageService){
     return{
@@ -104,8 +136,8 @@ app.factory('loginService', function( $http, StorageService){
 
 app.config(function ($httpProvider) {
     $httpProvider.interceptors.push('httpRequestInterceptor');
+	$httpProvider.interceptors.push('timestampMarker');
 });
-
 
 app.run( function($location, $window, $rootScope, StorageService){
     StorageService.setToken(null);

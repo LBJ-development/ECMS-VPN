@@ -127,7 +127,7 @@ angular.module('ECMSapp.services', [])
 		console.log("preparing email for :" + emailTemplateName + " with " + checkedIds);
 		console.log(requestPayload.attachements);
 		return executeHttpJSONPost("/rest/email/preparemail", requestPayload);
-	}
+	};
 		
 	var exportDocument = function(exportURL,targetFormat, fileName){
 		
@@ -135,19 +135,19 @@ angular.module('ECMSapp.services', [])
 		var blobType = {};
 		
 		switch (targetFormat){
-			case '.pdf': 
+			case '.pdf':
 					headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/pdf' };
 					blobType = {'type': 'application/pdf'};
 					break;
-			case '.xlsx': 
+			case '.xlsx':
 					headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' };
 					blobType = {'type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'};
 					break;
-			case '.docx': 
+			case '.docx':
 					headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/octet-stream' };
 					blobType = {'type': 'application/octet-stream'};
 					break;
-			default:  
+			default:
 					headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'plain/text' };
 					blobType = {'type': 'plain/text'};
 		}
@@ -155,8 +155,8 @@ angular.module('ECMSapp.services', [])
 		$http({
 			method: 'GET',
 			url: exportURL,
-			headers: headers, 
-			responseType: 'arraybuffer' 
+			headers: headers,
+			responseType: 'arraybuffer'
 			}).success(function (response) {
 				var blobFile = new Blob([response], blobType);
 				saveAs(blobFile, fileName + targetFormat);
@@ -165,14 +165,22 @@ angular.module('ECMSapp.services', [])
 			});
 		
 		return ;
-	}
+	};
 	
+	var printRFSes = function (casesToPrint) {
+		console.log("print cases");
+		console.log(casesToPrint);
+		//return executeHttpJSONPost("/rest/document/export/cases?reportFileName=CaseReportWs.html&ids=", casesToPrint);
+		return executeHttpJSONPost("/rest/document/export/cases?reportFileName=CaseReportWs.html&ids=1245290,1245291");
+		
+	};
+
 	
 	var sendEmail = function (mailMessage) {
 		console.log("sending email criteria");
 		console.log(mailMessage);
 		return executeHttpJSONPost("/rest/email/sendmail", mailMessage);
-	}
+	};
 
 
 	return {
@@ -185,6 +193,7 @@ angular.module('ECMSapp.services', [])
 		getCasesForMediaCertDist: getCasesForMediaCertDist,
 		prepareEmail: prepareEmail,
 		sendEmail: sendEmail,
-		exportDocument: exportDocument
+		exportDocument: exportDocument,
+		printRFSes: printRFSes
 		};
 });

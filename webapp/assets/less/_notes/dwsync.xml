@@ -82,16 +82,16 @@
 <file name="reset.less" server="Z:/UIDesigns/ECMS/" local="130681431642460936" remote="130681431640000000" Dst="1" />
 <file name="variables.less" server="Z:/UIDesigns/ECMS/" local="130681431642470936" remote="130681431640000000" Dst="1" />
 <file name="CC-forms.less" server="Z:/UIDesigns/ECMS/app/" local="130749009797520356" remote="130749009790000000" Dst="2" />
-<file name="CC-general.less" server="Z:/UIDesigns/ECMS/app/" local="130753903246416000" remote="130753903240000000" Dst="2" />
+<file name="CC-general.less" server="Z:/UIDesigns/ECMS/app/" local="130767781806857199" remote="130767781800000000" Dst="2" />
 <file name="CC-masthead.less" server="Z:/UIDesigns/ECMS/app/" local="130705524323130000" remote="130705524320000000" Dst="2" />
 <file name="CC-styles.less" server="Z:/UIDesigns/ECMS/app/" local="130699506021196000" remote="130699506020000000" Dst="1" />
-<file name="CC-typography.less" server="Z:/UIDesigns/ECMS/app/" local="130748986843550356" remote="130748986840000000" Dst="2" />
-<file name="kendoUI-redefined.less" server="Z:/UIDesigns/ECMS/app/" local="130753903246426000" remote="130753903240000000" Dst="2" />
+<file name="CC-typography.less" server="Z:/UIDesigns/ECMS/app/" local="130766286531798028" remote="130766286530000000" Dst="2" />
+<file name="kendoUI-redefined.less" server="Z:/UIDesigns/ECMS/app/" local="130767713740920942" remote="130767713740000000" Dst="2" />
 <file name="ng-Animation.less" server="Z:/UIDesigns/ECMS/app/" local="130688388332088081" remote="130688388330000000" Dst="1" />
 <file name="CC-variables.less" server="Z:/UIDesigns/ECMS/app/" local="130748987512390356" remote="130748987510000000" Dst="2" />
 <file name="ng-Animation.less" server="Z:/ECMS/app/" local="130711982047995872" remote="130711982040000000" Dst="2" />
 <file name="CC-buttons.less" server="Z:/ECMS/app/" local="130767117093884345" remote="130767117090000000" Dst="2" />
-<file name="CC-buttons.less" server="Z:/UIDesigns/ECMS/app/" local="130748826221724077" remote="130748826220000000" Dst="2" />
+<file name="CC-buttons.less" server="Z:/UIDesigns/ECMS/app/" local="130767713740850935" remote="130767713740000000" Dst="2" />
 <file name="JQX-redefined.less" server="Z:/ECMS/app/" local="130711982047845864" remote="130711982040000000" Dst="2" />
 <file name="CC-caseSpecs.less" server="Z:/ECMS/app/" local="130765305631114115" remote="130765305630000000" Dst="2" />
 </dwsync>

@@ -14,11 +14,11 @@
         				</li>
         				<li style="padding-right: 0px">
 							<label>From:</label> 
-							<input kendo-date-picker k-on-change="enableSumbitBtn()" k-ng-model="startDate" style="width: 180px"/> 
+							<input id="startDate" kendo-date-picker k-on-open="onCalendarOpen()" k-max={{today}} k-on-change="enableSumbitBtn()" k-ng-model="startDate" style="width: 180px"/> 
 						</li>
 						<li style="padding-right: 0px">
 							<label>To:</label> 
-							<input kendo-date-picker k-on-change="enableSumbitBtn()"  k-ng-model="endDate"  style="width: 180px"/>
+							<input kendo-date-picker k-max={{today}} k-on-change="enableSumbitBtn()"  k-ng-model="endDate"  style="width: 180px"/>
 						</li>
         			</ul>
         		</div>
@@ -51,9 +51,8 @@
 			<span ng-class="warningClass"> {{warning}} </span>
 			<ul ng-show="hasPermission('caseadmin:edit:main')" >
 				<li class="linkButton toEmail"><a href="" ng-class="buttonDisabledClass" ng-click="openEmailWindow()" >Email</a></li>
-				<li class="linkButton toPrint"><a href="" ng-class="buttonDisabledClass" ng-click="" >Print</a></li>
+				<li class="linkButton toPrint"><a href="" ng-class="buttonDisabledClass" ng-click="printRFSes()" >Print</a></li>
 				<li class="linkButton toPDF"><a target="_blank" ng-class="buttonDisabledClass" href ng-click="exportRFSes()">Export</a></li>
-				<!--li class="linkButton toPDF"><a target="_blank"  href="http://reportsdevapp1.ncmecad.net:8080/rest_v2/reports/ncmec/sandbox/RfsReport.pdf?rfsNumbers={{checkedIds.toString()}}">Export</a></li-->
 			</ul>
 		</div>
 		<div role="datagrid" class="grid-holder" >
@@ -102,6 +101,7 @@
 		</div>
 	</div>
 </div>
+
 <!-- HANDLING PERMISSIONS  /////////////////////////////////////////////////////////////////-->
 <div ng-show="!hasPermission('caseadmin:view:basic')" class="content-wrapper">
 	 You do not have permission to view this page. Please check with administrator

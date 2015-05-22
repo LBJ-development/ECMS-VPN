@@ -7,7 +7,7 @@ angular.module('ECMSapp.assignCM', [])
 	console.log("FROM ASSIGN CM");
 	console.log($location);
 
-		// SELECT A CASE AND REDIRECT TO THE CASE MANAGMENT //////////////////////////////////////////////////
+	// SELECT A CASE AND REDIRECT TO THE CASE MANAGMENT //////////////////////////////////////////////////
 	$scope.selectCase = function(e){
 		
 		// OPEN A CASE IN THE CASE MANAGEMENT SECTION
@@ -21,13 +21,13 @@ angular.module('ECMSapp.assignCM', [])
 					model: {
 						fields: {
 								id			: { type: "integer", editable: false},
-								name		: { type: "string", editable: false},
+								name		: { type: "string",  editable: false},
 								location	: { type: "string",  editable: false},
-								cmGroup	: { type: "string" , editable: false},
+								cmGroup		: { type: "string",  editable: false},
 								otherGroup	: { type: "string",  editable: false },
 								faRegion	: { type: "string",  editable: false },
 								foreignLang	: { type: "string",  editable: false },
-								ooo		: { type: "string" },
+								ooo			: { type: "string" },
 								onCall		: { type: "string" },
 								shift		: { type: "string" },
 								telecommute	: { type: "string" }
@@ -39,11 +39,13 @@ angular.module('ECMSapp.assignCM', [])
 		scrollable	: true,
 		height 		: "83%",
 		editable	: true,
-		columns		: [{
+		columns		: [
+					/*{
 						field	: "id",
 						title	: "Id",
 						width	: "5%",
-					},{
+					},*/
+					{
 						field	: "name",
 						title	: "Name",
 						width	: "15%",
@@ -228,12 +230,26 @@ angular.module('ECMSapp.assignCM', [])
 		return enYear + "-" + enMonth  + "-" + enDate;
 	}
 	
+	$scope.assignMessage = "";
 	$scope.assignCM = function(){
 		var assignURL = "case:" + $scope.dataItem.caseNumber + "manager:"+ $scope.assignCM.caseManagerId;
 
 		DataFtry.assignCaseManager($scope.dataItem.caseNumber, $scope.assignCM.caseManagerId).then(function(result){
+			
+			//Handle the result
+			if (result.status==200 && result.data.status == 'SUCCESS') {
+				$scope.assignMessage = "Successfully assigned to " + $scope.caseManagerName + ".";
+				$scope.warningClass = "inline-msg";
+			} else {
+				$scope.assignMessage = "Unable to assign " + $scope.caseManagerName + ". Please retry"
+				$scope.warningClass = "inline-err";
+			}
+
 			// console.log("assigned manager successfully:" + assignURL);
 			$scope.dataItem.caseManager = $scope.caseManagerName; //"12312";
+			if ($.inArray($scope.dataItem.caseManager, $scope.filterCaseManagerList) < 0) {
+				$scope.filterCaseManagerList.push($scope.dataItem.caseManager);
+			}
 
 			console.log($scope.caseManagerName);
 			//$scope.reloadData(); //triggering main grid refresh
@@ -255,13 +271,75 @@ angular.module('ECMSapp.assignCM', [])
 			$scope.submitSearch++;
 	};
 
+	$scope.filterSourcesList = [];
+	$scope.filterCaseTypeList = [];
+	$scope.filterCaseManagerList = [];
+	
+	var tempSource = "";
+	var tempCaseType= "";
+	var tempCaseManager
 
 	// WATCH FOR A DATE RANGE CHANGE
 	$scope.$watch('submitSearch', function(newValue, oldValue) {
 		// console.log("Calling submitSearch:" + $scope.submitSearch);
 		$scope.mainGridOptions.dataSource.data = [];
+		
+		$scope.today = new Date();
+		// data massaging
+		console.log("startDate valid:" + ($scope.startDate instanceof Date));
+		console.log("endDate valid:" + ($scope.endDate instanceof Date));
+		if (!($scope.startingDate instanceof Date)){
+			alert("Error: Enter correct Start Date(mm/dd/yyyy) OR  Pick a date from DatePicker widget.");
+			return;
+		}
+		
+		if (!($scope.endingDate instanceof Date)){
+			alert("Error: Enter correct End Date(mm/dd/yyyy) OR  Pick a date from DatePicker widget.");
+			return;
+		}
+		
+		if ($scope.startingDate > $scope.endingDate) {
+			alert("Start Date can't be after End Date");
+			return;
+		}
+		
 		DataFtry.getCasesForAssignment(formatStartingDate(), formatEndingDate(), $scope.isUnassignedCases).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;
+			
+			//console.log(result.data.content);
+			$.each(result.data.content, function(idx, currentCase){ 
+				
+					//source filter
+					tempSource 	= currentCase['caseSource'];
+					if ('undefined' != typeof tempSource ) {
+						//console.log('adding '+ tempSource);
+						if ($.inArray(tempSource, $scope.filterSourcesList) < 0) {
+							$scope.filterSourcesList.push(tempSource);
+						}
+					}
+					
+					//type filter
+					tempCaseType	= currentCase['caseTypeAbbr'];
+					if ('undefined' != typeof tempCaseType ) {
+						//console.log('adding '+ tempCaseType);
+						if ($.inArray(tempCaseType, $scope.filterCaseTypeList) < 0) {
+							$scope.filterCaseTypeList.push(tempCaseType);
+						}
+					}
+
+					//assignee list caseManager=(null)
+					tempCaseManager	= currentCase['caseManager'];
+					if ('undefined' != typeof tempCaseManager ) {
+						//console.log('adding '+ tempCaseManager);
+						if ($.inArray(tempCaseManager, $scope.filterCaseManagerList) < 0) {
+							$scope.filterCaseManagerList.push(tempCaseManager);
+						}
+					}
+
+			});
+			
+			
+			
 			if(result.data.content.length >= 500){
 				$scope.warningClass = "inline-err";
 			} else {
@@ -358,7 +436,7 @@ angular.module('ECMSapp.assignCM', [])
 						title	: "Source",
 						width	: "15%",
 						filterable: {
-							ui			: caseSourceFilter,
+							ui			: sourceFilter,
 							operators	: {
 								string	: {
 								eq		: "Equal to",
@@ -416,7 +494,15 @@ angular.module('ECMSapp.assignCM', [])
 						},{
 						field	: "caseManager",
 						title	: "Assignee",
-						width	: "20%"
+						width	: "20%",
+						filterable: {
+							ui			: caseManagerFilter,
+							operators	: {
+								string	: {
+								eq		: "Equal to"
+									}
+								}
+							}
 						}]
 				};
 			
@@ -451,7 +537,7 @@ angular.module('ECMSapp.assignCM', [])
 				columns: [
 					{ field: "childRecoveryStatus", title: "Recovery Status", width: "12%" },
 					{ field: "incidentType", title: "Child Case Type", width: "17%" },
-					{ field: "incidentState", title: "Inc. State", width: "45px" },
+					{ field: "incidentState", title: "Incd. State", width: "45px" },
 					{ field: "parentRelationship", title: "P/G Relationship", width: "15%" },
 					{ field: "foreignLanguage", title: "Foreign Lang.", width: "10%" },
 					{ field: "childName", title:"Child Name", width: "20%" },
@@ -504,45 +590,40 @@ angular.module('ECMSapp.assignCM', [])
 			
 	// FILTERING WITH DROPDOWN MENU 
 	var victim	= ["1", "2", "3", "4", "5", "6"],
-		bool	= ["Yes", "No"],
-		status	= ["Active", "Recovered", "Closed"],
-		types	= ["ERU", "FA", "NFA", "LIM", "5779", "UHR", "DECC", "RCST", "ATT", "UMR"],
-		caseSources	= ["Call", "Email", "Internet", "WebService", "Online Sighting Form"],
-		states	= ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'];
+		bool	= ["Yes", "No"];
 		
 	function typeFilter(element) {
 		//element.kendoMultiSelect({
 		element.kendoDropDownList({
-			dataSource: types,
+			dataSource: $scope.filterCaseTypeList.sort(),
 			//multiple: "multiple",
 			optionLabel: "--Select Value--"
 		});
 	}
-		
+	
+	function sourceFilter(element) {
+		element.kendoDropDownList({
+			dataSource: $scope.filterSourcesList.sort(),
+			optionLabel: "--Select Value--"
+		});
+	}		
+	
+	function caseManagerFilter(element) {
+		element.kendoDropDownList({
+			dataSource: $scope.filterCaseManagerList.sort(),
+			optionLabel: "--Select Value--"
+		});
+	}
+
 	function victimFilter(element) {
 		element.kendoDropDownList({
 			dataSource: victim,
 			optionLabel: "--Select Value--"
 		});
 	}
-		
-	function caseSourceFilter(element) {
-		element.kendoDropDownList({
-			dataSource: caseSources,
-			optionLabel: "--Select Value--"
-		});
-	}
-
 	function boolFilter(element) {
 		element.kendoDropDownList({
 			dataSource: bool,
-			optionLabel: "--Select Value--"
-		});
-	}
-
-	function stateFilter(element) {
-		element.kendoDropDownList({
-			dataSource: states,
 			optionLabel: "--Select Value--"
 		});
 	}
@@ -564,7 +645,7 @@ angular.module('ECMSapp.assignCM', [])
 				scope.acmGroupSource = result.content;
 				scope.disableCaseMgrBtnFlag = true;
 
-				console.log("FROM GET MANAGER GROUP");
+				//console.log("FROM GET MANAGER GROUP");
 			});
 
 		// GET CASE MANAGERS LIST 
@@ -584,7 +665,7 @@ angular.module('ECMSapp.assignCM', [])
 
 							// console.log(dataItem.name == scope.caseManager);
 
-							return dataItem.name === scope.caseManager;
+							return dataItem.name.trim() === scope.caseManager.trim();
 						});
 					}
 				}, 500);
@@ -616,7 +697,7 @@ angular.module('ECMSapp.assignCM', [])
 
 		//SELECT CASE MANAGER ///////////////////////////////
 		scope.selectManager = function(ev) {
-			console.log("FROM SELELCT MANAGER");
+			//console.log("FROM SELELCT MANAGER");
 			scope.caseManagerName = ev.item.text();
 			scope.disableCaseMgrBtnFlag = false;
 		// console.log($scope.caseManagerName);

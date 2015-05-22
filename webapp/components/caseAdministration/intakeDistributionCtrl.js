@@ -2,22 +2,42 @@
 
 angular.module('ECMSapp.intakeDistribution', [])
 
-.controller('IntakeDistributionCtrl', [ '$scope', 'DataFtry', '$http', '$location', 'ECMSConfig', 'StorageService',  function( $scope, DataFtry, $http, $location,  ECMSConfig, StorageService){
+.controller('IntakeDistributionCtrl', [ '$rootScope', '$scope', 'DataFtry', '$http', '$location', 'ECMSConfig', 'StorageService',  function( $rootScope, $scope, DataFtry, $http, $location,  ECMSConfig, StorageService){
 
 	// QUERY OPTIONS ///////////////////////////////////////////////////////////////////////
 
 	console.log("FROM INTAKE DISTRIBUTION");
 	console.log($location);
 	$scope.casesearch = {
-		caseCreateStartDate: startingDate,
-		caseCreateEndDate: endingDate,
+		caseCreateStartDate: $scope.startingDate,
+		caseCreateEndDate: $scope.endingDate,
 		frmSrchCaseHasPoliceReport: "-1", //set default value to ALL for drop-down list
 		frmSrchCaseDistributedTo: "-1", //set default value to ALL for drop-down list
 		frmSrchCaseDistributedStatus: "-1" //set default value to ALL for drop-down list
 	};
 
 	$scope.submitSearch = function(){
+		//Reset everytime search is submitted
+		$scope.checkedIds =[];
+		
 		// data massaging
+		$scope.today = new Date();
+		if (!($scope.startingDate instanceof Date)){
+			alert("Error: Enter correct Start Date(mm/dd/yyyy) OR  Pick a date from DatePicker widget.");
+			return;
+		}
+		
+		if (!($scope.endingDate instanceof Date)){
+			alert("Error: Enter correct End Date(mm/dd/yyyy) OR  Pick a date from DatePicker widget.");
+			return;
+		}
+		
+		if ($scope.startingDate > $scope.endingDate) {
+			alert("Start Date can't be after End Date");
+			return;
+		}
+		
+		
 		// format dates
 		$scope.casesearch.caseCreateStartDate = formatcaseCreateStartDate();
 		$scope.casesearch.caseCreateEndDate = formatcaseCreateEndDate();
@@ -52,16 +72,16 @@ angular.module('ECMSapp.intakeDistribution', [])
 	}
 
 	function formatcaseCreateStartDate(){
-		var stDate	= $scope.caseCreateStartDate.getDate();
-		var stMonth = $scope.caseCreateStartDate.getMonth() + 1;
-		var stYear	= $scope.caseCreateStartDate.getFullYear();
+		var stDate	= $scope.startingDate.getDate();
+		var stMonth = $scope.startingDate.getMonth() + 1;
+		var stYear	= $scope.startingDate.getFullYear();
 		return stYear + "-" + stMonth  + "-" + stDate;
 	}
 
 	function formatcaseCreateEndDate(){
-		var enDate	= $scope.caseCreateEndDate.getDate();
-		var enMonth = $scope.caseCreateEndDate.getMonth() + 1;
-		var enYear	= $scope.caseCreateEndDate.getFullYear();
+		var enDate	= $scope.endingDate.getDate();
+		var enMonth = $scope.endingDate.getMonth() + 1;
+		var enYear	= $scope.endingDate.getFullYear();
 		return enYear + "-" + enMonth  + "-" + enDate;
 	}
 
@@ -85,8 +105,8 @@ angular.module('ECMSapp.intakeDistribution', [])
 	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 2 DAYS 
 	var caseCreateStartDate		= new Date(todayDate.getTime() - dateOffset);
 	var caseCreateEndDate			= todayDate;
-	$scope.caseCreateStartDate	= caseCreateStartDate;
-	$scope.caseCreateEndDate		= caseCreateEndDate;
+	$scope.startingDate	= caseCreateStartDate;
+	$scope.endingDate	= caseCreateEndDate;
 	$scope.submissionCount = 0; //	
 
 	$scope.submitSearch();
@@ -153,8 +173,6 @@ angular.module('ECMSapp.intakeDistribution', [])
 					}
 
 			});
-			
-			
 			
 			// console.log(result.data.content.length)
 			if(result.data.content.length >= 500){
@@ -353,7 +371,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 						format	:"{0:MM/dd/yyyy hh:mm tt}"
 						},{
 
-						field	: "caseDistributionMehtod",
+						field	: "caseIntakeSentHistory",
 						title	: "Recip/D Sent/Method",
 						width	: "25%",
 						filterable: false,
@@ -382,28 +400,62 @@ angular.module('ECMSapp.intakeDistribution', [])
 	$scope.enableSumbitBtn = function() {
 		$scope.disabled = false;
 	};
+	
+	// MAKE THE CHECK BOX PERSISTING
+	$scope.checkedIds =[];
+	$scope.selectItem = function(item){
+		//remove from selection list if unchecked
+		if (!item.selected) {
+			while ($.inArray(item.caseNumber, $scope.checkedIds) >=0) {
+				console.log(item.caseNumber + "=" + $.inArray(item.caseNumber, $scope.checkedIds));
+				$scope.checkedIds.splice($.inArray(item.caseNumber, $scope.checkedIds),1);
+			}
+			//console.log($scope.checkedIds.toString());
+		} else {
+			//do not add if it already exists
+			if (!($.inArray(item.caseNumber, $scope.checkedIds) >=0)){
+				$scope.checkedIds.push(item.caseNumber);
+			}			
+		}
+	}
 
 	$scope.toggleSelectAll = function(ev) {
-
-		var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
-		var items = grid.dataSource.data();
-			items.forEach(function(item){
-		item.selected = ev.target.checked;
-		});
-
-		ev.currentTarget.checked ? $scope.caseNum = grid.dataSource.total() : $scope.caseNum = 0; 
-	};
-
+        //var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+        //var items = grid.dataSource.view(); //This gets only current page view
+		
+		//select only filtered data
+		var dataSource = $(ev.target).closest("[kendo-grid]").data("kendoGrid").dataSource;
+        var filters = dataSource.filter();
+        var allData = dataSource.data();
+        var query = new kendo.data.Query(allData);
+        var items = query.filter(filters).data;
+		console.log(items);
+		
+        items.forEach(function(item){
+			item.selected = ev.target.checked;
+			$scope.selectItem(item);
+        });
+		ev.currentTarget.checked ? $scope.caseNum = items.length : $scope.caseNum = 0; 
+    };
+	
 	$scope.caseSelected = function(ev){
+		var element =$(ev.currentTarget);
+        var checked = element.is(':checked');
+        var row = element.closest("tr");
+        var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+        var item = grid.dataItem(row);
+		
+		$scope.selectItem(item);
 
 		!ev.currentTarget.checked ?  $scope.caseNum -- :$scope.caseNum ++; 
 	
 	};
+	
+	
 	// DISABLE/ENABLE BUTTON WHEN CASE ARE SELECTED /////////////
 	$scope.buttonDisabledClass = "linkButtonDisabled";
 
 	$scope.$watch('caseNum', function() {
-
 		$scope.caseNum == 0? $scope.buttonDisabledClass = "linkButtonDisabled" : $scope.buttonDisabledClass = "";
 	});
 
@@ -421,6 +473,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 	$scope.confirmClearinghouse = function(e) {
 		$scope.numCases = $scope.caseNum + " cases";
 		$scope.recipient = "to Clearinghouses.";
+		$scope.targetGroup = "clearinghouse";
 		$scope.confirmMessage.center().open();
 	};
 
@@ -429,13 +482,64 @@ angular.module('ECMSapp.intakeDistribution', [])
 		$scope.recipient = "to Team Hope.";
 		$scope.confirmMessage.center().open();
 	};
-
-	$scope.confirmEmail = function(e) {
-		$scope.numCases = $scope.caseNum + " cases";
-		$scope.recipient = "to Custom Email.";
-		$scope.confirmMessage.center().open();
+	
+	$scope.sendEmailTo = function(){
+		DataFtry.sendEmailTo($scope.targetGroup, $scope.checkedIds.toString(), 'case')
+				.then(function(result){
+					$scope.mailStatus = "Mail sent successfully";
+					console.log(result);
+				});
+				
+		$scope.confirmMessage.close();
+	};
+	
+	// CUSTOM EMAIL WINDOW //////////////////////////////////////////////////
+	$scope.emailWindowOptions = {
+		width: 690,
+		height:550,
+		visible: false,	
+		modal: true,
+		scrollable : false
 	};
 
+	$scope.openEmailWindow = function() {
+		$scope.mailMessage = {
+			from:  $rootScope.userId + "@ncmec.org",
+			to: $rootScope.userId + "@ncmec.org",
+			subject: "Attention: Media Status",
+			text: "Please find Media Status of following cases: " + $scope.checkedIds.toString(),
+			extraInfo: 
+					{
+						entityType: "case"
+					},
+			attachments: [
+							{
+									reportTemplate:"Intake_Report_ECMS",
+									ids:$scope.checkedIds.toString(),
+									format:"pdf"
+							}
+						]
+		};
+			
+		$scope.emailWindow.center().open();
+	};
+	
+	$scope.ccMyself = function() {
+		$scope.mailMessage.cc = ($rootScope.userId + "@ncmec.org").split(",");
+	}
+	
+	$scope.sendEmail = function(){
+		$scope.mailMessage.to = $scope.mailMessage.to.split(',');
+	
+		DataFtry.sendEmail($scope.mailMessage).then(function(result){
+			console.log("SENT EMAIL !!!");
+			console.log(result);
+		});
+		$scope.emailWindow.close();
+		
+	};
+	
+	
 	// PDF WINDOW //////////////////////////////////////////////////
 	$scope.PDFPreviewOptions = {
 		width: "80%",
@@ -444,9 +548,9 @@ angular.module('ECMSapp.intakeDistribution', [])
 		height: "80%",
 		modal: true,
 		content: {
-			iframe: false,
-			template:  '<embed src=' + ECMSConfig.restServicesURI + '/rest/document/export/intake?X-Auth-Token=' + StorageService.getToken() + 'reportFilename=Intake_Report_ECMS.pdf&ids='  + $scope.caseID + '" width="100%" height="100%" type="application/pdf"></embed>'
-		}
+				iframe: false,
+				template:  '<embed src="' + ECMSConfig.restServicesURI + '/rest/document/export/intake?token=' + StorageService.getToken() + '&reportFileName=Intake_Report_ECMS.pdf&ids='  + $scope.caseID + '" width="100%" height="100%" type="application/pdf"></embed>'
+				}
 	};
 	
 	$scope.getPDF = function(ev){
@@ -457,6 +561,8 @@ angular.module('ECMSapp.intakeDistribution', [])
 		$scope.caseID  = dataItem.caseNumber;
 
 		setTimeout(function(){
+			
+			console.log($scope.PDFPreviewOptions);
 			$scope.PDFPreview.center().open();
 		}, 300);
 		console.log($scope.caseID);
@@ -540,7 +646,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 				pageable: false,
 				columns: [
 					{ field: "childRecoveryStatus", title: "Recovery Status", width: "12%" },
-					{ field: "incidenType", title:"Child Case Type", width: "20%" },
+					{ field: "incidentType", title:"Child Case Type", width: "20%" },
 					{ field: "childName", title:"Child Name", width: "40%" },
 					{ field: "childAge", title:"Child Age", width: "8%" },
 					{ field: "id", title: "Person ID", width: "20%" }

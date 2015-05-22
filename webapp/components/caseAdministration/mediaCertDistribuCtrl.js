@@ -51,6 +51,8 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 	};
 
 	$scope.submitSearch = function(){
+		//Reset everytime search is submitted
+		$scope.checkedIds =[];
 		
 		// data massaging
 		$scope.today = new Date();
@@ -164,7 +166,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 		var tempCaseType= "";
 		var tempIncidentState= "";
 		var filterCaseStatus = "";
-
+		
 		// console.log($scope.casesearch);
 		DataFtry.getCasesForMediaCertDist($scope.casesearch).then(function(result){
 	
@@ -396,39 +398,42 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 	$scope.selectItem = function(item){
 		//remove from selection list if unchecked
 		if (!item.selected) {
-			 $scope.checkedIds.splice($.inArray(item.caseNumber, $scope.checkedIds),1);
+			
+			while ($.inArray(item.caseNumber, $scope.checkedIds) >=0) {
+				console.log(item.caseNumber + "=" + $.inArray(item.caseNumber, $scope.checkedIds));
+				$scope.checkedIds.splice($.inArray(item.caseNumber, $scope.checkedIds),1);
+			}
+			//console.log($scope.checkedIds.toString());
 		} else {
-			$scope.checkedIds.push(item.caseNumber);
+			//do not add if it already exists
+			if (!($.inArray(item.caseNumber, $scope.checkedIds) >=0)){
+				$scope.checkedIds.push(item.caseNumber);
+			}
+							
 		}
         
 	}
 	
-	$scope.caseSelected = function(ev){
-		var element =$(ev.currentTarget);
-        var checked = element.is(':checked');
-        var row = element.closest("tr");
-        var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
-        var item = grid.dataItem(row);
-		
-		$scope.selectItem(item);
-
-        if (checked) {
-            row.addClass("k-state-selected");
-        } else {
-            row.removeClass("k-state-selected");
-        }
-	};
-	
 	$scope.toggleSelectAll = function(ev) {
-        var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
-        var items = grid.dataSource.data();
+        //var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+        //var items = grid.dataSource.view(); //This gets only current page view
+		
+		//select only filtered data
+		var dataSource = $(ev.target).closest("[kendo-grid]").data("kendoGrid").dataSource;
+        var filters = dataSource.filter();
+        var allData = dataSource.data();
+        var query = new kendo.data.Query(allData);
+        var items = query.filter(filters).data;
+		console.log(items);
+		
         items.forEach(function(item){
 			item.selected = ev.target.checked;
 			$scope.selectItem(item);
         });
 		
-		ev.currentTarget.checked ? $scope.caseNum = grid.dataSource.total() : $scope.caseNum = 0; 
+		ev.currentTarget.checked ? $scope.caseNum = items.length : $scope.caseNum = 0; 
     };
+
 
 	$scope.caseSelected = function(ev){
 		var element =$(ev.currentTarget);
@@ -439,15 +444,14 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 		
 		$scope.selectItem(item);
 
-      /*  if (checked) {
-            row.addClass("k-state-selected");
-        } else {
-            row.removeClass("k-state-selected");
-        }*/
-
 		!ev.currentTarget.checked ?  $scope.caseNum -- :$scope.caseNum ++; 
 	
 	};
+	
+
+
+
+
 	// DISABLE/ENABLE BUTTON WHEN CASE ARE SELECTED /////////////
 	$scope.buttonDisabledClass = "linkButtonDisabled";
 
