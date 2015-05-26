@@ -15,7 +15,7 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
             templateUrl: 'components/home/home.html'
         });
 
-        $routeProvider.when('/caseadministration', {
+        $routeProvider.when('/caseadministration/rfsadministration', {
             templateUrl: 'components/caseAdministration/caseAdministration.html'
 
         });
@@ -64,7 +64,7 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
             items: [{
                     text: "RFS Administration",
                     cssClass: "sub-menu",
-                    url: "#/caseadministration",
+                    url: "#/caseadministration/rfsadministration",
                     permission: "caseadmin:view:basic"
                 },{
                     text: "Assign Case Manager",
@@ -121,18 +121,26 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
             var locations = [];
 
         // WHEN A CASE HAS BEEN SELECTED AND REDIRECT TO CASE MANAGEMENT
-                scope.$on('$routeChangeStart', function(next, current) { 
+            scope.$on('$routeChangeStart', function(next, current) { 
 
-                // console.log("ROUTE CHANGES:");
+                // HIDE THE BACK BUTTON WHEN FIRST 
+                (locations.length === 0)? scope.backVis = false : scope.backVis = true;
 
-                    // STORE THE LCCATIONS FOR THE BACK BUTTON //////////////////////////
-                    locations.push($location.path());
-                 
+                // STORE THE LCCATIONS FOR THE BACK BUTTON //////////////////////////
+                locations.push($location.path());
+         
+                // ADJUST THE MENU WHEN NAVIGATION IS TRIGGER OUTSIDE THE MENU
                 if($location.path() == "/casemanagement" ){
-
                     // CHANGE THE ITEM MENU CLASS
                     $("#mainMenu").find(".k-state-selected").removeClass("k-state-selected");
                     $("#mainMenu").find(".casemanagement-menu").addClass("k-state-selected");
+                }
+
+                var caseAdmin = $location.path().slice(0,19); // CHECK IF WE NEED TO HIGHLIGHT THE HEAD-MENU WHE THE NAVIGATION IS NOT TRIGGERED FROM THE MAIN MENU
+                if(caseAdmin == "/caseadministration" ){
+                    // CHANGE THE ITEM MENU CLASS
+                    $("#mainMenu").find(".k-state-selected").removeClass("k-state-selected");
+                    $("#mainMenu").find(".head-menu").addClass("k-state-selected");
                 }
             });
 

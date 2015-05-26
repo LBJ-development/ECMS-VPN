@@ -557,6 +557,16 @@ filterMenu.form.find(".k-textbox:first")
 	};
 
 	//PRINT RFSs ////////////////////////////////
+		// CUSTOM EMAIL WINDOW //////////////////////////////////////////////////
+	$scope.printWindowOptions = {
+		title: "Print Preview",
+		width: 1200,
+		height:700,
+		visible: false,	
+		modal: true,
+		scrollable : true
+	};
+
 	$scope.printRFSes = function() {
 
 		console.log("FROM PRINT RFSES");
@@ -564,8 +574,8 @@ filterMenu.form.find(".k-textbox:first")
 			alert ('Please select one or more RFSes before printing..');
 			return;
 		} else {
-			//var printURL = '/rest/document/export/cases?reportFileName=CaseReportWs.html&ids=' +$scope.checkedIds.toString();
-			DataFtry.printRFSes($scope.checkedIds.toString());
+			$scope.printWindow.center().open();
+			DataFtry.printRFSes("http://ecms-devapp1.ncmecad.net:8080/ecms-services.nightly/rest/document/export/rfses?reportFileName=RfsReport.html&ids=" + $scope.checkedIds.toString());
 		}
 	};
 	
@@ -576,9 +586,8 @@ filterMenu.form.find(".k-textbox:first")
 			alert ('Please select one or more RFSes before exporting..');
 			return;
 		} else {
-
-
-			var exportURL = '/rest/document/export/cases?reportFileName=CaseReportWs.html&ids=' +$scope.checkedIds.toString();
+			//console.log("FROM EXPORT RFSES");
+			var exportURL = '/rest/document/export/rfses?reportFileName=RfsReport.xlsx&ids=' +$scope.checkedIds.toString()
 			DataFtry.exportDocument(exportURL, '.xlsx', 'SelectedRFSes.xlsx');
 		}
 	};

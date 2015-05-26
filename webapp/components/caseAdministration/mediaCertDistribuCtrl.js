@@ -71,7 +71,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 			return;
 		}
 
-		console.log("FROM SUBMIT SEARCH")
+		//console.log("FROM SUBMIT SEARCH")
 
 		$scope.casesearch.caseMediaSearchStartDate = formatcaseCreateStartDate();
 		$scope.casesearch.caseMediaSearchEndDate = formatcaseCreateEndDate();

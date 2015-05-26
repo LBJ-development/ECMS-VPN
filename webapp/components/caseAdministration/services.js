@@ -61,17 +61,41 @@ angular.module('ECMSapp.services', [])
 		var $promise =  $http({
 			method: 'POST',
 			url: restservice,
-                data: dataobject,
+			data: dataobject,
 			headers: {'Content-Type': 'application/json'}
 		});
 		var deferred = $q.defer();
-		
+
+		console.log("FROM EXECUTE POST: " + restservice + dataobject);
+	
 		$promise.then(function(result){
 			if(result.data.status == 'SUCCESS'){
 				//console.log(result.data.status);
 				deferred.resolve(result);
 			} else {
 				alert("Something better is coming!");
+			}
+		});
+		return deferred.promise;
+	}
+
+	function executeHttpJSONGet(restservice, dataobject) {
+		var $promise =  $http({
+			method: 'GET',
+			url: restservice,
+			data: dataobject,
+			headers: {'Content-Type': 'application/json'}
+		});
+		var deferred = $q.defer();
+
+		console.log("FROM EXECUTE GET: " + restservice + dataobject);
+	
+		$promise.then(function(result){
+			if(result.data.status == 'SUCCESS'){
+				console.log(result.data.status);
+				deferred.resolve(result);
+			} else {
+				//alert("Something better is coming!");
 			}
 		});
 		return deferred.promise;
@@ -163,25 +187,18 @@ angular.module('ECMSapp.services', [])
 			}).error(function(response) {
 				console.log(response);
 			});
-		
 		return ;
 	};
 	
-	var printRFSes = function (casesToPrint) {
-		console.log("print cases");
-		console.log(casesToPrint);
-		//return executeHttpJSONPost("/rest/document/export/cases?reportFileName=CaseReportWs.html&ids=", casesToPrint);
-		return executeHttpJSONPost("/rest/document/export/cases?reportFileName=CaseReportWs.html&ids=1245290,1245291");
-		
+	var printRFSes = function (rfsesToPrint) {
+		return executeHttpJSONGet(rfsesToPrint);
 	};
 
-	
 	var sendEmail = function (mailMessage) {
 		console.log("sending email criteria");
 		console.log(mailMessage);
 		return executeHttpJSONPost("/rest/email/sendmail", mailMessage);
 	};
-
 
 	return {
 		getData: getData,

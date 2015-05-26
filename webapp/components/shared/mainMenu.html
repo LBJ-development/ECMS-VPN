@@ -16,6 +16,6 @@
 	           </form>
                 </div>
 </div>
-<ul kendo-menu id="mainMenu" k-data-source="menuWithPermissions" k-on-open="onOpen(kendoEvent)"  k-on-select="onSelect(kendoEvent)" k-on-close="onClose(kendEvent)"></ul>
-<div class="linkButton toBack" style="float:left; display:online-block; position:relative; top:25px"><a href="" ng-click="goBack()" >Back</a></div>
+<ul kendo-menu id="mainMenu" k-data-source="menuWithPermissions" k-on-open="onOpen(kendoEvent)"  k-on-select="onSelect(kendoEvent)"  k-on-close="onClose(kendEvent)"></ul>
+<div class="linkButton toBack" ng-show="backVis" style="float:left; display:online-block; position:relative; top:25px"><a href="" ng-click="goBack()" >Back</a></div>
             

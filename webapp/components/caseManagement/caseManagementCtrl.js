@@ -135,7 +135,7 @@ angular.module('ECMSapp.caseManagement', [])
 	
 		function menuSelect(e) {
 		
-			console.log("FROM MENU SELECT");
+			//console.log("FROM MENU SELECT");
 			// BROADCASTING THE SELECTION
 			scope.$parent.$broadcast('caseMenuSelect', e.item.id);
 			}

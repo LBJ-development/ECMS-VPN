@@ -62,6 +62,7 @@ app.factory('httpRequestInterceptor', function ($q, $location, StorageService, E
             config.headers['X-Auth-Token'] = StorageService.getToken();
             if (config.url.indexOf('.html') === -1){
                 config.url = ECMSConfig.restServicesURI + config.url ;
+                console.log("FROM INTERCEPTOR");
             }
             return config;
         },
