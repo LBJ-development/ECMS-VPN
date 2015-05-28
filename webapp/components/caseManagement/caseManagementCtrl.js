@@ -82,6 +82,46 @@ angular.module('ECMSapp.caseManagement', [])
 	templateUrl: 'components/caseManagement/caseHeader.html',
 	link: function (scope, element, attrs){
 
+		/*$("#moreBtn").css("display", "none");
+
+		scope.toggleHeader = function(ev) {
+
+			if($("#caseHeaderInfo").is(":visible")) {
+
+				$("#caseHeaderInfo").animate(
+					{height: "0", opacity: "0"}, 300, function(){
+						$("#caseHeaderInfo").css("display", "none");
+					});
+				$("#moreBtn").css("display","inline-block");
+				$("#lessBtn").css("display", "none");
+
+			} else {
+
+				$("#caseHeaderInfo").css({display: "inline-block"});
+
+				$("#caseHeaderInfo").animate(
+					{height: "100%", opacity: "1"}, 300);
+				$("#moreBtn").css("display", "none");
+				$("#lessBtn").css("display","inline-block");
+				}
+			}*/
+		}
+	};
+})
+
+.controller('VictimsHeaderCtrl', function($scope){
+	// console.log("FROM CASE HEADER");
+	// console.log($scope);
+})
+
+.directive ('victimsHeader' , function ($interval, $window) {
+	return {
+	restrict: 'E',
+	scope :{},
+	controller: 'VictimsHeaderCtrl',
+	templateUrl: 'components/caseManagement/victimsHeader.html',
+	link: function (scope, element, attrs){
+
 		$("#moreBtn").css("display", "none");
 
 		scope.toggleHeader = function(ev) {
@@ -105,6 +145,24 @@ angular.module('ECMSapp.caseManagement', [])
 				$("#lessBtn").css("display","inline-block");
 				}
 			}
+
+		/*// RESIZE THE INFO HOLDER WHEN ONE RESIZE WINDOW
+		var offset = 310;
+		var infoWidth = $("#victim-holder").width() - offset;
+		$("#info-holder").css('width', infoWidth);
+		$window.addEventListener('resize', function() {
+			infoWidth = $("#victim-holder").width() - offset;
+			$("#info-holder").css('width', infoWidth);
+			}, false);*/
+		// RESIZE THE INFO HOLDER WHEN ONE RESIZE WINDOW
+		var offset = 310;
+		var infoWidth = $("#wrapper").width() - offset;
+
+		$("#victim-holder").css('width', infoWidth);
+		$window.addEventListener('resize', function() {
+			infoWidth = $("#wrapper").width() - offset;
+			$("#victim-holder").css('width', infoWidth);
+			}, false);
 		}
 	};
 })
@@ -175,11 +233,12 @@ angular.module('ECMSapp.caseManagement', [])
 	link: function (scope, element, attrs){
 
 		// RESIZE THE INFO HOLDER WHEN ONE RESIZE WINDOW
-		var offset = 310;
-		var infoWidth = $("#caseSummaryHolder").width() - offset;
+		var offset = 350;
+		var infoWidth = $("#wrapper").width() - offset;
+
 		$("#info-holder").css('width', infoWidth);
 		$window.addEventListener('resize', function() {
-			infoWidth = $("#caseSummaryHolder").width() - offset;
+			infoWidth = $("#wrapper").width() - offset;
 			$("#info-holder").css('width', infoWidth);
 			}, false);
 		}

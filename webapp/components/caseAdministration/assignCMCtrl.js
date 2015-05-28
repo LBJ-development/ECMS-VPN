@@ -557,6 +557,10 @@ angular.module('ECMSapp.assignCM', [])
 		$scope.urlNarrative = "/rest/caseadmin/narratives?caseNumber=" + caseNumber;
 		DataFtry.getData($scope.urlNarrative).then(function(result){
 
+			console.log("FROM NARRATIVE");
+			console.log(result.data.content);
+
+
 			grid = detailRow.find("#narrative-CM").kendoGrid({
 
 				dataSource:{

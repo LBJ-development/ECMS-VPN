@@ -26,21 +26,18 @@ angular.module('ECMSapp.services', [])
 			if(result.data.status == 'SUCCESS'){
 				deferred.resolve(result);
 			} else {
-				alert("Something better is coming!");
+				console.log(result);
+				alert(result.data.messages['ROOT']);
 			}
 		});
 		return deferred.promise;
 	};
 	
-	var assignCaseManager = function(caseid, managerid) {
-
+	var postData = function(url, data){
 		var $promise =  $http({
 			method: 'POST',
-			url: "/rest/case/assignmanager/",
-			data: Object.toparams({
-				caseId: caseid,
-				managerId: managerid
-				}),
+			url: url,
+			data: data,
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 			});
 			
@@ -51,10 +48,17 @@ angular.module('ECMSapp.services', [])
 			if(result.data.status == 'SUCCESS'){
 				deferred.resolve(result);
 			} else {
-				alert("Something better is coming!");
+				console.log(result);
+				alert(result.data.messages['ROOT']);
 			}
 		});
 		return deferred.promise;
+		
+	}
+	
+	var assignCaseManager = function(caseid, managerid) {
+		return postData("/rest/case/assignmanager/", Object.toparams({caseId: caseid, managerId: managerid}) );
+		
 	};
 		
 	function executeHttpJSONPost(restservice, dataobject) {
@@ -73,7 +77,8 @@ angular.module('ECMSapp.services', [])
 				//console.log(result.data.status);
 				deferred.resolve(result);
 			} else {
-				alert("Something better is coming!");
+				console.log(result);
+				alert(result.data.messages['ROOT']);
 			}
 		});
 		return deferred.promise;
@@ -153,6 +158,16 @@ angular.module('ECMSapp.services', [])
 		return executeHttpJSONPost("/rest/email/preparemail", requestPayload);
 	};
 		
+	var sendEmail = function (mailMessage) {
+		console.log("sending email criteria");
+		console.log(mailMessage);
+		return executeHttpJSONPost("/rest/email/sendmail", mailMessage);
+	}
+	
+	var sendEmailTo = function(targetGroup, caseIds, entityType){
+		return postData ('/rest/email/sendto/' + targetGroup, Object.toparams({ids: caseIds, entityType: entityType}));
+	}
+		
 	var exportDocument = function(exportURL,targetFormat, fileName){
 		
 		var headers = {};
@@ -211,6 +226,7 @@ angular.module('ECMSapp.services', [])
 		prepareEmail: prepareEmail,
 		sendEmail: sendEmail,
 		exportDocument: exportDocument,
+		sendEmailTo: sendEmailTo,
 		printRFSes: printRFSes
 		};
 });

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <dwsync>
 <file name="caseManagement.html" server="Z:/UIDesigns/ECMS/app/" local="130753991080935663" remote="130753991080000000" Dst="2" />
-<file name="caseManagementCtrl.js" server="Z:/UIDesigns/ECMS/app/" local="130771204965849827" remote="130771204960000000" Dst="2" />
-<file name="caseHeader.html" server="Z:/UIDesigns/ECMS/app/" local="130766086755878487" remote="130766086750000000" Dst="2" />
-<file name="caseTemplate.html" server="Z:/UIDesigns/ECMS/app/" local="130753996335401057" remote="130753996330000000" Dst="2" />
+<file name="caseManagementCtrl.js" server="Z:/UIDesigns/ECMS/app/" local="130772349438732685" remote="130772349430000000" Dst="2" />
+<file name="caseHeader.html" server="Z:/UIDesigns/ECMS/app/" local="130772212255903971" remote="130772212250000000" Dst="2" />
+<file name="caseTemplate.html" server="Z:/UIDesigns/ECMS/app/" local="130772267608444560" remote="130772267600000000" Dst="2" />
 <file name="caseHeader.html" server="Z:/ECMS/app/" local="130766846135934298" remote="130766846130000000" Dst="2" />
 <file name="caseManagement.html" server="Z:/ECMS/app/" local="130765338688651916" remote="130765338680000000" Dst="2" />
 <file name="caseManagementCtrl.js" server="Z:/ECMS/app/" local="130765418934054886" remote="130765418930000000" Dst="2" />
@@ -13,4 +13,7 @@
 <file name="caseTest.html" server="Z:/ECMS/app/" local="130765305631525591" remote="130765305630000000" Dst="2" />
 <file name="caseSummary.html" server="Z:/ECMS/app/" local="130766846136104417" remote="130766846130000000" Dst="2" />
 <file name="caseMenu.html" server="Z:/ECMS/app/" local="130765305631455339" remote="130765305630000000" Dst="2" />
+<file name="caseSummary.html" server="Z:/UIDesigns/ECMS/app/" local="130772233569635077" remote="130772233560000000" Dst="2" />
+<file name="caseTest.html" server="Z:/UIDesigns/ECMS/app/" local="130772337411532685" remote="130772337410000000" Dst="2" />
+<file name="victimsHeader.html" server="Z:/UIDesigns/ECMS/app/" local="130772348201192685" remote="130772348200000000" Dst="2" />
 </dwsync>

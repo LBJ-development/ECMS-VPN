@@ -14,11 +14,11 @@
 						</li>
 						<li style="padding-right: 0px">
 							<label >From:</label> 
-							<input id="startingDate" kendo-date-picker k-on-change="enableSumbitBtn()" k-ng-model="startingDate" style="width: 180px"/> 
+							<input id="startingDate" kendo-date-picker k-max={{today}} k-on-change="enableSumbitBtn()" k-ng-model="startingDate" style="width: 180px"/> 
 						</li>
 						<li style="padding-right: 0px">
 							<label>To:</label> 
-							<input id="endingDate" kendo-date-picker k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
+							<input id="endingDate"  k-max={{today}} kendo-date-picker k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
 						</li>
 					</ul>
         		</div>
@@ -50,7 +50,7 @@
 			<ul ng-show="hasPermission('caseadmin:edit:intakedistribution')">
 				<li class="linkButton toPrint"><a class="linkButtonDisabled">Print Labels</a></li>
 				<li class="linkButton"><img src="assets/images/darkPipe.png" ></li>
-				<li class="linkButton toEmail"><a href="" ng-class="buttonDisabledClass" ng-click="confirmEmail()" >Custom Email</a>
+				<li class="linkButton toEmail"><a href="" ng-class="buttonDisabledClass" ng-click="openEmailWindow()" >Custom Email</a>
 				<li class="linkButton"><img src="assets/images/darkPipe.png" ></li></li>
 				<li class="linkButton teamHope"><a href=""  ng-class="buttonDisabledClass" ng-click="confirmTeamHope()">Send to Team Hope</a></li>
 				<li class="linkButton clearinghouse"><a href="" ng-class="buttonDisabledClass" id="clearinghouse" ng-click="confirmClearinghouse()">Send to Clearinghouses</a></li>
@@ -66,7 +66,7 @@
 			<div class="bottom-window">
 				<ul>
 					<li  class="submit-btn">
-                		<kendo-button class="k-button" ng-click="confirmMessage.close()">SEND</kendo-button>
+                		<kendo-button class="k-button" ng-click="sendEmailTo()">SEND</kendo-button>
 					</li>
 					<li  class="submit-btn">
                 		<kendo-button  class="k-button"  ng-click="confirmMessage.close()">CANCEL</kendo-button>
@@ -82,6 +82,45 @@
 			<kendo-grid k-options="mainGridOptions" k-rebind="mainGridOptions" id="grid"  k-ng-delay="mainGridOptions">
 			</kendo-grid >
 		</div>
+		
+		<!-- EMAIL WINDOW  /////////////////////////////////////////////////////////////////-->
+	<div kendo-window="emailWindow" k-options="emailWindowOptions">
+		 	<form name="mailMessage" role="form">
+		 		<div class="filter-holder" style="margin: 25px 10px 0px 15px; padding:20px; width: 700px">
+		 			<ul style="float:left">
+		 				<li>
+		 					<span class="labelClass" style="width: 130px">Enter Recipient(s):</span>
+		 					<input class="k-textbox" ng-model="mailMessage.to" style="width: 400px" id="quicksearch" type="text" name="recipients">
+            				<span class="search-btn"  style="float:left"><a href="" ></a></span>
+            				<input   id="includeMyself" type="checkbox" name="copyMyself" ng-click="ccMyself()" style="float:left; margin-top:7px">
+            				<label  class="labelClass"  for="includeMyself"> Copy Myself</label>
+            			</li>
+            			<li >
+		 					<span  class="labelClass" style="width: 130px" >Subject Text:</span>
+		 					<input class="k-textbox" ng-model="mailMessage.subject" style="width: 400px" id="" type="text" name="">
+            			</li>
+            			<li >
+		 					<!-- <span class="labelClass" style="width: 130px">Body Text:</span> -->
+		 					<textarea  kendo-editor   class="narrative-text-box" ng-model="mailMessage.text" style="width: 700px; height: 300px;" id="" type="text" name=""></textarea>
+            			</li>
+            			
+            		</ul>
+		 		</div>
+		 	
+				<div class="bottom-window" style="padding: 20px 15px 0px 0">
+					<ul>
+						<li  class="submit-btn">
+                			<kendo-button class="k-button" ng-click="sendEmail()">SEND</kendo-button>
+						</li>
+						<li  class="submit-btn">
+                			<kendo-button  class="k-button"  ng-click="emailWindow.close()">CANCEL</kendo-button>
+						</li>	
+        			</ul>
+				</div>	
+			</form>
+		</div>
+		
+		
 	</div>
 </div>
 <!--  GRID DETAIL TEMPLATE /////////////////////////////////////////////////////////////////-->

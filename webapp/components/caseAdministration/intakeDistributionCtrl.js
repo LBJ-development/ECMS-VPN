@@ -495,8 +495,9 @@ angular.module('ECMSapp.intakeDistribution', [])
 	
 	// CUSTOM EMAIL WINDOW //////////////////////////////////////////////////
 	$scope.emailWindowOptions = {
-		width: 690,
-		height:550,
+		title: "Please provide email info:",
+		width: 790,
+		height:570,
 		visible: false,	
 		modal: true,
 		scrollable : false
@@ -505,7 +506,8 @@ angular.module('ECMSapp.intakeDistribution', [])
 	$scope.openEmailWindow = function() {
 		$scope.mailMessage = {
 			from:  $rootScope.userId + "@ncmec.org",
-			to: $rootScope.userId + "@ncmec.org",
+			//to: $rootScope.userId + "@ncmec.org",
+			
 			subject: "Attention: Media Status",
 			text: "Please find Media Status of following cases: " + $scope.checkedIds.toString(),
 			extraInfo: 
@@ -533,7 +535,8 @@ angular.module('ECMSapp.intakeDistribution', [])
 	
 		DataFtry.sendEmail($scope.mailMessage).then(function(result){
 			console.log("SENT EMAIL !!!");
-			console.log(result);
+			console.log(result.status);
+			if(result.data.status == "SUCCESS")	alert("Your email has been successfully sent!");
 		});
 		$scope.emailWindow.close();
 		
@@ -541,17 +544,22 @@ angular.module('ECMSapp.intakeDistribution', [])
 	
 	
 	// PDF WINDOW //////////////////////////////////////////////////
-	$scope.PDFPreviewOptions = {
-		width: "80%",
-		visible: false,
-		maxWidth: 1200,
-		height: "80%",
-		modal: true,
-		content: {
-				iframe: false,
-				template:  '<embed src="' + ECMSConfig.restServicesURI + '/rest/document/export/intake?token=' + StorageService.getToken() + '&reportFileName=Intake_Report_ECMS.pdf&ids='  + $scope.caseID + '" width="100%" height="100%" type="application/pdf"></embed>'
+
+
+	function callPDF(){
+		$scope.PDFPreviewOptions = {
+			width: "80%",
+			visible: false,
+			maxWidth: 1200,
+			height: "80%",
+			modal: true,
+			content: {
+					iframe: false,
+					template:  '<embed src="' + ECMSConfig.restServicesURI + '/rest/document/export/intake?token=' + StorageService.getToken() + '&reportFileName=Intake_Report_ECMS.pdf&ids='  + $scope.caseID + '" width="100%" height="100%" type="application/pdf"></embed>'
+					//template:  '<embed src='  + ECMSConfig.restServicesURI + '/rest/document/export/intake?X-Auth-Token=' + StorageService.getToken() + 'reportFilename=Intake_Report_ECMS.pdf&ids=' + $scope.caseID + '" width="100%" height="100%" type="application/pdf"></embed>'
 				}
-	};
+			}
+		}
 	
 	$scope.getPDF = function(ev){
 		var element	= $(ev.currentTarget);
@@ -560,10 +568,14 @@ angular.module('ECMSapp.intakeDistribution', [])
 		var dataItem 	= grid.dataItem(row);
 		$scope.caseID  = dataItem.caseNumber;
 
+		callPDF();
+
 		setTimeout(function(){
 			
-			console.log($scope.PDFPreviewOptions);
+			//console.log($scope.PDFPreviewOptions);
+
 			$scope.PDFPreview.center().open();
+
 		}, 300);
 		console.log($scope.caseID);
 	};

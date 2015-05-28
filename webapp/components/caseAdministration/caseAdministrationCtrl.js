@@ -13,7 +13,30 @@ angular.module('ECMSapp.adminMain', [])
 	};
 
 	$scope.submitSearch = function(){
+		$scope.today = new Date()
 		// data massaging
+		console.log("startDate valid:" + ($scope.startDate instanceof Date));
+		console.log("endDate valid:" + ($scope.endDate instanceof Date));
+		
+		//Reset everytime search is submitted
+		$scope.checkedIds =[];
+		
+		if (!($scope.startDate instanceof Date)){
+			alert("Error: Enter correct Start Date(mm/dd/yyyy) OR  Pick a date from DatePicker widget.");
+			return;
+		}
+		
+		if (!($scope.endDate instanceof Date)){
+			alert("Error: Enter correct End Date(mm/dd/yyyy) OR  Pick a date from DatePicker widget.");
+			return;
+		}
+		
+		if ($scope.startDate > $scope.endDate) {
+			alert("Start Date can't be after End Date");
+			return;
+		}
+
+		
 		// format dates
 		$scope.searchCriteria.startDate = formatstartDate();
 		$scope.searchCriteria.endDate = formatendDate();
@@ -33,6 +56,9 @@ angular.module('ECMSapp.adminMain', [])
 			//console.log('assigning -1');
 			$scope.searchCriteria.rfsStatus = "-1";
 		}
+		
+
+		
 		$scope.searchCriteria.rfsPrimaryType = $scope.searchCriteria.rfsPrimaryType.toString();
 		$scope.searchCriteria.rfsSource = $scope.searchCriteria.rfsSource.toString();
 		$scope.searchCriteria.rfsStatus = $scope.searchCriteria.rfsStatus.toString();
@@ -194,6 +220,10 @@ filterMenu.form.find(".k-textbox:first")
 			$scope.warning = result.data.messages.RESULTS_LIST;
 			$scope.caseNum = 0; // KEEP TRACK OF THE NUMBER OF SELECTED CASES
 			$scope.disabled = true;
+			setTimeout(function(){
+				// DELAY THE INITIALIZATION FOR THE TABLE CLICK ENVENT (CHECK IF CHECKBOX IS CLICKED)
+				//$scope.mainGrid.table.on("click", ".checkbox" , selectRow);
+			}, 1000);
 		});
 	});
 	
@@ -206,10 +236,16 @@ filterMenu.form.find(".k-textbox:first")
 	$scope.selectItem = function(item){
 		//remove from selection list if unchecked
 		if (!item.selected) {
+			while ($.inArray(item.rfsNumber, $scope.checkedIds) >=0) {
+				console.log(item.rfsNumber + "=" + $.inArray(item.rfsNumber, $scope.checkedIds));
 			 $scope.checkedIds.splice($.inArray(item.rfsNumber, $scope.checkedIds),1);
+			}
 		} else {
+			if (!($.inArray(item.rfsNumber, $scope.checkedIds) >=0)){
 			$scope.checkedIds.push(item.rfsNumber);
 		}
+	}
+	
 	}
 	
 	$scope.caseSelected = function(ev){
@@ -221,16 +257,20 @@ filterMenu.form.find(".k-textbox:first")
 		
 		$scope.selectItem(item);
 
-        if (checked) {
-            row.addClass("k-state-selected");
-        } else {
-            row.removeClass("k-state-selected");
-        }
 	};
 	
 	$scope.toggleSelectAll = function(ev) {
-        var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
-        var items = grid.dataSource.data();
+        //var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+        //var items = grid.dataSource.view(); //This gets only current page view
+		
+		//select only filtered data
+		var dataSource = $(ev.target).closest("[kendo-grid]").data("kendoGrid").dataSource;
+        var filters = dataSource.filter();
+        var allData = dataSource.data();
+        var query = new kendo.data.Query(allData);
+        var items = query.filter(filters).data;
+		console.log(items);
+		
         items.forEach(function(item){
 			item.selected = ev.target.checked;
 			$scope.selectItem(item);
@@ -468,29 +508,29 @@ filterMenu.form.find(".k-textbox:first")
 	var victim	= ["1", "2", "3", "4", "5", "6"],
 		bool	= ["Yes", "No"];
 			
+
 	function typeFilter(element) {
-		//element.kendoMultiSelect({
-		element.kendoDropDownList({
-			dataSource: $scope.filterRFSTypeList.sort(),
-			//multiple: "multiple",
-			optionLabel: "--Select Value--"
-		});
+		multiSelectFilter (element, 'rfsTypeDisplay', 'Select RFS Type(s) you want to filter on:', $scope.filterRFSTypeList);
 	}
-		
+	
+	function sourceFilter(element) {
+		multiSelectFilter (element, 'rfsSource', 'Select RFS Source(s) you want to filter on:', $scope.filterSourcesList);
+	}
+	
+	function stateFilter(element) {
+		multiSelectFilter (element, 'rfsIncidentState', 'Select Incident State(s) you want to filter on:', $scope.filterRFSIncidentStateList);
+	}
+	
+	function caseManagerFilter(element) {
+		multiSelectFilter (element, 'caseManager', 'Select Case Managers(s) you want to filter on:', $scope.filterCaseManagerList);
+	}
+	  
 	function statusFilter(element) {
 		element.kendoDropDownList({
 			dataSource: $scope.filterRFSStatusList.sort(),
 			optionLabel: "--Select Value--"
 		});
 	}
-		
-	function sourceFilter(element) {
-		element.kendoDropDownList({
-			dataSource: $scope.filterSourcesList.sort(),
-			optionLabel: "--Select Value--"
-		});
-	}
-
 	function boolFilter(element) {
 		element.kendoDropDownList({
 			dataSource: bool,
@@ -498,19 +538,117 @@ filterMenu.form.find(".k-textbox:first")
 		});
 	}
 
-	function stateFilter(element) {
-		element.kendoDropDownList({
-			dataSource: $scope.filterRFSIncidentStateList.sort(),
-			optionLabel: "--Select Value--"
-		});
+	////////////////////////////// MULTI SELECT FILTER FUNCTIONALITY //////////////////////////////
+	function multiSelectFilter(element, fieldName, customFilterMessage, dataSource) {
+		$scope.filterField = fieldName;
+		
+		var menu = $(element).parent(); 
+        menu.find(".k-filter-help-text").text(customFilterMessage);
+        menu.find("[data-role=dropdownlist]").remove(); 
+        
+        element.removeAttr("data-bind");
+        var multiSelect = element.kendoMultiSelect({
+          dataSource: dataSource.sort()
+        }).data("kendoMultiSelect");
+        menu.find("[type=submit]").on("click", {widget: multiSelect}, filterByMultipleSelections); 
 	}
 	
-	function caseManagerFilter(element) {
-		element.kendoDropDownList({
-			dataSource: $scope.filterCaseManagerList.sort(),
-			optionLabel: "--Select Value--"
-		});
+	function filterByMultipleSelections(e){
+		console.log('..........filterByMultipleSelections............');
+		console.log($scope.filterField);
+		
+        var sources = e.data.widget.value();
+		var grid = $("#grid").data("kendoGrid");
+		//First remove all 'filterField' filters, then we can add new selection
+		grid.clearFilters([$scope.filterField]);
+
+		var newFilterCriteria = [];  
+		for (var i = 0; i < sources.length; i++)
+        {
+			console.log($scope.filterField + ' + ' + sources[i]);
+			newFilterCriteria.push({ field: $scope.filterField, operator: "eq", value: sources[i] });
+        } 
+
+		var newFilter = {logic: 'or', filters: newFilterCriteria};
+				
+		console.log('after constructing the new filter ' );
+		console.log(newFilter);
+		
+		//add old filters
+		var currentFilters = grid.dataSource.filter();
+		console.log('current filters' );
+		console.log(currentFilters);
+		var combinedFilters = {logic:'and', filters:[]};
+		if (currentFilters && currentFilters.filters) {
+			console.log('adding --and-- filter');
+			combinedFilters.filters.push( newFilter);
+			combinedFilters.filters.push(currentFilters);
+		} else {
+			combinedFilters = newFilter;
+		}
+		
+		console.log('after combining old and new filters' );
+		console.log(combinedFilters);
+
+		//add updated currentFilters
+        grid.dataSource.filter(combinedFilters);
+    }
+	
+	kendo.ui.Grid.prototype.clearFilters = function(args){
+		// get dataSource of grid and columns of grid
+		var fields = [], filter = this.dataSource.filter(), col = this.columns;
+		if( $.isEmptyObject(filter) || $.isEmptyObject(filter)) return;
+
+		// Create array of Fields to remove from filter
+		for(var i = 0, l = col.length; i < l; i++){
+			if(col[i].hasOwnProperty('field')){
+				if(args.indexOf(col[i].field)>=0){
+					fields.push(col[i].field)
+				}
+			}
+		}
+
+		if($.isEmptyObject(fields)) return;
+
+		// call "private" method
+		var newFilter = this._eraseFiltersField(fields, filter)
+
+		// set new filter
+		this.dataSource.filter(newFilter);
 	}
+	
+	kendo.ui.Grid.prototype._eraseFiltersField = function(fields, filter){
+				for (var i = 0; i < filter.filters.length; i++) {
+
+					// For combination 'and' and 'or', kendo use nested filters so here is recursion
+					if(filter.filters[i].hasOwnProperty('filters')){
+						filter.filters[i] = this._eraseFiltersField(fields, filter.filters[i]);
+						if($.isEmptyObject(filter.filters[i])){
+							filter.filters.splice(i, 1);
+							i--;
+							continue;
+						}
+					}
+
+					// Remove filters
+					if(filter.filters[i].hasOwnProperty('field')){
+						if( fields.indexOf(filter.filters[i].field) > -1){
+							filter.filters.splice(i, 1);
+							i--;
+							continue;
+						}
+					}
+				}
+
+				if(filter.filters.length === 0){
+					filter = {};
+				}
+
+			return filter;
+	}
+	//////////////////////////////////////////// MULTI SELECT FILTER Functionality ENDS here ////////////////////////////////////
+
+
 
 	// CUSTOM EMAIL WINDOW //////////////////////////////////////////////////
 	$scope.emailWindowOptions = {
@@ -525,12 +663,16 @@ filterMenu.form.find(".k-textbox:first")
 	$scope.openEmailWindow = function() {
 		$scope.mailMessage = {
 			from:  $rootScope.userId + "@ncmec.org",
-			to: $rootScope.userId + "@ncmec.org",
+			//to: $rootScope.userId + "@ncmec.org",
 			subject: "Attention: New RFSes",
 			text: "Please find attached RFS Cases: " + $scope.checkedIds.toString(),
+			extraInfo: 
+					{
+						entityType: "rfs"
+					},
 			attachments : [
 				{
-					template: "RfsReport",
+					reportTemplate: "RfsReport",
 					format: "xlsx",
 					ids: $scope.checkedIds.toString()
 				}
@@ -551,6 +693,7 @@ filterMenu.form.find(".k-textbox:first")
 		DataFtry.sendEmail($scope.mailMessage).then(function(result){
 			console.log("SENT EMAIL !!!");
 			console.log(result);
+			if(result.data.status == "SUCCESS")	alert("Your email has been successfully sent!");
 		});
 		$scope.emailWindow.close();
 		
@@ -574,8 +717,16 @@ filterMenu.form.find(".k-textbox:first")
 			alert ('Please select one or more RFSes before printing..');
 			return;
 		} else {
-			$scope.printWindow.center().open();
-			DataFtry.printRFSes("http://ecms-devapp1.ncmecad.net:8080/ecms-services.nightly/rest/document/export/rfses?reportFileName=RfsReport.html&ids=" + $scope.checkedIds.toString());
+			//$scope.printWindow.center().open();
+			
+			var HTMLcontent = DataFtry.printRFSes("http://ecms-devapp1.ncmecad.net:8080/ecms-services.nightly/rest/document/export/rfses?reportFileName=RfsReport.html&ids=" + $scope.checkedIds.toString());
+			console.log(HTMLcontent)
+			//var w = window.open();
+			//w.document.write(HTMLcontent);
+
+
+			//w.focus();
+			//w.print();
 		}
 	};
 	

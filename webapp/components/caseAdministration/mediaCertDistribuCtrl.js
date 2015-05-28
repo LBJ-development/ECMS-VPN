@@ -511,7 +511,7 @@ angular.module('ECMSapp.mediaCertDistribu', [])
 	$scope.openEmailWindow = function() {
 		$scope.mailMessage = {
 			from:  $rootScope.userId + "@ncmec.org",
-			to: $rootScope.userId + "@ncmec.org",
+			//to: $rootScope.userId + "@ncmec.org",
 			subject: "Attention: Intakes",
 			extraInfo: 
 					{
