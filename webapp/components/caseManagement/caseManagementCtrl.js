@@ -170,15 +170,15 @@ angular.module('ECMSapp.caseManagement', [])
 // CASE LEFT MENU CONTROLLER & DIRECTIVE /////////////////////////////////////////////////////////
 
 .controller('CaseMenuCtrl', function($scope){
-	$scope.caseMenuOptions = {
-		contentUrls: [ null, null, "" ]
-	};
+	// $scope.caseMenuOptions = {
+	// 	contentUrls: [ null, null, "" ]
+	// };
 })
 
 .directive ('caseMenu', function () {
 	return {
 	restrict: 'E',
-	scope :{},
+	//scope :{},
 	controller: 'CaseMenuCtrl',
 	templateUrl: 'components/caseManagement/caseMenu.html',
 	link: function (scope, element, attrs){
@@ -193,7 +193,7 @@ angular.module('ECMSapp.caseManagement', [])
 	
 		function menuSelect(e) {
 		
-			//console.log("FROM MENU SELECT");
+			console.log("FROM MENU SELECT");
 			// BROADCASTING THE SELECTION
 			scope.$parent.$broadcast('caseMenuSelect', e.item.id);
 			}

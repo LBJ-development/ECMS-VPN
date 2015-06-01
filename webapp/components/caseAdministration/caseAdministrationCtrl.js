@@ -106,7 +106,7 @@ angular.module('ECMSapp.adminMain', [])
 	$scope.searchCriteria.startDate = formatstartDate();
 	$scope.searchCriteria.endDate = formatendDate();
 	$scope.submissionCount = 0;
-	
+		
 	//Initial Load
 	$scope.submitSearch();
 	
@@ -137,7 +137,7 @@ angular.module('ECMSapp.adminMain', [])
 				
 					//rfs source filter
 					tempSource 	= rfs['rfsSource'];
-					if ('undefined' != typeof tempSource ) {
+					if (nonNullUndefined(tempSource)) {	
 						//console.log('adding '+ tempSource);
 						if ($.inArray(tempSource, $scope.filterSourcesList) < 0) {
 							$scope.filterSourcesList.push(tempSource);
@@ -146,7 +146,7 @@ angular.module('ECMSapp.adminMain', [])
 					
 					//rfstype filter
 					tempRFSType	= rfs['rfsTypeDisplay'];
-					if ('undefined' != typeof tempRFSType ) {
+					if (nonNullUndefined(tempRFSType) )	{
 						//console.log('adding '+ tempRFSType);
 						if ($.inArray(tempRFSType, $scope.filterRFSTypeList) < 0) {
 							$scope.filterRFSTypeList.push(tempRFSType);
@@ -155,7 +155,7 @@ angular.module('ECMSapp.adminMain', [])
 					
 					//rfstate filter
 					tempIncidentState	= rfs['rfsIncidentState'];
-					if ('undefined' != typeof tempIncidentState ) {
+					if (nonNullUndefined(tempIncidentState) )	{
 						//console.log('adding '+ tempIncidentState);
 						if ($.inArray(tempIncidentState, $scope.filterRFSIncidentStateList) < 0) {
 							$scope.filterRFSIncidentStateList.push(tempIncidentState);
@@ -164,7 +164,7 @@ angular.module('ECMSapp.adminMain', [])
 					
 					//rfs status
 					tempRFSStatus	= rfs['rfsStatus'];
-					if ('undefined' != typeof tempRFSStatus ) {
+					if (nonNullUndefined(tempRFSStatus) )	{
 						//console.log('adding '+ tempRFSStatus);
 						if ($.inArray(tempRFSStatus, $scope.filterRFSStatusList) < 0) {
 							$scope.filterRFSStatusList.push(tempRFSStatus);
@@ -173,8 +173,7 @@ angular.module('ECMSapp.adminMain', [])
 					
 					//rfs assignee list caseManager=(null)
 					tempCaseManager	= rfs['caseManager'];
-					if ('undefined' != typeof tempCaseManager ) {
-						//console.log('adding '+ tempCaseManager);
+					if (nonNullUndefined(tempCaseManager) )	{
 						if ($.inArray(tempCaseManager, $scope.filterCaseManagerList) < 0) {
 							$scope.filterCaseManagerList.push(tempCaseManager);
 						}
@@ -184,33 +183,6 @@ angular.module('ECMSapp.adminMain', [])
 			//console.log($scope.filterSourcesList);
 			//console.log($scope.filterRFSTypeList);
 			//console.log($scope.filterRFSIncidentStateList);
-			
-/**************************/
-var grid = angular.element('#grid').data("kendoGrid");// the grid
-		 
-// Find the Role filter menu.
-/*
-var filterMenu = grid.thead.find("th[data-field='rfsSource']").data("kendoFilterMenu");
-filterMenu.form.find("div.k-filter-help-text").text("Select an item from the list:");
-filterMenu.form.find("span.k-dropdown:first").css("display", "none");
-
-// Change the text field to a dropdownlist in the Role filter menu.
-
-filterMenu.form.find(".k-textbox:first")
-    .removeClass("k-textbox")
-    .kendoDropDownList({
-        dataSource: new kendo.data.DataSource({
-            data: [
-                { title: "Software Engineer" },
-                { title: "Quality Assurance Engineer" },
-                { title: "Team Lead" }
-            ]
-        }),
-        dataTextField: "title",
-        dataValueField: "title"
-    });
-/**************************/
-	
 			
 			if(result.data.content.length >= 500){
 				$scope.warningClass = "inline-err";
@@ -227,6 +199,13 @@ filterMenu.form.find(".k-textbox:first")
 		});
 	});
 	
+	var  nonNullUndefined = function (value){
+		if( 'undefiend' != value && null !== value )
+			return true
+		else
+			return false
+	}
+	
 	$scope.enableSumbitBtn = function() {
 		$scope.disabled = false;
 	};
@@ -238,14 +217,14 @@ filterMenu.form.find(".k-textbox:first")
 		if (!item.selected) {
 			while ($.inArray(item.rfsNumber, $scope.checkedIds) >=0) {
 				console.log(item.rfsNumber + "=" + $.inArray(item.rfsNumber, $scope.checkedIds));
-			 $scope.checkedIds.splice($.inArray(item.rfsNumber, $scope.checkedIds),1);
+				$scope.checkedIds.splice($.inArray(item.rfsNumber, $scope.checkedIds),1);
 			}
 		} else {
 			if (!($.inArray(item.rfsNumber, $scope.checkedIds) >=0)){
-			$scope.checkedIds.push(item.rfsNumber);
+				$scope.checkedIds.push(item.rfsNumber);
+			}
 		}
-	}
-	
+        
 	}
 	
 	$scope.caseSelected = function(ev){
@@ -301,9 +280,9 @@ filterMenu.form.find(".k-textbox:first")
 									caseManager				: { type: "string"}
 								}
 						
-							}
 						}
-					},
+					}
+				},
 		//height		: 550,
         dataBound	: onDataBound,
 		//toolbar		: ["create"],
@@ -447,48 +426,9 @@ filterMenu.form.find(".k-textbox:first")
 							style: "text-align: center"
 							}
 						}]
-				};
-	$scope.toggleSelectAll = function(ev) {
-
-		var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
-		var items = grid.dataSource.data();
-			items.forEach(function(item){
-			item.selected = ev.target.checked;
-		});
-		ev.currentTarget.checked ? $scope.caseNum = grid.dataSource.total() : $scope.caseNum = 0; 
-		console.log($scope.caseNum);
-	};
-
-	var checkedIds = {};
-	
-	$scope.caseSelected = function(ev){
-
-		!ev.currentTarget.checked ?  $scope.caseNum -- :$scope.caseNum ++; 
-
-		var element =$(ev.currentTarget);
-		var checked = element.is(':checked');
-		var row = element.closest("tr");
-		var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
-		var dataItem = grid.dataItem(row);
+		};
 		
-		//remove from selection list if unchecked
-		if (!checked) {
-			 $scope.checkedIds.splice($.inArray(dataItem.rfsNumber, $scope.checkedIds),1);
-		} else {
-			$scope.checkedIds.push(dataItem.rfsNumber);
-		}
-	};
 
-	// DISABLE/ENABLE BUTTON WHEN CASE ARE SELECTED /////////////
-	$scope.buttonDisabledClass = "linkButtonDisabled"
-
-	$scope.$watch('caseNum', function() {
-
-		$scope.caseNum == 0? $scope.buttonDisabledClass = "linkButtonDisabled" : $scope.buttonDisabledClass = ""
-
-
-	});
-	
 	
 	// ON DATABOUND EVENT (WHEN PAGING) RESTORE PREVIOUSLY SELECTED ROWS
 	function onDataBound(e) {
@@ -540,22 +480,25 @@ filterMenu.form.find(".k-textbox:first")
 
 	////////////////////////////// MULTI SELECT FILTER FUNCTIONALITY //////////////////////////////
 	function multiSelectFilter(element, fieldName, customFilterMessage, dataSource) {
-		$scope.filterField = fieldName;
-		
 		var menu = $(element).parent(); 
         menu.find(".k-filter-help-text").text(customFilterMessage);
         menu.find("[data-role=dropdownlist]").remove(); 
         
         element.removeAttr("data-bind");
         var multiSelect = element.kendoMultiSelect({
-          dataSource: dataSource.sort()
+			dataSource: dataSource.sort(),
+			change: function(e) {
+					$scope.filterField = fieldName;
+					console.log('filtered with' + $scope.filterField); //this will fire after filtered.
+			}
         }).data("kendoMultiSelect");
         menu.find("[type=submit]").on("click", {widget: multiSelect}, filterByMultipleSelections); 
 	}
 	
 	function filterByMultipleSelections(e){
-		console.log('..........filterByMultipleSelections............');
-		console.log($scope.filterField);
+		//console.log('..........filterByMultipleSelections............');
+		//console.log($scope.filterField);
+		//console.log($scope);
 		
         var sources = e.data.widget.value();
 		var grid = $("#grid").data("kendoGrid");
@@ -571,8 +514,8 @@ filterMenu.form.find(".k-textbox:first")
 
 		var newFilter = {logic: 'or', filters: newFilterCriteria};
 				
-		console.log('after constructing the new filter ' );
-		console.log(newFilter);
+		//console.log('after constructing the new filter ' );
+		//console.log(newFilter);
 		
 		//add old filters
 		var currentFilters = grid.dataSource.filter();
@@ -587,8 +530,8 @@ filterMenu.form.find(".k-textbox:first")
 			combinedFilters = newFilter;
 		}
 		
-		console.log('after combining old and new filters' );
-		console.log(combinedFilters);
+		//console.log('after combining old and new filters' );
+		//console.log(combinedFilters);
 
 		//add updated currentFilters
         grid.dataSource.filter(combinedFilters);
@@ -685,7 +628,7 @@ filterMenu.form.find(".k-textbox:first")
 	
 	$scope.ccMyself = function() {
 		$scope.mailMessage.cc = ($rootScope.userId + "@ncmec.org").split(",");
-	};
+	}
 	
 	$scope.sendEmail = function(){
 		$scope.mailMessage.to = $scope.mailMessage.to.split(',');

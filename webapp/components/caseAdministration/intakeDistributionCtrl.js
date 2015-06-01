@@ -547,6 +547,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 
 
 	function callPDF(){
+		onsole.log("FROM CALL PDF" + $scope.caseID);
 		$scope.PDFPreviewOptions = {
 			width: "80%",
 			visible: false,
@@ -555,7 +556,9 @@ angular.module('ECMSapp.intakeDistribution', [])
 			modal: true,
 			content: {
 					iframe: false,
-					template:  '<embed src="' + ECMSConfig.restServicesURI + '/rest/document/export/intake?token=' + StorageService.getToken() + '&reportFileName=Intake_Report_ECMS.pdf&ids='  + $scope.caseID + '" width="100%" height="100%" type="application/pdf"></embed>'
+					template:  '<embed src="' + ECMSConfig.restServicesURI + '/rest/document/export/intake?token=' + StorageService.getToken() + '&reportFileName=Intake_Report_ECMS.pdf&ids='  + "1249075" + '" width="100%" height="100%" type="application/pdf"></embed>'
+					//template:  '<embed src="' + ECMSConfig.restServicesURI + '/rest/document/export/intake?token=' + StorageService.getToken() + '&reportFileName=Intake_Report_ECMS.pdf&ids='  + $scope.caseID + '" width="100%" height="100%" type="application/pdf"></embed>'
+					
 					//template:  '<embed src='  + ECMSConfig.restServicesURI + '/rest/document/export/intake?X-Auth-Token=' + StorageService.getToken() + 'reportFilename=Intake_Report_ECMS.pdf&ids=' + $scope.caseID + '" width="100%" height="100%" type="application/pdf"></embed>'
 				}
 			}
@@ -577,7 +580,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 			$scope.PDFPreview.center().open();
 
 		}, 300);
-		console.log($scope.caseID);
+		console.log("FROM GET PDF" + $scope.caseID);
 	};
 
 	// SELECT A CASE AND REDIRECT TO THE CASE MANAGMENT //////////////////////////////////////////////////
