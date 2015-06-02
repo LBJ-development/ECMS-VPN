@@ -114,7 +114,8 @@ angular.module('ECMSapp.caseManagement', [])
 	// console.log($scope);
 })
 
-.directive ('victimsHeader' , function ($interval, $window) {
+.directive ('victimsHeader' , function ($rootScope) {
+
 	return {
 	restrict: 'E',
 	scope :{},
@@ -146,23 +147,16 @@ angular.module('ECMSapp.caseManagement', [])
 				}
 			}
 
-		/*// RESIZE THE INFO HOLDER WHEN ONE RESIZE WINDOW
-		var offset = 310;
-		var infoWidth = $("#victim-holder").width() - offset;
-		$("#info-holder").css('width', infoWidth);
-		$window.addEventListener('resize', function() {
-			infoWidth = $("#victim-holder").width() - offset;
-			$("#info-holder").css('width', infoWidth);
-			}, false);*/
 		// RESIZE THE INFO HOLDER WHEN ONE RESIZE WINDOW
 		var offset = 310;
 		var infoWidth = $("#wrapper").width() - offset;
 
 		$("#victim-holder").css('width', infoWidth);
-		$window.addEventListener('resize', function() {
-			infoWidth = $("#wrapper").width() - offset;
-			$("#victim-holder").css('width', infoWidth);
-			}, false);
+
+		$rootScope.$on('wrapperWidthChanges', function (event, data) {
+	
+			$("#victim-holder").css('width', data - offset);
+			});
 		}
 	};
 })
@@ -193,7 +187,7 @@ angular.module('ECMSapp.caseManagement', [])
 	
 		function menuSelect(e) {
 		
-			console.log("FROM MENU SELECT");
+			//console.log("FROM MENU SELECT");
 			// BROADCASTING THE SELECTION
 			scope.$parent.$broadcast('caseMenuSelect', e.item.id);
 			}
@@ -224,7 +218,7 @@ angular.module('ECMSapp.caseManagement', [])
 	
 })
 
-.directive ('caseSummary',function ($interval, $window) {
+.directive ('caseSummary',function ( $rootScope) {
 	return {
 	restrict: 'E',
 	scope :{},
@@ -237,24 +231,39 @@ angular.module('ECMSapp.caseManagement', [])
 		var infoWidth = $("#wrapper").width() - offset;
 
 		$("#info-holder").css('width', infoWidth);
-		$window.addEventListener('resize', function() {
-			infoWidth = $("#wrapper").width() - offset;
-			$("#info-holder").css('width', infoWidth);
-			}, false);
+
+		$rootScope.$on('wrapperWidthChanges', function (event, data) {
+			
+			$("#info-holder").css('width', data - offset);
+			});
 		}
 	};
 })
 
 // CASE TEST DIRECTIVE /////////////////////////////////////////////////////////
 
-.directive ('caseTest',function () {
+.directive ('caseTest',function ($rootScope) {
 	return {
 	restrict: 'E',
-	scope :{},
+	//scope :{},
 	templateUrl: 'components/caseManagement/caseTest.html',
 	link: function (scope, element, attrs){
 
 		var menuTitle;
+
+		// RESIZE THE INFO HOLDER WHEN ONE RESIZE WINDOW
+		var offset = 350;
+		var infoWidth = $("#wrapper").width() - offset;
+
+		$("#test-holder").css('width', infoWidth);
+
+		console.log("FROM TEST DIRECTIVE");
+		console.log($("#test-holder").width());
+
+		$rootScope.$on('wrapperWidthChanges', function (event, data) {
+			
+			$("#test-holder").css('width', data - offset);
+			});
 
 		scope.$on('caseMenuSelect', function (event, data) {
 			//console.log("FROM CASE TEST");

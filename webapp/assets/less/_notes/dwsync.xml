@@ -52,7 +52,7 @@
 <file name="650.less" server="Z:/ECMS/app/" local="130711982047595850" remote="130711982040000000" Dst="2" />
 <file name="850.less" server="Z:/ECMS/app/" local="130711982047615851" remote="130711982040000000" Dst="2" />
 <file name="CC-forms.less" server="Z:/ECMS/app/" local="130753095850347619" remote="130753095850000000" Dst="2" />
-<file name="CC-general.less" server="Z:/ECMS/app/" local="130767124716966577" remote="130767124710000000" Dst="2" />
+<file name="CC-general.less" server="Z:/ECMS/app/" local="130777206320214293" remote="130777206320000000" Dst="2" />
 <file name="CC-masthead.less" server="Z:/ECMS/app/" local="130711982047735858" remote="130711982040000000" Dst="2" />
 <file name="CC-mixins.less" server="Z:/ECMS/app/" local="130711982047755859" remote="130711982040000000" Dst="2" />
 <file name="CC-styles.less" server="Z:/ECMS/app/" local="130765305631134187" remote="130765305630000000" Dst="2" />
@@ -93,6 +93,6 @@
 <file name="CC-buttons.less" server="Z:/ECMS/app/" local="130767117093884345" remote="130767117090000000" Dst="2" />
 <file name="CC-buttons.less" server="Z:/UIDesigns/ECMS/app/" local="130767713740850935" remote="130767713740000000" Dst="2" />
 <file name="JQX-redefined.less" server="Z:/ECMS/app/" local="130711982047845864" remote="130711982040000000" Dst="2" />
-<file name="CC-caseSpecs.less" server="Z:/ECMS/app/" local="130765305631114115" remote="130765305630000000" Dst="2" />
+<file name="CC-caseSpecs.less" server="Z:/ECMS/app/" local="130777484269770630" remote="130777484260000000" Dst="2" />
 <file name="CC-caseSpecs.less" server="Z:/UIDesigns/ECMS/app/" local="130772347213732685" remote="130772347210000000" Dst="2" />
 </dwsync>

@@ -44,7 +44,7 @@ angular.module('ECMSapp.mainMenu', ['ngRoute'])
 
     }])
 
-    .controller('MainMenuCtrl', function($http, $scope, $location) {
+    .controller('MainMenuCtrl', function($http, $scope, $location, WindowSizeFtry) {
 
         $scope.menuSource =    [{
             text: "Home",

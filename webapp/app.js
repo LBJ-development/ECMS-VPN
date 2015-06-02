@@ -12,12 +12,14 @@ var app = angular.module('ECMSapp', [
 	'ECMSapp.login',
 	'ECMSapp.home',
 	'ECMSapp.mainMenu',
-    'ECMSapp.services',
+        'ECMSapp.services',
+    'ECMSapp.servicesGeneral',
 	'ECMSapp.adminMain',
 	'ECMSapp.assignCM',
     'ECMSapp.intakeDistribution',
     'ECMSapp.mediaCertDistribu',
     'ECMSapp.caseManagement',
+
 	'kendo.directives',
     "ngSanitize" 
 	]);
@@ -63,7 +65,7 @@ app.factory('httpRequestInterceptor', function ($q, $location, StorageService, E
            
             if (config.url.indexOf('.html') === -1){
                 config.url = ECMSConfig.restServicesURI + config.url ;
-                console.log("FROM INTERCEPTOR");
+              //  console.log("FROM INTERCEPTOR");
             }
             return config;
         },

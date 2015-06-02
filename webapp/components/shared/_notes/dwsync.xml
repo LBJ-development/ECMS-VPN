@@ -4,8 +4,8 @@
 <file name="mainMenu.html" server="C:/tomcat/webapps/ecms/" local="130673623910000000" remote="130673623910000000" Dst="1" />
 <file name="mainMenu.html" server="C:/tomcat/webapps/ecms/WEB-INF/views/" local="130673623910000000" remote="130673623910000000" Dst="1" />
 <file name="mainMenu.html" server="Z:/ECMS/" local="130673623910000000" remote="130673623910000000" Dst="1" />
-<file name="mainMenu.html" server="Z:/ECMS/app/" local="130767156289603713" remote="130767156280000000" Dst="2" />
-<file name="mainMenuCtrl.js" server="Z:/ECMS/app/" local="130767184560370507" remote="130767184560000000" Dst="2" />
+<file name="mainMenu.html" server="Z:/ECMS/app/" local="130777206320828929" remote="130777206320000000" Dst="2" />
+<file name="mainMenuCtrl.js" server="Z:/ECMS/app/" local="130777427581713290" remote="130777427580000000" Dst="2" />
 <file name="comingSoon.html" server="Z:/UIDesigns/ECMS/" local="130687633797813547" remote="130687633790000000" Dst="1" />
 <file name="footer.html" server="Z:/UIDesigns/ECMS/" local="130688304388348271" remote="130688304380000000" Dst="1" />
 <file name="mainMenu.html" server="Z:/UIDesigns/ECMS/" local="130687616676843547" remote="130687616670000000" Dst="1" />
@@ -17,4 +17,5 @@
 <file name="comingSoon.html" server="Z:/ECMS/app/" local="130711982049685969" remote="130711982040000000" Dst="2" />
 <file name="footer.html" server="Z:/ECMS/app/" local="130711982049705970" remote="130711982040000000" Dst="2" />
 <file name="config.js" server="Z:/ECMS/app/" local="130746981060653095" remote="130746981060000000" Dst="2" />
+<file name="servicesGeneral.js" server="Z:/ECMS/app/" local="130777441669261005" remote="130777441660000000" Dst="2" />
 </dwsync>
