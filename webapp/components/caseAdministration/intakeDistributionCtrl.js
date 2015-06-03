@@ -182,7 +182,6 @@ angular.module('ECMSapp.intakeDistribution', [])
 			}
 			$scope.warning = result.data.messages.RESULTS_LIST;
 			$scope.disabled = true;
-			$scope.caseNum = 0; // KEEP TRACK OF THE NUMBER OF SELECTED CASES
 		});
 	});
 	
@@ -435,7 +434,6 @@ angular.module('ECMSapp.intakeDistribution', [])
 			item.selected = ev.target.checked;
 			$scope.selectItem(item);
         });
-		ev.currentTarget.checked ? $scope.caseNum = items.length : $scope.caseNum = 0; 
     };
 	
 	$scope.caseSelected = function(ev){
@@ -446,17 +444,14 @@ angular.module('ECMSapp.intakeDistribution', [])
         var item = grid.dataItem(row);
 		
 		$scope.selectItem(item);
-
-		!ev.currentTarget.checked ?  $scope.caseNum -- :$scope.caseNum ++; 
-	
 	};
 	
 	
 	// DISABLE/ENABLE BUTTON WHEN CASE ARE SELECTED /////////////
 	$scope.buttonDisabledClass = "linkButtonDisabled";
 
-	$scope.$watch('caseNum', function() {
-		$scope.caseNum == 0? $scope.buttonDisabledClass = "linkButtonDisabled" : $scope.buttonDisabledClass = "";
+	$scope.$watch('checkedIds.length', function() {
+		$scope.checkedIds.length == 0? $scope.buttonDisabledClass = "linkButtonDisabled" : $scope.buttonDisabledClass = ""
 	});
 
 	// DISTRIBUTE INTAKES MESSAGES //////////////////////////////////////////////////
@@ -471,14 +466,14 @@ angular.module('ECMSapp.intakeDistribution', [])
 	};
 
 	$scope.confirmClearinghouse = function(e) {
-		$scope.numCases = $scope.caseNum + " cases";
+		$scope.numCases = $scope.checkedIds.length + " cases";
 		$scope.recipient = "to Clearinghouses.";
 		$scope.targetGroup = "clearinghouse";
 		$scope.confirmMessage.center().open();
 	};
 
 	$scope.confirmTeamHope = function(e) {
-		$scope.numCases = $scope.caseNum + " cases";
+		$scope.numCases = $scope.checkedIds.length + " cases";
 		$scope.recipient = "to Team Hope.";
 		$scope.confirmMessage.center().open();
 	};
@@ -508,11 +503,12 @@ angular.module('ECMSapp.intakeDistribution', [])
 			from:  $rootScope.userId + "@ncmec.org",
 			//to: $rootScope.userId + "@ncmec.org",
 			
-			subject: "Attention: Media Status",
-			text: "Please find Media Status of following cases: " + $scope.checkedIds.toString(),
+			subject: "Attention: Intakes",
+			text: "Please find Intakes of following cases: " + $scope.checkedIds.toString(),
 			extraInfo: 
 					{
-						entityType: "case"
+						entityType: "case",
+						ids: $scope.checkedIds.toString()
 					},
 			attachments: [
 							{
@@ -544,22 +540,21 @@ angular.module('ECMSapp.intakeDistribution', [])
 	
 	
 	// PDF WINDOW //////////////////////////////////////////////////
-
-
-	function callPDF(){
-		onsole.log("FROM CALL PDF" + $scope.caseID);
-		$scope.PDFPreviewOptions = {
+    $scope.PDFPreviewOptions = { 
 			width: "80%",
 			visible: false,
 			maxWidth: 1200,
 			height: "80%",
-			modal: true,
+				modal: true,   
+			};
+
+	function callPDF(caseId){
+		var reportUrl =  ECMSConfig.restServicesURI + '/rest/document/export/intake?token=' + StorageService.getToken() + '&reportFileName=Intake_Report_ECMS.pdf&ids='  + caseId;
+		
+		return {
 			content: {
 					iframe: false,
-					template:  '<embed src="' + ECMSConfig.restServicesURI + '/rest/document/export/intake?token=' + StorageService.getToken() + '&reportFileName=Intake_Report_ECMS.pdf&ids='  + "1249075" + '" width="100%" height="100%" type="application/pdf"></embed>'
-					//template:  '<embed src="' + ECMSConfig.restServicesURI + '/rest/document/export/intake?token=' + StorageService.getToken() + '&reportFileName=Intake_Report_ECMS.pdf&ids='  + $scope.caseID + '" width="100%" height="100%" type="application/pdf"></embed>'
-					
-					//template:  '<embed src='  + ECMSConfig.restServicesURI + '/rest/document/export/intake?X-Auth-Token=' + StorageService.getToken() + 'reportFilename=Intake_Report_ECMS.pdf&ids=' + $scope.caseID + '" width="100%" height="100%" type="application/pdf"></embed>'
+					template:  '<object type="application/pdf" data="' + reportUrl + '" width="100%" height="100%" ><embed src="' + reportUrl + '" width="100%" height="100%" type="application/pdf"></embed></object>'
 				}
 			}
 		}
@@ -569,18 +564,16 @@ angular.module('ECMSapp.intakeDistribution', [])
 		var row 	= element.closest("tr");
 		var grid 	= $(ev.target).closest("[kendo-grid]").data("kendoGrid");
 		var dataItem 	= grid.dataItem(row);
-		$scope.caseID  = dataItem.caseNumber;
+		var caseId = dataItem.caseNumber;
+		var options = callPDF(caseId);
 
-		callPDF();
-
-		setTimeout(function(){
-			
-			//console.log($scope.PDFPreviewOptions);
-
-			$scope.PDFPreview.center().open();
+		setTimeout(function(){			
+			console.log(options);
+			$scope.PDFPreview.setOptions(options);
+			$scope.PDFPreview.refresh().center().open();
 
 		}, 300);
-		console.log("FROM GET PDF" + $scope.caseID);
+		console.log(caseId);
 	};
 
 	// SELECT A CASE AND REDIRECT TO THE CASE MANAGMENT //////////////////////////////////////////////////
@@ -589,45 +582,6 @@ angular.module('ECMSapp.intakeDistribution', [])
 		// OPEN A CASE IN THE CASE MANAGEMENT SECTION
 		 $location.path('/casemanagement');
 	};
-
-/*
-	$scope.getPDF = function(e){
-
-		console.log("FROM GET PDF");
-
-		$scope.PDFPreview.center().open();
-	};
-*/
-
-	
-/*	$scope.caseSel = []; // KEEP TRACK OF THE CASES SELECTED
-	$scope.caseSelected = function(evt){
-
-		var	row			= evt.currentTarget.closest("tr"),
-			grid		= $("#grid").data("kendoGrid"),
-			dataItem	= grid.dataItem(row);
-
-
-		if(!evt.currentTarget.checked) {
-
-			for(var i=0; i < $scope.caseSel.length; i++) {
-
-				if($scope.caseSel[i] === dataItem.caseNumber){
-
-					$scope.caseSel.splice(i , 1);
-
-					$scope.caseNum --;
-				}
-			}
-		} else {
-
-			$scope.caseSel.push(dataItem.caseNumber);
-
-			$scope.caseNum ++;
-		}
-
-		console.log($scope.caseSel);
-	};*/
 
 	// GRID DETAIL SETTINGS /////////////////////////////////////////////////////////////////////////////////////
 	function detailIExpand(e) {

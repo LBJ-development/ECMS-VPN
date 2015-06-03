@@ -13,14 +13,17 @@
 						 	<input type="radio" style="float: left; margin:6px" name="isUnassignedCases" ng-model="isUnassignedCases" ng-change="handleRadioSelection(isUnassignedCases)"  value="0" id="bydate"/>
 						 	<label for="bydate">Received Date Range</label>
 						</li>
-						<li style="padding-right: 0px">
+
+        				<div id="dateRangeHolder"></div>
+
+						<!-- <li style="padding-right: 0px">
 							<label >From:</label> 
 							<input kendo-date-picker id="startingDate" k-max={{today}} k-on-change="enableSumbitBtn()" k-ng-model="startingDate" ng-disabled="datePickerDisable" style="width: 180px"/> 
 						</li>
 						<li style="padding-right: 0px">
 							<label  >To:</label> 
 							<input kendo-date-picker id="endingDate" k-max={{today}} ng-disabled="datePickerDisable"  k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
-						</li>
+						</li> -->
 					</ul>
 				</div>
 				<div class="filter-row-holder" >

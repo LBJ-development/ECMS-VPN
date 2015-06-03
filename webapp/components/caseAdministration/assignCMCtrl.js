@@ -4,8 +4,6 @@ angular.module('ECMSapp.assignCM', [])
 
 .controller('AssignCMCtrl', [ '$scope', 'DataFtry', '$http', '$location', function( $scope, DataFtry, $http, $location){
 
-	console.log("FROM ASSIGN CM");
-	console.log($location);
 
 	// SELECT A CASE AND REDIRECT TO THE CASE MANAGMENT //////////////////////////////////////////////////
 	$scope.selectCase = function(e){
@@ -199,16 +197,35 @@ angular.module('ECMSapp.assignCM', [])
 	}
 
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
+
+	//setTimeout(function(){
+
+
+
 	var todayDate		= new Date();
 	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 1 DAYS 
 	var startingDate	= new Date(todayDate.getTime() - dateOffset);
 	var endingDate		= todayDate;
+
+	var dateRange = new DateRange($("#dateRangeHolder"));
+
 	$scope.startingDate	= startingDate;
 	$scope.endingDate	= endingDate;
 	$scope.isUnassignedCases = 0;
 	$scope.submitSearch = 0; //
 	$scope.disabled		= true; // DISABLES THE SUBMIT BUTTON
 	$scope.datePickerDisable = false; // ENABLES THE DATE PICKER
+
+	console.log("FROM INITIAL DATE");
+	console.log($scope.startingDate);
+
+
+	
+	//}, 2000);
+
+	
+
+	
 		
 	function formatDate(){
 		var date	= new Date().getDate();
@@ -286,8 +303,8 @@ angular.module('ECMSapp.assignCM', [])
 		
 		$scope.today = new Date();
 		// data massaging
-		console.log("startDate valid:" + ($scope.startDate instanceof Date));
-		console.log("endDate valid:" + ($scope.endDate instanceof Date));
+		//console.log("startDate valid:" + ($scope.startDate instanceof Date));
+		//console.log("endDate valid:" + ($scope.endDate instanceof Date));
 		if (!($scope.startingDate instanceof Date)){
 			alert("Error: Enter correct Start Date(mm/dd/yyyy) OR  Pick a date from DatePicker widget.");
 			return;

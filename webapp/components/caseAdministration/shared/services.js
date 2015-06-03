@@ -26,7 +26,7 @@ angular.module('ECMSapp.services', [])
 			if(result.data.status == 'SUCCESS'){
 				deferred.resolve(result);
 			} else {
-				console.log(result);
+				//console.log(result);
 				alert(result.data.messages['ROOT']);
 			}
 		});
@@ -70,7 +70,7 @@ angular.module('ECMSapp.services', [])
 		});
 		var deferred = $q.defer();
 
-		console.log("FROM EXECUTE POST: " + restservice + dataobject);
+		//console.log("FROM EXECUTE POST: " + restservice + dataobject);
 	
 		$promise.then(function(result){
 			if(result.data.status == 'SUCCESS'){
@@ -121,21 +121,21 @@ angular.module('ECMSapp.services', [])
 				caseCreateEndDate: endDate,
 				isUnassignedCases : isUnAssignedCases
 			};
-		console.log("search criteria");
-		console.log(casesearch);
+		//console.log("search criteria");
+		//console.log(casesearch);
 		return executeHttpJSONPost("/rest/caseadmin/caseSearch", casesearch);
 	};
 	
 	var getCasesForIntakeDist = function (casesearch){
-		console.log("search criteria");
-		console.log(casesearch);
+		//console.log("search criteria");
+		//console.log(casesearch);
 		return executeHttpJSONPost("/rest/caseadmin/intakeDistCaseSearch", casesearch);
 	};
 	
 
 	var getCasesForMediaCertDist = function (casesearch){
-		console.log("search criteria");
-		console.log(casesearch);
+		//console.log("search criteria");
+		//console.log(casesearch);
 		return executeHttpJSONPost("/rest/caseadmin/mediaDistCaseSearch", casesearch);
 	};
 	
@@ -153,14 +153,14 @@ angular.module('ECMSapp.services', [])
 			requestPayload.attachments = attachments;
 		}
 		
-		console.log("preparing email for :" + emailTemplateName + " with " + checkedIds);
-		console.log(requestPayload.attachements);
+		//console.log("preparing email for :" + emailTemplateName + " with " + checkedIds);
+		//console.log(requestPayload.attachements);
 		return executeHttpJSONPost("/rest/email/preparemail", requestPayload);
 	};
 		
 	var sendEmail = function (mailMessage) {
-		console.log("sending email criteria");
-		console.log(mailMessage);
+		//console.log("sending email criteria");
+		//console.log(mailMessage);
 		return executeHttpJSONPost("/rest/email/sendmail", mailMessage);
 	}
 	
@@ -210,8 +210,8 @@ angular.module('ECMSapp.services', [])
 	};
 
 	var sendEmail = function (mailMessage) {
-		console.log("sending email criteria");
-		console.log(mailMessage);
+		//console.log("sending email criteria");
+		//console.log(mailMessage);
 		return executeHttpJSONPost("/rest/email/sendmail", mailMessage);
 	};
 

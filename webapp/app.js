@@ -143,7 +143,7 @@ app.config(function ($httpProvider) {
 	$httpProvider.interceptors.push('timestampMarker');
 });
 
-app.run( function($location, $window, $rootScope, StorageService){
+app.run( function($location, $window, $rootScope, StorageService, ECMSConfig){
     StorageService.setToken(null);
 
     var windowElement = angular.element($window);
@@ -163,4 +163,8 @@ app.run( function($location, $window, $rootScope, StorageService){
     }
 
 	$rootScope.loggedIn = false;
+	console.log('adding services url to root scope'+ ECMSConfig.restServicesURI);
+
+    //put services url on root scope in case we need to use it in html 
+    $rootScope.restServicesURL = ECMSConfig.restServicesURI;
 });
