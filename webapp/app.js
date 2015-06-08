@@ -12,14 +12,13 @@ var app = angular.module('ECMSapp', [
 	'ECMSapp.login',
 	'ECMSapp.home',
 	'ECMSapp.mainMenu',
-        'ECMSapp.services',
+    'ECMSapp.services',
     'ECMSapp.servicesGeneral',
 	'ECMSapp.adminMain',
 	'ECMSapp.assignCM',
     'ECMSapp.intakeDistribution',
     'ECMSapp.mediaCertDistribu',
     'ECMSapp.caseManagement',
-
 	'kendo.directives',
     "ngSanitize" 
 	]);
@@ -163,7 +162,7 @@ app.run( function($location, $window, $rootScope, StorageService, ECMSConfig){
     }
 
 	$rootScope.loggedIn = false;
-	console.log('adding services url to root scope'+ ECMSConfig.restServicesURI);
+	//console.log('adding services url to root scope'+ ECMSConfig.restServicesURI);
 
     //put services url on root scope in case we need to use it in html 
     $rootScope.restServicesURL = ECMSConfig.restServicesURI;

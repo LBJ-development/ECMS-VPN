@@ -202,10 +202,9 @@ angular.module('ECMSapp.assignCM', [])
 	var dateRange = new DateRange(dateRangeHolder, dateRangeValue);
 	dateRange.enable(true);
 	$(dateRange).bind("dateRangeHasChanged", function(ev, startingDate, endingDate){
-		console.log($scope);
 		$scope.submitDisabled = false;
 		$scope.$digest();
-		console.log("FROM DATE CHANGE! :" + startingDate + " / " + endingDate);
+		//console.log("FROM DATE CHANGE! :" + startingDate + " / " + endingDate);
 	});
 
 	// INITIAL DATE RANGE //////////////////////////////////////////////////
@@ -278,7 +277,7 @@ angular.module('ECMSapp.assignCM', [])
 
 	// WHEN DATE RANGE CHANGES //////////////////////////////////////////////////
 	$scope.reloadData = function(){
-		console.log("reloadData");
+		//console.log("reloadData");
 		$scope.submitSearch++;
 	};
 
@@ -316,7 +315,10 @@ angular.module('ECMSapp.assignCM', [])
 			return;
 		}*/
 		
-		DataFtry.getCasesForAssignment(dateRange.formatStartingDate(), dateRange.formatEndingDate(), $scope.isUnassignedCases).then(function(result){
+		// GET CASES FROM ANGULARJS DIRECTIVE WIDGET //////////////////////////////////
+		DataFtry.getCasesForAssignment($scope.formatStartingDate(), $scope.formatEndingDate(), $scope.isUnassignedCases).then(function(result){
+		// GET CASES FROM JAVASCRIPT OBJECT WIDGET //////////////////////////////////
+		//DataFtry.getCasesForAssignment(dateRange.formatStartingDate(), dateRange.formatEndingDate(), $scope.isUnassignedCases).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;
 			
 			//console.log(result.data.content);
