@@ -134,7 +134,6 @@ angular.module('ECMSapp.assignCM', [])
     };
 
     // DAILY ASSIGNMENT WORKSHEET WINDOW //////////////////////////////////////////////////
-
 	$scope.dawsOptions = {
 		width: "80%",
 		visible: false,
@@ -148,10 +147,6 @@ angular.module('ECMSapp.assignCM', [])
 		// left: "center"
 		// },
 	};
-
-	//$scope.todayDate = formatDate();
-
-	//var grid = $("#grid").data("kendoGrid");
 
 	function getDAWSdata(){
 
@@ -195,54 +190,7 @@ angular.module('ECMSapp.assignCM', [])
 			$("#dawsWin").data("kendoWindow").close();
                         }
 	}
-
-	// USING THE DATE RANGE WIDGET //////////////////////////////
-	var dateRangeHolder = $("#dateRangeHolder"); // HTML ELEMENT HOLDING THE DATE RANGE
-	var dateRangeValue = 1; // DATE RANGE VALUE IN NUMBER OF DAYS
-	var dateRange = new DateRange(dateRangeHolder, dateRangeValue);
-	dateRange.enable(true);
-	$(dateRange).bind("dateRangeHasChanged", function(ev, startingDate, endingDate){
-		$scope.submitDisabled = false;
-		$scope.$digest();
-		//console.log("FROM DATE CHANGE! :" + startingDate + " / " + endingDate);
-	});
-
-	// INITIAL DATE RANGE //////////////////////////////////////////////////
-
-	//setTimeout(function(){
-
-/*	var todayDate		= new Date();
-	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 1 DAYS 
-	var startingDate	= new Date(todayDate.getTime() - dateOffset);
-	var endingDate		= todayDate;
-*/
-/*	$scope.startingDate	= startingDate;
-	$scope.endingDate	= endingDate;*/
-	$scope.isUnassignedCases = 0;
-	$scope.submitSearch = 0; //
-	$scope.submitDisabled		= true; // DISABLES THE SUBMIT BUTTON
-	$scope.datePickerDisable = false; // ENABLES THE DATE PICKER
 		
-/*	function formatDate(){
-		var date	= new Date().getDate();
-		var month	= new Date().getMonth() + 1;
-		var year	= new Date().getFullYear();
-		return   month  + "/" + date + "/" +  year ;
-	}
-	function formatStartingDate(){
-		var stDate	= $scope.startingDate.getDate();
-		var stMonth	= $scope.startingDate.getMonth() + 1;
-		var stYear	= $scope.startingDate.getFullYear();
-		return stYear + "-" + stMonth  + "-" + stDate;
-	}
-
-	function formatEndingDate(){
-		var enDate	= $scope.endingDate.getDate();
-		var enMonth	= $scope.endingDate.getMonth() + 1;
-		var enYear	= $scope.endingDate.getFullYear();
-		return enYear + "-" + enMonth  + "-" + enDate;
-	}*/
-	
 	$scope.assignMessage = "";
 	$scope.assignCM = function(){
 		var assignURL = "case:" + $scope.dataItem.caseNumber + "manager:"+ $scope.assignCM.caseManagerId;
@@ -263,22 +211,14 @@ angular.module('ECMSapp.assignCM', [])
 			if ($.inArray($scope.dataItem.caseManager, $scope.filterCaseManagerList) < 0) {
 				$scope.filterCaseManagerList.push($scope.dataItem.caseManager);
 			}
-
-			console.log($scope.caseManagerName);
-			//$scope.reloadData(); //triggering main grid refresh
+			//console.log($scope.caseManagerName);
 		});
 	};
 
 	$scope.handleRadioSelection = function(ev) {
 		$scope.submitDisabled = false;
-		//ev == 0? $scope.datePickerDisable = false : $scope.datePickerDisable = true;
-		ev == 0? dateRange.enable(true) : dateRange.enable(false);
-	};
-
-	// WHEN DATE RANGE CHANGES //////////////////////////////////////////////////
-	$scope.reloadData = function(){
-		//console.log("reloadData");
-		$scope.submitSearch++;
+		ev == 0? $scope.datePickerDisable = false : $scope.datePickerDisable = true;
+		//ev == 0? dateRange.enable(true) : dateRange.enable(false);
 	};
 
 	$scope.filterSourcesList = [];
@@ -289,32 +229,30 @@ angular.module('ECMSapp.assignCM', [])
 	var tempCaseType= "";
 	var tempCaseManager
 
-	// WATCH FOR A DATE RANGE CHANGE
-	$scope.$watch('submitSearch', function(newValue, oldValue) {
-		// console.log("Calling submitSearch:" + $scope.submitSearch);
+	// USING THE DATE RANGE WIDGET //////////////////////////////
+	/*var dateRangeHolder = $("#dateRangeHolder"); // HTML ELEMENT HOLDING THE DATE RANGE
+	var dateRangeValue = 1; // DATE RANGE VALUE IN NUMBER OF DAYS
+	var dateRange = new DateRange(dateRangeHolder, dateRangeValue);
+	dateRange.enable(true);
+	$(dateRange).bind("dateRangeHasChanged", function(ev, startingDate, endingDate){
+		$scope.submitDisabled = false;
+		$scope.$digest();
+		//console.log("FROM DATE CHANGE! :" + startingDate + " / " + endingDate);
+	});*/
+	$scope.isUnassignedCases = 0;
+	//$scope.submitSearch = 0; //
+	$scope.submitDisabled		= true; // DISABLES THE SUBMIT BUTTON
+	$scope.datePickerDisable = false; // ENABLES THE DATE PICKER
+
+	$scope.$watch('$viewContentLoaded', function() {
+		$scope.reloadData();
+	});
+
+	$scope.reloadData = function(){
+	//$scope.$watch('submitSearch', function(newValue, oldValue) {
+		
 		$scope.mainGridOptions.dataSource.data = [];
 
-		//if($scope.submitSearch > 0) dateRange.checkDateFormating();
-		
-		/*$scope.today = new Date();
-		// data massaging
-		//console.log("startDate valid:" + ($scope.startDate instanceof Date));
-		//console.log("endDate valid:" + ($scope.endDate instanceof Date));
-		if (!($scope.startingDate instanceof Date)){
-			alert("Error: Enter correct Start Date(mm/dd/yyyy) OR  Pick a date from DatePicker widget.");
-			return;
-		}
-		
-		if (!($scope.endingDate instanceof Date)){
-			alert("Error: Enter correct End Date(mm/dd/yyyy) OR  Pick a date from DatePicker widget.");
-			return;
-		}
-		
-		if ($scope.startingDate > $scope.endingDate) {
-			alert("Start Date can't be after End Date");
-			return;
-		}*/
-		
 		// GET CASES FROM ANGULARJS DIRECTIVE WIDGET //////////////////////////////////
 		DataFtry.getCasesForAssignment($scope.formatStartingDate(), $scope.formatEndingDate(), $scope.isUnassignedCases).then(function(result){
 		// GET CASES FROM JAVASCRIPT OBJECT WIDGET //////////////////////////////////
@@ -353,8 +291,6 @@ angular.module('ECMSapp.assignCM', [])
 
 			});
 			
-			
-			
 			if(result.data.content.length >= 500){
 				$scope.warningClass = "inline-err";
 			} else {
@@ -364,7 +300,7 @@ angular.module('ECMSapp.assignCM', [])
 			$scope.submitDisabled = true;
 		});
 		//var divgrid = angular.element('#datagrid').data("kendo-grid").dataSource.read(); 
-	});
+	};
 	
 	
     // MAIN GRID SETTINGS //////////////////////////////////////////////////////////////////////////////////////	
@@ -390,9 +326,6 @@ angular.module('ECMSapp.assignCM', [])
 							}
 						},
 					},
-		//height		: 550,
-        //dataBound	: onDataBound,
-		//toolbar		: ["create"],
 		sortable	: true,
 		scrollable	: false,
 		filterable	: {
@@ -428,20 +361,7 @@ angular.module('ECMSapp.assignCM', [])
 						pageSize: 15
                         },
 		detailTemplate: kendo.template($("#detail-template").html()),
-		/*detailExpand: function(e) {
-			this.collapseRow(this.tbody.find(' > tr.k-master-row').not(e.masterRow));
-		},*/
-		// detailExpand:detailIExpand,
 		detailInit: detailInit,
-			/*detailInit: function(e) {
-			// without this line, detail template bindings will not work
-			kendo.bind(e.detailRow, e.data);
-		},*/
-						
-      //dataBound: function() {
-                           // this.expandRow(this.tbody.find("tr.k-master-row").first());
-                        //},
-
 		columns		: [{
 						field	: "caseAlerts",
 						title	: "Alerts",
@@ -600,13 +520,10 @@ angular.module('ECMSapp.assignCM', [])
 						},
 					]
 				});
-			
 			// getCaseManagers(caseManager);
 		});
 	}
-
-
-			
+	
 	// FILTERING WITH DROPDOWN MENU 
 	var victim	= ["1", "2", "3", "4", "5", "6"],
 		bool	= ["Yes", "No"];

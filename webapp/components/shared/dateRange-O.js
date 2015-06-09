@@ -5,7 +5,7 @@
 serviceGeneralModule.directive('dateRange', function() {
 	return {
 		restrict: 'E',
-		template: '<li style="padding-right: 10px"><label >From:</label><input id="startingDate" kendo-date-picker k-max={{today}} k-on-change="enableSumbitBtn()" k-ng-model="startingDate" k-rebind="startingDate" k-ng-delay="startingDate" style="width: 180px"/></li><li style="padding-right: 10px"><label>To:</label><input id="endingDate"  kendo-date-picker k-max={{today}}  k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  k-rebind="startingDate" k-ng-delay="startingDate"  style="width: 180px"/></li>',
+		template: '<li style="padding-right: 10px"><label >From:</label><input id="startingDate" kendo-date-picker k-max={{today}} k-on-change="enableSumbitBtn()" k-ng-model="startingDate" k-rebind="startingDate" k-ng-delay="startingDate" ng-disabled="datePickerDisable" style="width: 180px"/></li><li style="padding-right: 10px"><label>To:</label><input id="endingDate"  kendo-date-picker k-max={{today}}  k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  k-rebind="startingDate"  k-ng-delay="startingDate"  ng-disabled="datePickerDisable" style="width: 180px"/></li>',
 		controller: ['$scope', '$http', function($scope, $http){
 
 			// INITIAL DATE RANGE ///////////////////////////////////
@@ -33,6 +33,8 @@ serviceGeneralModule.directive('dateRange', function() {
 					return;
 				}
 				if ($scope.startingDate > $scope.endingDate) {
+					$scope.startingDate	= initStartingDate;
+					$scope.endingDate	= initEndingDate;
 					alert("Start Date can't be after End Date");
 					return;
 				} 
@@ -55,22 +57,6 @@ serviceGeneralModule.directive('dateRange', function() {
 				var enYear	= scope.endingDate.getFullYear();
 				return enYear + "-" + enMonth  + "-" + enDate;
 			}
-			/*scope.checkDateFormating = function() {
-
-				if (!($scope.startingDate instanceof Date)){
-					alert("Error: Enter correct Start Date(mm/dd/yyyy) OR  Pick a date from DatePicker widget.");
-					return false;
-				} 
-				if (!($scope.endingDate instanceof Date)){
-					alert("Error: Enter correct End Date(mm/dd/yyyy) OR  Pick a date from DatePicker widget.");;
-					return false;
-				}
-				if ($scope.startingDate > $scope.endingDate) {
-					alert("Start Date can't be after End Date");
-					return false;
-				} 
-				return true;
-			}*/
 		}
 	}
 });
