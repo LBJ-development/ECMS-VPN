@@ -2,7 +2,7 @@
 
 angular.module('ECMSapp.adminMain', [])
 
-.controller('MainCaseAdminCtrl', ['$rootScope', '$scope', 'DataFtry', '$http', function($rootScope, $scope, DataFtry, $http){
+.controller('MainCaseAdminCtrl', ['$rootScope', '$scope', 'ECMSConfig', 'StorageService', 'DataFtry', 'ECMSGrid', '$http', function($rootScope, $scope, ECMSConfig, StorageService, DataFtry, ECMSGrid, $http){
 	
 	$scope.searchCriteria = {
 		startDate: null,
@@ -131,58 +131,62 @@ angular.module('ECMSapp.adminMain', [])
 		var tempRFSStatus = "";
 		var tempCaseManager = "";
 		DataFtry.getRFSes($scope.searchCriteria).then(function(result){
-			$scope.mainGridOptions.dataSource.data = result.data.content;
+			
+			var modifiedData = [];
+			
 			//console.log(result.data.content);
+			ECMSGrid.buildDynamicFilters(['rfsSource' , 'rfsTypeDisplay', 'rfsIncidentState', 'rfsStatus', 'caseManager'  ],result.data.content );
 			$.each(result.data.content, function(idx, rfs){ 
+				var tempRFS = {
+							primarykey:"",
+							rfsNumber:"",
+							caseNumber:"",
+							rfsDateTimeReceived:"",
+							rfsSource:"",
+							rfsStatus:"",
+							rfsPrimaryType:"",
+							rfsPrimaryTypeAbbr:"",
+							rfsSecondaryType:"",
+							rfsSecondaryTypeAbbr:"",
+							rfsIncidentDate:"",
+							rfsIncidentState:"",
+							caseManager:"",
+							id:"",
+							rfsAlerts:"",
+							caseNumberDisplay:"",
+							rfsNumberDisplay:"",
+							rfsTypeDisplay:"",
+							links:[]
+							};
+							
+				tempRFS.primarykey = rfs.rfsNumber,
+				tempRFS.rfsNumber = rfs.rfsNumber,
+				tempRFS.caseNumber = rfs.caseNumber,
+				tempRFS.rfsDateTimeReceived = rfs.rfsDateTimeReceived,
+				tempRFS.rfsSource=rfs.rfsSource,
+				tempRFS.rfsStatus=rfs.rfsStatus,
+				tempRFS.rfsPrimaryType=rfs.rfsPrimaryType,
+				tempRFS.rfsPrimaryTypeAbbr=rfs.rfsPrimaryTypeAbbr,
+				tempRFS.rfsSecondaryType=rfs.rfsSecondaryType,
+				tempRFS.rfsSecondaryTypeAbbr=rfs.rfsSecondaryTypeAbbr,
+				tempRFS.rfsIncidentDate=rfs.rfsIncidentDate,
+				tempRFS.rfsIncidentState=rfs.rfsIncidentState,
+				tempRFS.caseManager=rfs.caseManager,
+				tempRFS.id=rfs.id,
+				tempRFS.rfsAlerts=rfs.rfsAlerts,
+				tempRFS.caseNumberDisplay=rfs.caseNumberDisplay,
+				tempRFS.rfsNumberDisplay=rfs.rfsNumberDisplay,
+				tempRFS.rfsTypeDisplay=rfs.rfsTypeDisplay,
+				tempRFS.links=rfs.links
 				
-					//rfs source filter
-					tempSource 	= rfs['rfsSource'];
-					if (nonNullUndefined(tempSource)) {	
-						//console.log('adding '+ tempSource);
-						if ($.inArray(tempSource, $scope.filterSourcesList) < 0) {
-							$scope.filterSourcesList.push(tempSource);
-						}
-					}
-					
-					//rfstype filter
-					tempRFSType	= rfs['rfsTypeDisplay'];
-					if (nonNullUndefined(tempRFSType) )	{
-						//console.log('adding '+ tempRFSType);
-						if ($.inArray(tempRFSType, $scope.filterRFSTypeList) < 0) {
-							$scope.filterRFSTypeList.push(tempRFSType);
-						}
-					}
-					
-					//rfstate filter
-					tempIncidentState	= rfs['rfsIncidentState'];
-					if (nonNullUndefined(tempIncidentState) )	{
-						//console.log('adding '+ tempIncidentState);
-						if ($.inArray(tempIncidentState, $scope.filterRFSIncidentStateList) < 0) {
-							$scope.filterRFSIncidentStateList.push(tempIncidentState);
-						}
-					}
-					
-					//rfs status
-					tempRFSStatus	= rfs['rfsStatus'];
-					if (nonNullUndefined(tempRFSStatus) )	{
-						//console.log('adding '+ tempRFSStatus);
-						if ($.inArray(tempRFSStatus, $scope.filterRFSStatusList) < 0) {
-							$scope.filterRFSStatusList.push(tempRFSStatus);
-						}
-					}
-					
-					//rfs assignee list caseManager=(null)
-					tempCaseManager	= rfs['caseManager'];
-					if (nonNullUndefined(tempCaseManager) )	{
-						if ($.inArray(tempCaseManager, $scope.filterCaseManagerList) < 0) {
-							$scope.filterCaseManagerList.push(tempCaseManager);
-						}
-					}
-				
+				modifiedData.push(tempRFS);
+
 			});
 			//console.log($scope.filterSourcesList);
 			//console.log($scope.filterRFSTypeList);
 			//console.log($scope.filterRFSIncidentStateList);
+			
+			$scope.mainGridOptions.dataSource.data = modifiedData;
 			
 			if(result.data.content.length >= 500){
 				$scope.warningClass = "inline-err";
@@ -212,49 +216,16 @@ angular.module('ECMSapp.adminMain', [])
 	
 	// MAKE THE CHECK BOX PERSISTING
 	$scope.checkedIds =[];
-	$scope.selectItem = function(item){
-		//remove from selection list if unchecked
-		if (!item.selected) {
-			while ($.inArray(item.rfsNumber, $scope.checkedIds) >=0) {
-				console.log(item.rfsNumber + "=" + $.inArray(item.rfsNumber, $scope.checkedIds));
-				$scope.checkedIds.splice($.inArray(item.rfsNumber, $scope.checkedIds),1);
-			}
-		} else {
-			if (!($.inArray(item.rfsNumber, $scope.checkedIds) >=0)){
-				$scope.checkedIds.push(item.rfsNumber);
-			}
-		}
-        
-	}
+	ECMSGrid.init($scope.checkedIds);
+	$scope.caseSelected = ECMSGrid.caseSelected;
+	$scope.toggleSelectAll =  ECMSGrid.toggleSelectAll;
 	
-	$scope.caseSelected = function(ev){
-		var element =$(ev.currentTarget);
-        var checked = element.is(':checked');
-        var row = element.closest("tr");
-        var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
-        var item = grid.dataItem(row);
-		
-		$scope.selectItem(item);
-
-	};
-	
-	$scope.toggleSelectAll = function(ev) {
-        //var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
-        //var items = grid.dataSource.view(); //This gets only current page view
-		
-		//select only filtered data
-		var dataSource = $(ev.target).closest("[kendo-grid]").data("kendoGrid").dataSource;
-        var filters = dataSource.filter();
-        var allData = dataSource.data();
-        var query = new kendo.data.Query(allData);
-        var items = query.filter(filters).data;
-		console.log(items);
-		
-        items.forEach(function(item){
-			item.selected = ev.target.checked;
-			$scope.selectItem(item);
-        });
-    };
+	// DISABLE/ENABLE BUTTON WHEN CASE ARE SELECTED /////////////
+	$scope.buttonDisabledClass = "linkButtonDisabled"
+	$scope.$watch('checkedIds.length', function() {
+		console.log($scope.checkedIds.length);
+		$scope.checkedIds.length == 0? $scope.buttonDisabledClass = "linkButtonDisabled" : $scope.buttonDisabledClass = ""
+	});
 	
 	// GRID SETTINGS 
 	$scope.mainGridOptions =  {
@@ -342,11 +313,11 @@ angular.module('ECMSapp.adminMain', [])
 						width	: "9%",
 						filterable: false,
 						},{
-						field	: "rfsNumberDisplay",
+						field	: "rfsNumber",
 						title	: "RFS",
 						width	: "8%"
 						},{
-						field	: "caseNumberDisplay",
+						field	: "caseNumber",
 						title	: "Case",
 						width	: "8%"
 						},{
@@ -427,9 +398,7 @@ angular.module('ECMSapp.adminMain', [])
 							}
 						}]
 		};
-		
 
-	
 	// ON DATABOUND EVENT (WHEN PAGING) RESTORE PREVIOUSLY SELECTED ROWS
 	function onDataBound(e) {
 
@@ -447,22 +416,21 @@ angular.module('ECMSapp.adminMain', [])
 	// FILTERING WITH DROPDOWN MENU 
 	var victim	= ["1", "2", "3", "4", "5", "6"],
 		bool	= ["Yes", "No"];
-			
 
 	function typeFilter(element) {
-		multiSelectFilter (element, 'rfsTypeDisplay', 'Select RFS Type(s) you want to filter on:', $scope.filterRFSTypeList);
+		ECMSGrid.multiSelectFilter(element, 'rfsTypeDisplay', 'Select RFS Type(s) you want to filter on:', ECMSGrid.getDynamicFilter('rfsTypeDisplay') );
 	}
 	
 	function sourceFilter(element) {
-		multiSelectFilter (element, 'rfsSource', 'Select RFS Source(s) you want to filter on:', $scope.filterSourcesList);
+		ECMSGrid.multiSelectFilter(element, 'rfsSource', 'Select RFS Source(s) you want to filter on:', ECMSGrid.getDynamicFilter('rfsSource') );
 	}
 	
 	function stateFilter(element) {
-		multiSelectFilter (element, 'rfsIncidentState', 'Select Incident State(s) you want to filter on:', $scope.filterRFSIncidentStateList);
+		ECMSGrid.multiSelectFilter(element, 'rfsIncidentState', 'Select Incident State(s) you want to filter on:', ECMSGrid.getDynamicFilter('rfsIncidentState') );
 	}
 	
 	function caseManagerFilter(element) {
-		multiSelectFilter (element, 'caseManager', 'Select Case Managers(s) you want to filter on:', $scope.filterCaseManagerList);
+		ECMSGrid.multiSelectFilter(element, 'caseManager', 'Select Case Managers(s) you want to filter on:', ECMSGrid.getDynamicFilter('caseManager') );
 	}
 	  
 	function statusFilter(element) {
@@ -477,119 +445,6 @@ angular.module('ECMSapp.adminMain', [])
 			optionLabel: "--Select Value--"
 		});
 	}
-
-	////////////////////////////// MULTI SELECT FILTER FUNCTIONALITY //////////////////////////////
-	function multiSelectFilter(element, fieldName, customFilterMessage, dataSource) {
-		var menu = $(element).parent(); 
-        menu.find(".k-filter-help-text").text(customFilterMessage);
-        menu.find("[data-role=dropdownlist]").remove(); 
-        
-        element.removeAttr("data-bind");
-        var multiSelect = element.kendoMultiSelect({
-			dataSource: dataSource.sort(),
-			change: function(e) {
-					$scope.filterField = fieldName;
-					console.log('filtered with' + $scope.filterField); //this will fire after filtered.
-			}
-        }).data("kendoMultiSelect");
-        menu.find("[type=submit]").on("click", {widget: multiSelect}, filterByMultipleSelections); 
-	}
-	
-	function filterByMultipleSelections(e){
-		//console.log('..........filterByMultipleSelections............');
-		//console.log($scope.filterField);
-		//console.log($scope);
-		
-        var sources = e.data.widget.value();
-		var grid = $("#grid").data("kendoGrid");
-		//First remove all 'filterField' filters, then we can add new selection
-		grid.clearFilters([$scope.filterField]);
-
-		var newFilterCriteria = [];  
-		for (var i = 0; i < sources.length; i++)
-        {
-			console.log($scope.filterField + ' + ' + sources[i]);
-			newFilterCriteria.push({ field: $scope.filterField, operator: "eq", value: sources[i] });
-        } 
-
-		var newFilter = {logic: 'or', filters: newFilterCriteria};
-				
-		//console.log('after constructing the new filter ' );
-		//console.log(newFilter);
-		
-		//add old filters
-		var currentFilters = grid.dataSource.filter();
-		console.log('current filters' );
-		console.log(currentFilters);
-		var combinedFilters = {logic:'and', filters:[]};
-		if (currentFilters && currentFilters.filters) {
-			console.log('adding --and-- filter');
-			combinedFilters.filters.push( newFilter);
-			combinedFilters.filters.push(currentFilters);
-		} else {
-			combinedFilters = newFilter;
-		}
-		
-		//console.log('after combining old and new filters' );
-		//console.log(combinedFilters);
-
-		//add updated currentFilters
-        grid.dataSource.filter(combinedFilters);
-    }
-	
-	kendo.ui.Grid.prototype.clearFilters = function(args){
-		// get dataSource of grid and columns of grid
-		var fields = [], filter = this.dataSource.filter(), col = this.columns;
-		if( $.isEmptyObject(filter) || $.isEmptyObject(filter)) return;
-
-		// Create array of Fields to remove from filter
-		for(var i = 0, l = col.length; i < l; i++){
-			if(col[i].hasOwnProperty('field')){
-				if(args.indexOf(col[i].field)>=0){
-					fields.push(col[i].field)
-				}
-			}
-		}
-
-		if($.isEmptyObject(fields)) return;
-
-		// call "private" method
-		var newFilter = this._eraseFiltersField(fields, filter)
-
-		// set new filter
-		this.dataSource.filter(newFilter);
-	}
-	
-	kendo.ui.Grid.prototype._eraseFiltersField = function(fields, filter){
-				for (var i = 0; i < filter.filters.length; i++) {
-
-					// For combination 'and' and 'or', kendo use nested filters so here is recursion
-					if(filter.filters[i].hasOwnProperty('filters')){
-						filter.filters[i] = this._eraseFiltersField(fields, filter.filters[i]);
-						if($.isEmptyObject(filter.filters[i])){
-							filter.filters.splice(i, 1);
-							i--;
-							continue;
-						}
-					}
-
-					// Remove filters
-					if(filter.filters[i].hasOwnProperty('field')){
-						if( fields.indexOf(filter.filters[i].field) > -1){
-							filter.filters.splice(i, 1);
-							i--;
-							continue;
-						}
-					}
-				}
-
-				if(filter.filters.length === 0){
-					filter = {};
-				}
-
-			return filter;
-	}
-	//////////////////////////////////////////// MULTI SELECT FILTER Functionality ENDS here ////////////////////////////////////
 
 
 
@@ -607,8 +462,8 @@ angular.module('ECMSapp.adminMain', [])
 		$scope.mailMessage = {
 			from:  $rootScope.userId + "@ncmec.org",
 			//to: $rootScope.userId + "@ncmec.org",
-			subject: "Attention: New RFSes",
-			text: "Please find attached RFS Cases: " + $scope.checkedIds.toString(),
+			subject: "Attention: RFSes",
+			text: "Please find attached RFS: " + $scope.checkedIds.toString(),
 			extraInfo: 
 					{
 						entityType: "rfs"
@@ -632,7 +487,7 @@ angular.module('ECMSapp.adminMain', [])
 	
 	$scope.sendEmail = function(){
 		$scope.mailMessage.to = $scope.mailMessage.to.split(',');
-	
+
 		DataFtry.sendEmail($scope.mailMessage).then(function(result){
 			console.log("SENT EMAIL !!!");
 			console.log(result);
@@ -641,38 +496,37 @@ angular.module('ECMSapp.adminMain', [])
 		$scope.emailWindow.close();
 		
 	};
-
-	//PRINT RFSs ////////////////////////////////
-		// CUSTOM EMAIL WINDOW //////////////////////////////////////////////////
-	$scope.printWindowOptions = {
-		title: "Print Preview",
-		width: 1200,
-		height:700,
-		visible: false,	
-		modal: true,
-		scrollable : true
-	};
-
-	$scope.printRFSes = function() {
-
-		console.log("FROM PRINT RFSES");
-		if ($scope.checkedIds.length <= 0) {
-			alert ('Please select one or more RFSes before printing..');
-			return;
-		} else {
-			//$scope.printWindow.center().open();
-			
-			var HTMLcontent = DataFtry.printRFSes("http://ecms-devapp1.ncmecad.net:8080/ecms-services.nightly/rest/document/export/rfses?reportFileName=RfsReport.html&ids=" + $scope.checkedIds.toString());
-			console.log(HTMLcontent)
-			//var w = window.open();
-			//w.document.write(HTMLcontent);
-
-
-			//w.focus();
-			//w.print();
-		}
-	};
 	
+	//PRINT RFSs ////////////////////////////////
+   $scope.previewWindowOptions = {   };
+   $scope.previewRFSes = function(){
+		  console.log('Inside printRFSes');
+		  
+		  var exportEndpoint = '/rest/document/exportToHtml/rfses?token=' + StorageService.getToken() + '&reportName=RfsReport&ids='  + $scope.checkedIds.toString();
+		  
+		  $http.get(exportEndpoint)
+				 .success( function(result) {
+					   console.log(result.content)
+					   var options =  {     
+									 width: "80%",
+									 visible: false,
+									 maxWidth: 1200,
+									 height: "80%",
+									 modal: true,
+									 content: {
+											iframe: true,
+											template:  '<embed src="' + ECMSConfig.restServicesURI + result.content + '" width="100%" height="100%" ></embed>' 
+									 }};    
+					   
+					   $scope.previewWindow.setOptions(options);
+					   
+					   console.log($scope.previewWindowOptions);
+					   $scope.previewWindow.refresh().center().open();
+		  });           
+		  
+   }
+
+
 	//EXPORT RFSs ////////////////////////////////
 	$scope.exportRFSes = function() {
 		if ($scope.checkedIds.length <= 0)

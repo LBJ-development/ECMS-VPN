@@ -4,7 +4,6 @@ angular.module('ECMSapp.assignCM', [])
 
 .controller('AssignCMCtrl', [ '$scope', 'DataFtry', '$http', '$location', function( $scope, DataFtry, $http, $location){
 
-
 	// SELECT A CASE AND REDIRECT TO THE CASE MANAGMENT //////////////////////////////////////////////////
 	$scope.selectCase = function(e){
 		
@@ -227,7 +226,7 @@ angular.module('ECMSapp.assignCM', [])
 	
 	var tempSource = "";
 	var tempCaseType= "";
-	var tempCaseManager
+	var tempCaseManager;
 
 	// USING THE DATE RANGE WIDGET //////////////////////////////
 	/*var dateRangeHolder = $("#dateRangeHolder"); // HTML ELEMENT HOLDING THE DATE RANGE
@@ -301,7 +300,35 @@ angular.module('ECMSapp.assignCM', [])
 		});
 		//var divgrid = angular.element('#datagrid').data("kendo-grid").dataSource.read(); 
 	};
-	
+
+	// MAIN GRID SAVING/LOADING STATES /////////////////////////////////////////////////////////////////
+	$scope.saveState = function(){
+
+		console.log("FROM SAVESTATE");
+		console.log($scope.warning);
+
+		var grid = $("#grid").data("kendoGrid");
+		sessionStorage["kendo-grid-options"] = kendo.stringify(grid.getOptions());
+		sessionStorage.startingDate = $scope.startingDate;
+		sessionStorage.endingDate = $scope.endingDate;
+		sessionStorage.radioBtnRDR = $("#radioBtn-RDR").is(":checked");
+		sessionStorage.radioBtnUAC = $("#radioBtn-UAC").is(":checked");
+		sessionStorage.submitBtnDisabled = $scope.submitDisabled;
+		sessionStorage.datePickerDisable = $scope.datePickerDisable;
+		sessionStorage.warningMessage = $scope.warning;
+		
+	 }
+
+	$scope.loadState = function(){
+
+		var grid = $("#grid").data("kendoGrid");
+
+		var options = sessionStorage["kendo-grid-options"];
+		if (options) {
+			grid.setOptions(JSON.parse(options));
+			}
+		console.log("FROM LOADSTATE");
+	 }
 	
     // MAIN GRID SETTINGS //////////////////////////////////////////////////////////////////////////////////////	
 	var result = {};

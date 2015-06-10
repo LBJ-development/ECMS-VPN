@@ -12,7 +12,6 @@
         				<li style="width: 188px; padding-top:0">
         					<label>Received Date Range:</label>
         				</li>
-
         				<li style="padding-right: 0px">
 							<label>From:</label> 
 							<input id="startDate" kendo-date-picker k-on-open="onCalendarOpen()" k-max={{today}} k-on-change="enableSumbitBtn()" k-ng-model="startDate" style="width: 180px"/> 
@@ -52,10 +51,13 @@
 			<span ng-class="warningClass"> {{warning}} </span>
 			<ul ng-show="hasPermission('caseadmin:edit:main')" >
 				<li class="linkButton toEmail"><a href="" ng-class="buttonDisabledClass" ng-click="openEmailWindow()" >Email</a></li>
-				<li class="linkButton toPrint"><a href="" ng-class="buttonDisabledClass" ng-click="printRFSes()" >Print</a></li>
+				<li class="linkButton toPrint"><a href="" ng-class="buttonDisabledClass" ng-click="previewRFSes()" >Print Preview</a></li>
 				<li class="linkButton toPDF"><a target="_blank" ng-class="buttonDisabledClass" href ng-click="exportRFSes()">Export</a></li>
 			</ul>
 		</div>
+		
+<div id="window1"></div>
+
 		<div role="datagrid" class="grid-holder" >
 			<div>
 				<div kendo-grid="mainGrid" id="grid" k-options="mainGridOptions" k-rebind="mainGridOptions"  k-ng-delay="mainGridOptions" ></div>
@@ -79,7 +81,7 @@
             			</li>
             			<li >
 		 					<!-- <span class="labelClass" style="width: 130px">Body Text:</span> -->
-		 					<textarea  kendo-editor   class="narrative-text-box" ng-model="mailMessage.text" style="width: 700px; height: 300px;" id="" type="text" name=""></textarea>
+		 					<textarea  kendo-editor   class="narrative-text-box" k-ng-model="mailMessage.text" style="width: 700px; height: 300px;" id="" type="text" name=""></textarea>
             			</li>
             			<li style="padding-bottom:0">
 		 					<span class="labelClass" style="width: 130px">Attachment(s):</span>
@@ -100,10 +102,10 @@
 				</div>	
 			</form>
 		</div>
-		<!-- PRINT WINDOW  /////////////////////////////////////////////////////////////////-->
-		 <div kendo-window="printWindow" k-options="printWindowOptions">
-		 	<div id="printContent"></div>
-		 </div>
+		
+		<!-- printWindow PREVIEW  /////////////////////////////////////////////////////////////////-->
+		<div kendo-window="previewWindow" k-title="'Preview Rfses'" k-options="previewWindowOptions"
+			k-ng-delay="previewWindowOptions" style="text-align: center"></div>
 	</div>
 </div>
 

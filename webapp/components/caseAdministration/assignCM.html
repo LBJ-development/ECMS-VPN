@@ -10,8 +10,8 @@
 				<div class="filter-row-holder" style="padding-top:20px">
 					<ul>
 						<li style="width: 220px" ng-init="isUnassignedCases=0">
-						 	<input type="radio" style="float: left; margin:6px" name="isUnassignedCases" ng-model="isUnassignedCases" ng-change="handleRadioSelection(isUnassignedCases)"  value="0" id="bydate"/>
-						 	<label for="bydate">Received Date Range</label>
+						 	<input type="radio" id="radioBtn-RDR" style="float: left; margin:6px" name="isUnassignedCases" ng-model="isUnassignedCases" ng-change="handleRadioSelection(isUnassignedCases)"  value="0"/>
+						 	<label for="radioBtn-RDR">Received Date Range</label>
 						</li>
 <!-- 
         				<div id="dateRangeHolder"></div> -->
@@ -30,8 +30,8 @@
 				<div class="filter-row-holder" >
 					<ul>
 						<li style="width: 597px">
-							<input type="radio"  style="float: left; margin:6px" name="isUnassignedCases" value="1" ng-model="isUnassignedCases" ng-change="handleRadioSelection(isUnassignedCases)" id="unassignedcases"/>
-							<label for="unassignedcases">All Unassigned Cases</label>
+							<input type="radio"  id="radioBtn-UAC" style="float: left; margin:6px" name="isUnassignedCases" value="1" ng-model="isUnassignedCases" ng-change="handleRadioSelection(isUnassignedCases)" id="unassignedcases"/>
+							<label for="radioBtn-UAC">All Unassigned Cases</label>
 						</li>
 						<li  class="submit-btn">
                 			<kendo-button ng-disabled="submitDisabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT
@@ -40,6 +40,14 @@
 					</ul>
 				</div>
 			</form>
+			<li >
+                			<kendo-button  ng-click="saveState()">SAVE STATE
+                			</kendo-button>
+						</li>
+							<li >
+                			<kendo-button  ng-click="loadState()">LOAD STATE
+                			</kendo-button>
+						</li>
 		</div>
 	<!-- DAILY ASSIGNMENT WORKSHEET /////////////////////////////////////////////////////////////////-->
 		<div class="row-holder title-small" style="padding: 0px 0 0px 0px">

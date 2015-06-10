@@ -14,6 +14,7 @@ var app = angular.module('ECMSapp', [
 	'ECMSapp.mainMenu',
     'ECMSapp.services',
     'ECMSapp.servicesGeneral',
+    'ECMSapp.GlobalServices',
 	'ECMSapp.adminMain',
 	'ECMSapp.assignCM',
     'ECMSapp.intakeDistribution',
@@ -140,7 +141,61 @@ app.factory('loginService', function( $http, StorageService){
 app.config(function ($httpProvider) {
     $httpProvider.interceptors.push('httpRequestInterceptor');
 	$httpProvider.interceptors.push('timestampMarker');
-});
+
+    //Overriding Kendo UI Grid functions
+    kendo.ui.Grid.prototype.clearFilters = function(args){
+        // get dataSource of grid and columns of grid
+        var fields = [], filter = this.dataSource.filter(), col = this.columns;
+        if( $.isEmptyObject(filter) || $.isEmptyObject(filter)) return;
+
+        // Create array of Fields to remove from filter
+        for(var i = 0, l = col.length; i < l; i++){
+            if(col[i].hasOwnProperty('field')){
+                if(args.indexOf(col[i].field)>=0){
+                    fields.push(col[i].field)
+                }
+            }
+        }
+
+        if($.isEmptyObject(fields)) return;
+
+        // call "private" method
+        var newFilter = this._eraseFiltersField(fields, filter)
+
+        // set new filter
+        this.dataSource.filter(newFilter);
+    }
+        
+     kendo.ui.Grid.prototype._eraseFiltersField = function(fields, filter){
+        for (var i = 0; i < filter.filters.length; i++) {
+
+            // For combination 'and' and 'or', kendo use nested filters so here is recursion
+            if(filter.filters[i].hasOwnProperty('filters')){
+                    filter.filters[i] = this._eraseFiltersField(fields, filter.filters[i]);
+                    if($.isEmptyObject(filter.filters[i])){
+                        filter.filters.splice(i, 1);
+                        i--;
+                        continue;
+                    }
+                }
+
+                // Remove filters
+                if(filter.filters[i].hasOwnProperty('field')){
+                    if( fields.indexOf(filter.filters[i].field) > -1){
+                        filter.filters.splice(i, 1);
+                            i--;
+                            continue;
+                        }
+                    }
+                }
+
+                if(filter.filters.length === 0){
+                    filter = {};
+                }
+            return filter;
+        }
+    }
+);
 
 app.run( function($location, $window, $rootScope, StorageService, ECMSConfig){
     StorageService.setToken(null);
