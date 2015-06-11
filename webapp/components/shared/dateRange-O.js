@@ -5,7 +5,7 @@
 serviceGeneralModule.directive('dateRange', function() {
 	return {
 		restrict: 'E',
-		template: '<li style="padding-right: 10px"><label >From:</label><input id="startingDate" kendo-date-picker k-max={{today}} k-on-change="enableSumbitBtn()" k-ng-model="startingDate" k-rebind="startingDate" k-ng-delay="startingDate" ng-disabled="datePickerDisable" style="width: 180px"/></li><li style="padding-right: 10px"><label>To:</label><input id="endingDate"  kendo-date-picker k-max={{today}}  k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  k-rebind="startingDate"  k-ng-delay="startingDate"  ng-disabled="datePickerDisable" style="width: 180px"/></li>',
+		template: '<li style="padding-right: 10px"><label >From:</label><input id="startingDate" kendo-date-picker k-max={{today}} k-on-change="enableSumbitBtn()" k-ng-model="startingDate" k-rebind="startingDate" k-ng-delay="startingDate" ng-disabled="datePickerDisabled" style="width: 180px"/></li><li style="padding-right: 10px"><label>To:</label><input id="endingDate"  kendo-date-picker k-max={{today}}  k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  k-rebind="startingDate"  k-ng-delay="startingDate"  ng-disabled="datePickerDisabled" style="width: 180px"/></li>',
 		controller: ['$scope', '$http', function($scope, $http){
 
 			// INITIAL DATE RANGE ///////////////////////////////////

@@ -1,6 +1,6 @@
 
 <div  ng-show="hasPermission('caseadmin:view:basic')" class="content-wrapper">
-	<div class="content-holder" ng-controller="AssignCMCtrl">
+	<div class="content-holder" ng-controller="AssignCMCtrl" ng-init="init()">
 		<div class="title-holder">
 			<span class="title">Assign Case Manager</span>
 		</div>
@@ -19,11 +19,11 @@
 
 						<!-- <li style="padding-right: 0px">
 							<label >From:</label> 
-							<input kendo-date-picker id="startingDate" k-max={{today}} k-on-change="enableSumbitBtn()" k-ng-model="startingDate" ng-disabled="datePickerDisable" style="width: 180px"/> 
+							<input kendo-date-picker id="startingDate" k-max={{today}} k-on-change="enableSumbitBtn()" k-ng-model="startingDate" ng-disabled="datePickerDisabled" style="width: 180px"/> 
 						</li>
 						<li style="padding-right: 0px">
 							<label  >To:</label> 
-							<input kendo-date-picker id="endingDate" k-max={{today}} ng-disabled="datePickerDisable"  k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
+							<input kendo-date-picker id="endingDate" k-max={{today}} ng-disabled="datePickerDisabled"  k-on-change="enableSumbitBtn()"  k-ng-model="endingDate"  style="width: 180px"/>
 						</li> -->
 					</ul>
 				</div>
@@ -40,14 +40,14 @@
 					</ul>
 				</div>
 			</form>
-			<li >
+			<!-- <li >
                 			<kendo-button  ng-click="saveState()">SAVE STATE
                 			</kendo-button>
 						</li>
 							<li >
                 			<kendo-button  ng-click="loadState()">LOAD STATE
                 			</kendo-button>
-						</li>
+						</li> -->
 		</div>
 	<!-- DAILY ASSIGNMENT WORKSHEET /////////////////////////////////////////////////////////////////-->
 		<div class="row-holder title-small" style="padding: 0px 0 0px 0px">

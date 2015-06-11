@@ -4,6 +4,54 @@ angular.module('ECMSapp.assignCM', [])
 
 .controller('AssignCMCtrl', [ '$scope', 'DataFtry', '$http', '$location', function( $scope, DataFtry, $http, $location){
 
+	// INIT STATES /////////////////////////////////////////////////
+	$scope.init = function (){
+		// WAIT UNTIL THE GRID BECOMES AVAILABLE
+		var delay = setInterval(function(){
+			if($("#grid").data("kendoGrid")) {
+				clearInterval(delay);
+				// IF THERE IS A PREVIOUS STATE FETCH IT
+				if(sessionStorage.optionsToSave){
+
+					var savedOptions =  JSON.parse(sessionStorage.getItem('optionsToSave'));
+					var grid = $("#grid").data("kendoGrid");
+
+					grid.setOptions(JSON.parse(savedOptions.gridOptions));
+					$scope.startingDate = new Date(savedOptions.startingDate);
+					$scope.endingDate = new Date(savedOptions.endingDate);
+					$("#radioBtn-RDR").prop("checked", savedOptions.radioBtnRDR);
+					$("#radioBtn-UAC").prop("checked", savedOptions.radioBtnUAC);
+					$scope.submitDisabled = savedOptions.submitDisabled;
+					$scope.datePickerDisabled = savedOptions.datePickerDisabled;
+					$scope.warning = savedOptions.warningMessage;
+					$scope.warningClass = savedOptions.warningClass;
+					$scope.$digest();
+				// IF ITS A NEW SESSION LOAD THE DATA
+				} else {
+					$scope.reloadData();
+				}
+			}
+		}, 200);
+		// SAVE THE CURRENT STATES WHEN NAVIGATING AWAY FORM THE PAGE 
+		$scope.$on('$locationChangeStart', function (event, next, current) {
+		
+			var grid = $("#grid").data("kendoGrid");
+
+			var optionsToSave = {
+				"gridOptions"		: kendo.stringify(grid.getOptions()),
+				"startingDate"		: $scope.startingDate,
+				"endingDate"		: $scope.endingDate,
+				"radioBtnRDR"		: $("#radioBtn-RDR").is(":checked"),
+				"radioBtnUAC"		: $("#radioBtn-UAC").is(":checked"),
+				"submitDisabled"	: $scope.submitDisabled,
+				"datePickerDisabled": $scope.datePickerDisabled,
+				"warningMessage"	: $scope.warning,
+				"warningClass"		: $scope.warningClass
+			};
+			sessionStorage.setItem('optionsToSave', JSON.stringify(optionsToSave));
+		})
+	}
+
 	// SELECT A CASE AND REDIRECT TO THE CASE MANAGMENT //////////////////////////////////////////////////
 	$scope.selectCase = function(e){
 		
@@ -216,7 +264,7 @@ angular.module('ECMSapp.assignCM', [])
 
 	$scope.handleRadioSelection = function(ev) {
 		$scope.submitDisabled = false;
-		ev == 0? $scope.datePickerDisable = false : $scope.datePickerDisable = true;
+		ev == 0? $scope.datePickerDisabled = false : $scope.datePickerDisabled = true;
 		//ev == 0? dateRange.enable(true) : dateRange.enable(false);
 	};
 
@@ -241,12 +289,9 @@ angular.module('ECMSapp.assignCM', [])
 	$scope.isUnassignedCases = 0;
 	//$scope.submitSearch = 0; //
 	$scope.submitDisabled		= true; // DISABLES THE SUBMIT BUTTON
-	$scope.datePickerDisable = false; // ENABLES THE DATE PICKER
+	$scope.datePickerDisabled = false; // ENABLES THE DATE PICKER
 
-	$scope.$watch('$viewContentLoaded', function() {
-		$scope.reloadData();
-	});
-
+	
 	$scope.reloadData = function(){
 	//$scope.$watch('submitSearch', function(newValue, oldValue) {
 		
@@ -300,35 +345,6 @@ angular.module('ECMSapp.assignCM', [])
 		});
 		//var divgrid = angular.element('#datagrid').data("kendo-grid").dataSource.read(); 
 	};
-
-	// MAIN GRID SAVING/LOADING STATES /////////////////////////////////////////////////////////////////
-	$scope.saveState = function(){
-
-		console.log("FROM SAVESTATE");
-		console.log($scope.warning);
-
-		var grid = $("#grid").data("kendoGrid");
-		sessionStorage["kendo-grid-options"] = kendo.stringify(grid.getOptions());
-		sessionStorage.startingDate = $scope.startingDate;
-		sessionStorage.endingDate = $scope.endingDate;
-		sessionStorage.radioBtnRDR = $("#radioBtn-RDR").is(":checked");
-		sessionStorage.radioBtnUAC = $("#radioBtn-UAC").is(":checked");
-		sessionStorage.submitBtnDisabled = $scope.submitDisabled;
-		sessionStorage.datePickerDisable = $scope.datePickerDisable;
-		sessionStorage.warningMessage = $scope.warning;
-		
-	 }
-
-	$scope.loadState = function(){
-
-		var grid = $("#grid").data("kendoGrid");
-
-		var options = sessionStorage["kendo-grid-options"];
-		if (options) {
-			grid.setOptions(JSON.parse(options));
-			}
-		console.log("FROM LOADSTATE");
-	 }
 	
     // MAIN GRID SETTINGS //////////////////////////////////////////////////////////////////////////////////////	
 	var result = {};
@@ -597,7 +613,7 @@ angular.module('ECMSapp.assignCM', [])
 .directive ('detailRow', ['DataFtry', '$http', function (DataFtry, $http) {
 	return {
 	restrict: 'E',
-	// scope :{},
+	//scope :{},
 	controller: 'AssignCMCtrl',
 	templateUrl: 'components/caseAdministration/detailRow.html',
 	link: function (scope, element, attrs){
