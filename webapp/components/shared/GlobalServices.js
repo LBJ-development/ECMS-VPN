@@ -18,19 +18,25 @@ globalServicesModule.factory("ECMSGrid", function() {
 	function selectItem(item){
 		//remove from selection list if unchecked
 		if (!item.selected) {
-			while ($.inArray(item.primarykey, selectedIds) >=0) {
-				console.log(item.primarykey + "=" + $.inArray(item.primarykey, selectedIds));
-				selectedIds.splice($.inArray(item.primarykey, selectedIds),1);
+			while ($.inArray(item.id, selectedIds) >=0) {
+				console.log(item.id + "=" + $.inArray(item.id, selectedIds));
+				selectedIds.splice($.inArray(item.id, selectedIds),1);
 			}
 		} else {
-			if (!($.inArray(item.primarykey, selectedIds) >=0)){
-				selectedIds.push(item.primarykey);
+			console.log('adding item:' + item.id )
+			if (!($.inArray(item.id, selectedIds) >=0)){
+				selectedIds.push(item.id);
 			}
+			console.log(selectedIds);
 		}
 	}
 	
 	return {
-		////////////////////////////// MULTI SELECT FILTER FUNCTIONALITY //////////////////////////////
+		
+		init: function(checkedIds){
+					selectedIds = checkedIds;
+				},
+				
 		buildDynamicFilters: function(filterkeys, results) {
 			
 			filterkeys.forEach(function(filterKey){
@@ -51,17 +57,19 @@ globalServicesModule.factory("ECMSGrid", function() {
 			});
 			
 		},
+		
 		getDynamicFilter: function (filterKey){
 			return dynamicGridFilters[filterKey];
 		},
-		multiSelectFilter: function (element, fieldName, customFilterMessage, dataSource) {
+		
+		multiSelectFilter: function (element, fieldName, customFilterMessage) {
 			var menu = $(element).parent(); 
 			menu.find(".k-filter-help-text").text(customFilterMessage);
 			menu.find("[data-role=dropdownlist]").remove(); 
 			
 			element.removeAttr("data-bind");
 			var multiSelect = element.kendoMultiSelect({
-				dataSource: dataSource.sort(),
+				dataSource: dynamicGridFilters[fieldName].sort(),
 				change: function(e) {
 						filterField = fieldName;
 						console.log('filtered with' + filterField); //this will fire after filtered.
@@ -111,46 +119,34 @@ globalServicesModule.factory("ECMSGrid", function() {
 			grid.dataSource.filter(combinedFilters);
 		},	
 		
-		//////////////////////////////////////////// MULTI SELECT FILTER Functionality ENDS here ////////////////////////////////////
+		////////////////////////////////////////////FILTERs Functionality ENDS here ////////////////////////////////////
+		////////////////////////////// Row Select/ Toggle/UnToggle //////////////////////////////		
+
+		caseSelected: function(ev){
+						var element =$(ev.currentTarget);
+						var checked = element.is(':checked');
+						var row = element.closest("tr");
+						var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
+						var item = grid.dataItem(row);
+						
+						selectItem(item);
+
+						},
 		
-/*	}; //Return multiSelectFilter
-});
-
-
-globalServicesModule.factory("GridCustomActions", function() {
-*/
-	
-
-	init:	function(checkedIds){
-				selectedIds = checkedIds;
-			},
-				
-
-	caseSelected: function(ev){
-					var element =$(ev.currentTarget);
-					var checked = element.is(':checked');
-					var row = element.closest("tr");
-					var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
-					var item = grid.dataItem(row);
-					
-					selectItem(item);
-
-					},
-	
-	toggleSelectAll: function(ev) {
-						var dataSource = $(ev.target).closest("[kendo-grid]").data("kendoGrid").dataSource;
-						var filters = dataSource.filter();
-						var allData = dataSource.data();
-						var query = new kendo.data.Query(allData);
-						var items = query.filter(filters).data;
-						console.log(items);
-						
-						items.forEach(function(item){
-							item.selected = ev.target.checked;
-							selectItem(item);
-						});
-					}
-						
-	}
+		toggleSelectAll: function(ev) {
+							var dataSource = $(ev.target).closest("[kendo-grid]").data("kendoGrid").dataSource;
+							var filters = dataSource.filter();
+							var allData = dataSource.data();
+							var query = new kendo.data.Query(allData);
+							var items = query.filter(filters).data;
+							console.log(items);
+							
+							items.forEach(function(item){
+								item.selected = ev.target.checked;
+								selectItem(item);
+							});
+						}
+							
+		}
 });
 

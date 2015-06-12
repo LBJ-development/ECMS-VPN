@@ -2,14 +2,15 @@
 
 angular.module('ECMSapp.assignCM', [])
 
-.controller('AssignCMCtrl', [ '$scope', 'DataFtry', '$http', '$location', function( $scope, DataFtry, $http, $location){
+.controller('AssignCMCtrl', [ '$scope', 'DataFtry', '$http', '$location', '$interval', function( $scope, DataFtry, $http, $location, $interval){
 
 	// INIT STATES /////////////////////////////////////////////////
 	$scope.init = function (){
 		// WAIT UNTIL THE GRID BECOMES AVAILABLE
-		var delay = setInterval(function(){
+		var delay = $interval(function(){
 			if($("#grid").data("kendoGrid")) {
-				clearInterval(delay);
+				
+				$interval.cancel(delay);
 				// IF THERE IS A PREVIOUS STATE FETCH IT
 				if(sessionStorage.optionsToSave){
 
@@ -25,7 +26,7 @@ angular.module('ECMSapp.assignCM', [])
 					$scope.datePickerDisabled = savedOptions.datePickerDisabled;
 					$scope.warning = savedOptions.warningMessage;
 					$scope.warningClass = savedOptions.warningClass;
-					$scope.$digest();
+					//$scope.$digest();
 				// IF ITS A NEW SESSION LOAD THE DATA
 				} else {
 					$scope.reloadData();

@@ -19,7 +19,10 @@ angular.module('ECMSapp.adminMain', [])
 		console.log("endDate valid:" + ($scope.endDate instanceof Date));
 		
 		//Reset everytime search is submitted
-		$scope.checkedIds =[];
+		if ($scope.checkedIds){
+			$scope.checkedIds.splice(0, $scope.checkedIds.length);
+		}
+		
 		
 		if (!($scope.startDate instanceof Date)){
 			alert("Error: Enter correct Start Date(mm/dd/yyyy) OR  Pick a date from DatePicker widget.");
@@ -106,6 +109,7 @@ angular.module('ECMSapp.adminMain', [])
 	$scope.searchCriteria.startDate = formatstartDate();
 	$scope.searchCriteria.endDate = formatendDate();
 	$scope.submissionCount = 0;
+	$scope.checkedIds =[];
 		
 	//Initial Load
 	$scope.submitSearch();
@@ -119,82 +123,18 @@ angular.module('ECMSapp.adminMain', [])
 			return;
 		}
 
-		$scope.filterSourcesList = [];
-		$scope.filterRFSTypeList = [];
-		$scope.filterRFSIncidentStateList= [];
-		$scope.filterRFSStatusList = [];
-		$scope.filterCaseManagerList = [];
-		
-		var tempSource = "";
-		var tempRFSType= "";
-		var tempIncidentState= "";
-		var tempRFSStatus = "";
-		var tempCaseManager = "";
 		DataFtry.getRFSes($scope.searchCriteria).then(function(result){
-			
-			var modifiedData = [];
-			
+	
 			//console.log(result.data.content);
-			ECMSGrid.buildDynamicFilters(['rfsSource' , 'rfsTypeDisplay', 'rfsIncidentState', 'rfsStatus', 'caseManager'  ],result.data.content );
-			$.each(result.data.content, function(idx, rfs){ 
-				var tempRFS = {
-							primarykey:"",
-							rfsNumber:"",
-							caseNumber:"",
-							rfsDateTimeReceived:"",
-							rfsSource:"",
-							rfsStatus:"",
-							rfsPrimaryType:"",
-							rfsPrimaryTypeAbbr:"",
-							rfsSecondaryType:"",
-							rfsSecondaryTypeAbbr:"",
-							rfsIncidentDate:"",
-							rfsIncidentState:"",
-							caseManager:"",
-							id:"",
-							rfsAlerts:"",
-							caseNumberDisplay:"",
-							rfsNumberDisplay:"",
-							rfsTypeDisplay:"",
-							links:[]
-							};
-							
-				tempRFS.primarykey = rfs.rfsNumber,
-				tempRFS.rfsNumber = rfs.rfsNumber,
-				tempRFS.caseNumber = rfs.caseNumber,
-				tempRFS.rfsDateTimeReceived = rfs.rfsDateTimeReceived,
-				tempRFS.rfsSource=rfs.rfsSource,
-				tempRFS.rfsStatus=rfs.rfsStatus,
-				tempRFS.rfsPrimaryType=rfs.rfsPrimaryType,
-				tempRFS.rfsPrimaryTypeAbbr=rfs.rfsPrimaryTypeAbbr,
-				tempRFS.rfsSecondaryType=rfs.rfsSecondaryType,
-				tempRFS.rfsSecondaryTypeAbbr=rfs.rfsSecondaryTypeAbbr,
-				tempRFS.rfsIncidentDate=rfs.rfsIncidentDate,
-				tempRFS.rfsIncidentState=rfs.rfsIncidentState,
-				tempRFS.caseManager=rfs.caseManager,
-				tempRFS.id=rfs.id,
-				tempRFS.rfsAlerts=rfs.rfsAlerts,
-				tempRFS.caseNumberDisplay=rfs.caseNumberDisplay,
-				tempRFS.rfsNumberDisplay=rfs.rfsNumberDisplay,
-				tempRFS.rfsTypeDisplay=rfs.rfsTypeDisplay,
-				tempRFS.links=rfs.links
-				
-				modifiedData.push(tempRFS);
-
-			});
-			//console.log($scope.filterSourcesList);
-			//console.log($scope.filterRFSTypeList);
-			//console.log($scope.filterRFSIncidentStateList);
+			ECMSGrid.buildDynamicFilters(['rfsSource' , 'rfsTypeDisplay', 'rfsIncidentState', 'rfsStatus', 'caseManager'], result.data.content );
 			
-			$scope.mainGridOptions.dataSource.data = modifiedData;
-			
+			$scope.mainGridOptions.dataSource.data = result.data.content;
 			if(result.data.content.length >= 500){
 				$scope.warningClass = "inline-err";
 			} else {
 				$scope.warningClass = "inline-msg";
 			}
 			$scope.warning = result.data.messages.RESULTS_LIST;
-			$scope.caseNum = 0; // KEEP TRACK OF THE NUMBER OF SELECTED CASES
 			$scope.disabled = true;
 			setTimeout(function(){
 				// DELAY THE INITIALIZATION FOR THE TABLE CLICK ENVENT (CHECK IF CHECKBOX IS CLICKED)
@@ -203,19 +143,11 @@ angular.module('ECMSapp.adminMain', [])
 		});
 	});
 	
-	var  nonNullUndefined = function (value){
-		if( 'undefiend' != value && null !== value )
-			return true
-		else
-			return false
-	}
-	
 	$scope.enableSumbitBtn = function() {
 		$scope.disabled = false;
 	};
 	
 	// MAKE THE CHECK BOX PERSISTING
-	$scope.checkedIds =[];
 	ECMSGrid.init($scope.checkedIds);
 	$scope.caseSelected = ECMSGrid.caseSelected;
 	$scope.toggleSelectAll =  ECMSGrid.toggleSelectAll;
@@ -418,24 +350,24 @@ angular.module('ECMSapp.adminMain', [])
 		bool	= ["Yes", "No"];
 
 	function typeFilter(element) {
-		ECMSGrid.multiSelectFilter(element, 'rfsTypeDisplay', 'Select RFS Type(s) you want to filter on:', ECMSGrid.getDynamicFilter('rfsTypeDisplay') );
+		ECMSGrid.multiSelectFilter(element, 'rfsTypeDisplay', 'Select RFS Type(s) you want to filter on:');
 	}
 	
 	function sourceFilter(element) {
-		ECMSGrid.multiSelectFilter(element, 'rfsSource', 'Select RFS Source(s) you want to filter on:', ECMSGrid.getDynamicFilter('rfsSource') );
+		ECMSGrid.multiSelectFilter(element, 'rfsSource', 'Select RFS Source(s) you want to filter on:');
 	}
 	
 	function stateFilter(element) {
-		ECMSGrid.multiSelectFilter(element, 'rfsIncidentState', 'Select Incident State(s) you want to filter on:', ECMSGrid.getDynamicFilter('rfsIncidentState') );
+		ECMSGrid.multiSelectFilter(element, 'rfsIncidentState', 'Select Incident State(s) you want to filter on:');
 	}
 	
 	function caseManagerFilter(element) {
-		ECMSGrid.multiSelectFilter(element, 'caseManager', 'Select Case Managers(s) you want to filter on:', ECMSGrid.getDynamicFilter('caseManager') );
+		ECMSGrid.multiSelectFilter(element, 'caseManager', 'Select Case Managers(s) you want to filter on:');
 	}
 	  
 	function statusFilter(element) {
 		element.kendoDropDownList({
-			dataSource: $scope.filterRFSStatusList.sort(),
+			dataSource: ECMSGrid.getDynamicFilter('rfsStatus').sort(),
 			optionLabel: "--Select Value--"
 		});
 	}
@@ -498,7 +430,7 @@ angular.module('ECMSapp.adminMain', [])
 	};
 	
 	//PRINT RFSs ////////////////////////////////
-   $scope.previewWindowOptions = {   };
+   $scope.previewWindowOptions = {};
    $scope.previewRFSes = function(){
 		  console.log('Inside printRFSes');
 		  
