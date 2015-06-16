@@ -42,15 +42,21 @@ angular.module('ECMSapp.assignCM', [])
 				"gridOptions"		: kendo.stringify(grid.getOptions()),
 				"startingDate"		: $scope.startingDate,
 				"endingDate"		: $scope.endingDate,
-				"radioBtnRDR"		: $("#radioBtn-RDR").is(":checked"),
-				"radioBtnUAC"		: $("#radioBtn-UAC").is(":checked"),
+				"radioBtnRDR"	: $("#radioBtn-RDR").is(":checked"),
+				"radioBtnUAC"	: $("#radioBtn-UAC").is(":checked"),
 				"submitDisabled"	: $scope.submitDisabled,
-				"datePickerDisabled": $scope.datePickerDisabled,
+				"datePickerDisabled"	: $scope.datePickerDisabled,
 				"warningMessage"	: $scope.warning,
-				"warningClass"		: $scope.warningClass
+				"warningClass"	: $scope.warningClass
 			};
 			sessionStorage.setItem('optionsToSave', JSON.stringify(optionsToSave));
-		})
+		});
+
+		$scope.searchCriteria = {
+			startDate: null,
+			endDate: null,
+			isUnassignedCases: null
+		};
 	}
 
 	// SELECT A CASE AND REDIRECT TO THE CASE MANAGMENT //////////////////////////////////////////////////
@@ -292,14 +298,17 @@ angular.module('ECMSapp.assignCM', [])
 	$scope.submitDisabled		= true; // DISABLES THE SUBMIT BUTTON
 	$scope.datePickerDisabled = false; // ENABLES THE DATE PICKER
 
-	
 	$scope.reloadData = function(){
 	//$scope.$watch('submitSearch', function(newValue, oldValue) {
 		
 		$scope.mainGridOptions.dataSource.data = [];
 
+		$scope.searchCriteria.startDate 	= $scope.formatStartingDate();
+		$scope.searchCriteria.endDate 	= $scope.formatEndingDate();
+		$scope.searchCriteria.isUnassignedCases = $scope.isUnassignedCases;
+
 		// GET CASES FROM ANGULARJS DIRECTIVE WIDGET //////////////////////////////////
-		DataFtry.getCasesForAssignment($scope.formatStartingDate(), $scope.formatEndingDate(), $scope.isUnassignedCases).then(function(result){
+		DataFtry.getCasesForAssignment($scope.searchCriteria).then(function(result){
 		// GET CASES FROM JAVASCRIPT OBJECT WIDGET //////////////////////////////////
 		//DataFtry.getCasesForAssignment(dateRange.formatStartingDate(), dateRange.formatEndingDate(), $scope.isUnassignedCases).then(function(result){
 			$scope.mainGridOptions.dataSource.data = result.data.content;

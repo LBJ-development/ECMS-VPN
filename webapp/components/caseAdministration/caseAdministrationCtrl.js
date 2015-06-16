@@ -135,7 +135,7 @@ angular.module('ECMSapp.adminMain', [])
 				$scope.warningClass = "inline-msg";
 			}
 			$scope.warning = result.data.messages.RESULTS_LIST;
-			$scope.disabled = true;
+			$scope.submitDisabled = true;
 			setTimeout(function(){
 				// DELAY THE INITIALIZATION FOR THE TABLE CLICK ENVENT (CHECK IF CHECKBOX IS CLICKED)
 				//$scope.mainGrid.table.on("click", ".checkbox" , selectRow);
@@ -143,9 +143,9 @@ angular.module('ECMSapp.adminMain', [])
 		});
 	});
 	
-	$scope.enableSumbitBtn = function() {
+/*	$scope.enableSumbitBtn = function() {
 		$scope.disabled = false;
-	};
+	};*/
 	
 	// MAKE THE CHECK BOX PERSISTING
 	ECMSGrid.init($scope.checkedIds);

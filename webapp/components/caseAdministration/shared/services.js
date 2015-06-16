@@ -57,6 +57,7 @@ angular.module('ECMSapp.services', [])
 	}
 
 	function executeHttpJSONPost(restservice, dataobject) {
+
 		var $promise =  $http({
 			method: 'POST',
 			url: restservice,
@@ -114,12 +115,14 @@ angular.module('ECMSapp.services', [])
         return executeHttpJSONPost("/rest/caseadmin/rfsSearch", searchCriteria);
 	};
 	
-	var getCasesForAssignment = function (starDate, endDate, isUnAssignedCases){
+	var getCasesForAssignment = function (searchCriteria){
+		console.log( 'FROM GETCASES FOR ASSIGNMENT');
+		console.log( searchCriteria.isUnassignedCases);
 		
 		var casesearch = {
-				caseCreateStartDate: starDate,
-				caseCreateEndDate: endDate,
-				isUnassignedCases : isUnAssignedCases
+				caseCreateStartDate: searchCriteria.startDate,
+				caseCreateEndDate: searchCriteria.endDate,
+				isUnassignedCases : searchCriteria.isUnassignedCases
 			};
 		console.log("search criteria");
 		console.log(casesearch);

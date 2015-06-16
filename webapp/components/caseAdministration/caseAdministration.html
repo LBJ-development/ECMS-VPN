@@ -12,14 +12,15 @@
         				<li style="width: 188px; padding-top:0">
         					<label>Received Date Range:</label>
         				</li>
-        				<li style="padding-right: 0px">
+                                                    <date-range></date-range>
+        				<!-- <li style="padding-right: 0px">
 							<label>From:</label> 
 							<input id="startDate" kendo-date-picker k-on-open="onCalendarOpen()" k-max={{today}} k-on-change="enableSumbitBtn()" k-ng-model="startDate" style="width: 180px"/> 
 						</li>
 						<li style="padding-right: 0px">
 							<label>To:</label> 
 							<input kendo-date-picker k-max={{today}} k-on-change="enableSumbitBtn()"  k-ng-model="endDate"  style="width: 180px"/>
-						</li>
+						</li> -->
         			</ul>
         		</div>
 				<div class="filter-row-holder">
@@ -40,7 +41,7 @@
                 		</li>
 
                 		<li  class="submit-btn" style="padding-top:25px">
-                			<kendo-button ng-disabled="disabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
+                			<kendo-button ng-disabled="submitDisabled" ng-model="button" class="k-button submit-btn-txt">SUBMIT</kendo-button>
                 		</li>
             		</ul>
                	</div> 	
