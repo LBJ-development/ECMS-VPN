@@ -2,129 +2,56 @@
 
 angular.module('ECMSapp.adminMain', [])
 
-.controller('MainCaseAdminCtrl', ['$rootScope', '$scope', 'ECMSConfig', 'StorageService', 'DataFtry', 'ECMSGrid', '$http', function($rootScope, $scope, ECMSConfig, StorageService, DataFtry, ECMSGrid, $http){
+.controller('MainCaseAdminCtrl', ['$rootScope', '$scope', 'ECMSConfig', 'StorageService', 'DataFtry', 'ECMSGrid', '$http', '$location', '$interval', function($rootScope, $scope, ECMSConfig, StorageService, DataFtry, ECMSGrid, $http, $location, $interval){
 	
-	$scope.searchCriteria = {
-		startDate: null,
-		endDate: null,
-		rfsPrimaryType: "-1", //set default value to ALL for drop-down list
-		rfsSource: "-1", //set default value to ALL for drop-down list
-		rfsStatus: "-1" //set default value to ALL for drop-down list
-	};
+	$scope.checkedIds =[];
 
-	$scope.submitSearch = function(){
-		$scope.today = new Date()
-		// data massaging
-		console.log("startDate valid:" + ($scope.startDate instanceof Date));
-		console.log("endDate valid:" + ($scope.endDate instanceof Date));
-		
-		//Reset everytime search is submitted
-		if ($scope.checkedIds){
-			$scope.checkedIds.splice(0, $scope.checkedIds.length);
-		}
-		
-		
-		if (!($scope.startDate instanceof Date)){
-			alert("Error: Enter correct Start Date(mm/dd/yyyy) OR  Pick a date from DatePicker widget.");
-			return;
-		}
-		
-		if (!($scope.endDate instanceof Date)){
-			alert("Error: Enter correct End Date(mm/dd/yyyy) OR  Pick a date from DatePicker widget.");
-			return;
-		}
-		
-		if ($scope.startDate > $scope.endDate) {
-			alert("Start Date can't be after End Date");
-			return;
-		}
+	$scope.init = function (){
+		$scope.searchCriteria = {
+			startDate: null,
+			endDate: null,
+			rfsPrimaryType: "-1", //set default value to ALL for drop-down list
+			rfsSource: "-1", //set default value to ALL for drop-down list
+			rfsStatus: "-1" //set default value to ALL for drop-down list
+		};
 
-		
-		// format dates
-		$scope.searchCriteria.startDate = formatstartDate();
-		$scope.searchCriteria.endDate = formatendDate();
-		
-		//handle null and  convert to string array into comma-separated string
-		if ($scope.searchCriteria.rfsPrimaryType === null){
-			//console.log('assigning -1');
-			$scope.searchCriteria.rfsPrimaryType = "-1";
-		}
-		
-		if ($scope.searchCriteria.rfsSource === null){
-			//console.log('assigning -1');
-			$scope.searchCriteria.rfsSource = "-1";
-		}
-		
-		if ($scope.searchCriteria.rfsStatus === null){
-			//console.log('assigning -1');
-			$scope.searchCriteria.rfsStatus = "-1";
-		}
-		
+		var delay = $interval(function(){
+			if($("#grid").data("kendoGrid")) {
+				$interval.cancel(delay);
+				$scope.reloadData();
+			}
+		}, 200);
 
-		
-		$scope.searchCriteria.rfsPrimaryType = $scope.searchCriteria.rfsPrimaryType.toString();
-		$scope.searchCriteria.rfsSource = $scope.searchCriteria.rfsSource.toString();
-		$scope.searchCriteria.rfsStatus = $scope.searchCriteria.rfsStatus.toString();
-		
-		$scope.submissionCount ++;
-	};
-
-	function formatstartDate(){
-		var stDate	= $scope.startDate.getDate();
-		var stMonth = $scope.startDate.getMonth() + 1;
-		var stYear	= $scope.startDate.getFullYear();
-		return stYear + "-" + stMonth  + "-" + stDate;
-	}
-
-	function formatendDate(){
-		var enDate	= $scope.endDate.getDate();
-		var enMonth = $scope.endDate.getMonth() + 1;
-		var enYear	= $scope.endDate.getFullYear();
-		return enYear + "-" + enMonth  + "-" + enDate;
-	}
-
-	$http.get("/rest/common/lookup?lookupName=rfsSource")
+		$http.get("/rest/common/lookup?lookupName=rfsSource")
 		.success( function(result) {
 			$scope.rfsSourceDataSource = result.content;
-		});
+			});
 			 
-	$http.get("/rest/common/lookup?lookupName=rfsPrimaryType")
+		$http.get("/rest/common/lookup?lookupName=rfsPrimaryType")
 		.success( function(result) {
 			$scope.rfsPrimaryTypeDataSource = result.content;
-	});
+			});
 	
-	$http.get("/rest/common/lookup?lookupName=rfsStatus")
+		$http.get("/rest/common/lookup?lookupName=rfsStatus")
 		.success( function(result) {
 			$scope.rfsStatusDataSource = result.content;
-	});
+		});
+	};
+
+	
 		
 	var result = {};
-	// QUERY OPTIONS ///////////////////////////////////////////////////////////////////////
-	// INITIAL DATE RANGE //////////////////////////////////////////////////
-	var todayDate		= new Date();
-	var dateOffset		= (24*60*60*1000) * 1; //DEFAULT: 1 DAY 
-	$scope.startDate	= new Date(todayDate.getTime() - dateOffset);
-	$scope.endDate		= todayDate;
-	
-	$scope.searchCriteria.startDate = formatstartDate();
-	$scope.searchCriteria.endDate = formatendDate();
-	$scope.submissionCount = 0;
-	$scope.checkedIds =[];
-		
-	//Initial Load
-	$scope.submitSearch();
-	
-	// GRID ////////////////////////////////////////////////////////////////////
-	// WATCH FOR A Search Submission
-	$scope.$watch('submissionCount', function(newValue, oldValue) {
-		
-		//console.log("FROM WATCH: submissionCount ="  + $scope.submissionCount);
-		if (newValue === 0){
-			return;
-		}
+
+	$scope.reloadData = function(){
+
+		$scope.searchCriteria.startDate 		= $scope.formatStartingDate();
+		$scope.searchCriteria.endDate 			= $scope.formatEndingDate();
+		$scope.searchCriteria.rfsPrimaryType 	= $scope.searchCriteria.rfsPrimaryType.toString();
+		$scope.searchCriteria.rfsSource 		= $scope.searchCriteria.rfsSource.toString();
+		$scope.searchCriteria.rfsStatus 		= $scope.searchCriteria.rfsStatus.toString();
 
 		DataFtry.getRFSes($scope.searchCriteria).then(function(result){
-	
+
 			//console.log(result.data.content);
 			ECMSGrid.buildDynamicFilters(['rfsSource' , 'rfsTypeDisplay', 'rfsIncidentState', 'rfsStatus', 'caseManager'], result.data.content );
 			
@@ -141,11 +68,7 @@ angular.module('ECMSapp.adminMain', [])
 				//$scope.mainGrid.table.on("click", ".checkbox" , selectRow);
 			}, 1000);
 		});
-	});
-	
-/*	$scope.enableSumbitBtn = function() {
-		$scope.disabled = false;
-	};*/
+	};
 	
 	// MAKE THE CHECK BOX PERSISTING
 	ECMSGrid.init($scope.checkedIds);
@@ -167,22 +90,21 @@ angular.module('ECMSapp.adminMain', [])
 			schema: {
 					model: {
 						fields: {
-									rfsAlerts				: { type: "string"},
-									rfsDateTimeReceived     : { type: "date"  },
-									rfsNumberDisplay		: { type: "string"},
-									rfsNumber				: { type: "string"},
-									caseNumberDisplay		: { type: "string"},
-									caseNumber				: { type: "string"},
-									rfsSource				: { type: "string"},
-									rfsTypeDisplay			: { type: "string"},
-									rfsPrimaryType			: { type: "string"},
-									rfsSecondaryType		: { type: "string"},
-									rfsStatus				: { type: "string"},
-									rfsIncidentDate			: { type: "date"  },
-									rfsIncidentState		: { type: "string"},
-									caseManager				: { type: "string"}
-								}
-						
+								rfsAlerts				: { type: "string"},
+								rfsDateTimeReceived     : { type: "date"  },
+								rfsNumberDisplay		: { type: "string"},
+								rfsNumber				: { type: "string"},
+								caseNumberDisplay		: { type: "string"},
+								caseNumber				: { type: "string"},
+								rfsSource				: { type: "string"},
+								rfsTypeDisplay			: { type: "string"},
+								rfsPrimaryType			: { type: "string"},
+								rfsSecondaryType		: { type: "string"},
+								rfsStatus				: { type: "string"},
+								rfsIncidentDate			: { type: "date"  },
+								rfsIncidentState		: { type: "string"},
+								caseManager				: { type: "string"}
+							}
 						}
 					}
 				},
@@ -224,16 +146,6 @@ angular.module('ECMSapp.adminMain', [])
 						buttonCount: 5,
 						pageSize: 15
 						},
-						
-		/*columnMenu: {
-			messages	: {
-				columns			: "Choose columns",
-				filter			: "Apply filter",
-				sortAscending	: "Sort (asc)",
-				sortDescending	: "Sort (desc)"
-							}
-					},*/
-
 		columns		: [{
 						field	: "rfsAlerts",
 						title	: "Alerts",
@@ -354,6 +266,8 @@ angular.module('ECMSapp.adminMain', [])
 	}
 	
 	function sourceFilter(element) {
+		console.log("FROM SOURCE FILTER:");
+		console.log(element);
 		ECMSGrid.multiSelectFilter(element, 'rfsSource', 'Select RFS Source(s) you want to filter on:');
 	}
 	
@@ -377,8 +291,6 @@ angular.module('ECMSapp.adminMain', [])
 			optionLabel: "--Select Value--"
 		});
 	}
-
-
 
 	// CUSTOM EMAIL WINDOW //////////////////////////////////////////////////
 	$scope.emailWindowOptions = {
@@ -430,34 +342,32 @@ angular.module('ECMSapp.adminMain', [])
 	};
 	
 	//PRINT RFSs ////////////////////////////////
-   $scope.previewWindowOptions = {};
-   $scope.previewRFSes = function(){
-		  console.log('Inside printRFSes');
-		  
-		  var exportEndpoint = '/rest/document/exportToHtml/rfses?token=' + StorageService.getToken() + '&reportName=RfsReport&ids='  + $scope.checkedIds.toString();
-		  
-		  $http.get(exportEndpoint)
-				 .success( function(result) {
-					   console.log(result.content)
-					   var options =  {     
-									 width: "80%",
-									 visible: false,
-									 maxWidth: 1200,
-									 height: "80%",
-									 modal: true,
-									 content: {
-											iframe: true,
-											template:  '<embed src="' + ECMSConfig.restServicesURI + result.content + '" width="100%" height="100%" ></embed>' 
-									 }};    
-					   
-					   $scope.previewWindow.setOptions(options);
-					   
-					   console.log($scope.previewWindowOptions);
-					   $scope.previewWindow.refresh().center().open();
-		  });           
-		  
-   }
-
+	$scope.previewWindowOptions = {};
+	$scope.previewRFSes = function(){
+		console.log('Inside printRFSes');
+		
+		var exportEndpoint = '/rest/document/exportToHtml/rfses?token=' + StorageService.getToken() + '&reportName=RfsReport&ids='  + $scope.checkedIds.toString();
+	
+		$http.get(exportEndpoint)
+			.success( function(result) {
+				console.log(result.content);
+				var options =  {
+					width: "80%",
+					visible: false,
+					maxWidth: 1200,
+					height: "80%",
+					modal: true,
+					content: {
+						iframe: true,
+						template:  '<embed src="' + ECMSConfig.restServicesURI + result.content + '" width="100%" height="100%" ></embed>' 
+						}
+					};
+				$scope.previewWindow.setOptions(options);
+	
+				console.log($scope.previewWindowOptions);
+				$scope.previewWindow.refresh().center().open();
+		});
+	};
 
 	//EXPORT RFSs ////////////////////////////////
 	$scope.exportRFSes = function() {

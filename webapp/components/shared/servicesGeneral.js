@@ -14,6 +14,14 @@ var serviceGeneralModule = angular.module('ECMSapp.servicesGeneral', [])
 		$rootScope.$broadcast('wrapperWidthChanges', wrapperWidth);
 
 		}, false);
-	return { }
+	return { };
+}])
+
+.factory('SessionToSaveFtry', [ function(){
+
+
+
+
+
 }]);
 

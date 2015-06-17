@@ -1,12 +1,12 @@
 
 <div authorized ng-show="hasPermission('caseadmin:view:basic')" class="content-wrapper">
-	<div class="content-holder" ng-controller="MainCaseAdminCtrl">
+	<div class="content-holder" ng-controller="MainCaseAdminCtrl" ng-init="init()">
 		<div class="title-holder">
 			<span class="title">RFS Administration</span>
 		</div>
         <!-- DATE RANGE /////////////////////////////////////////////////////////////////-->
 		<div class="filter-holder" role="query-filter">
-			<form name="dateRange-frm" ng-submit="submitSearch()" role="form">
+			<form name="dateRange-frm" ng-submit="reloadData()" role="form">
         		<div class="filter-row-holder" style="padding-top:20px">
         			<ul>
         				<li style="width: 188px; padding-top:0">

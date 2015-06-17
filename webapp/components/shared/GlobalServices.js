@@ -5,7 +5,7 @@ var globalServicesModule = angular.module('ECMSapp.GlobalServices', []);
 
 globalServicesModule.factory("ECMSGrid", function() {
 	var filterField;
-	var selectedIds;
+	var selectedIds = [];
 	var dynamicGridFilters = {};
 	
 	function nonNullUndefined(value){
@@ -17,6 +17,7 @@ globalServicesModule.factory("ECMSGrid", function() {
 	
 	function selectItem(item){
 		//remove from selection list if unchecked
+
 		if (!item.selected) {
 			while ($.inArray(item.id, selectedIds) >=0) {
 				console.log(item.id + "=" + $.inArray(item.id, selectedIds));
@@ -38,9 +39,9 @@ globalServicesModule.factory("ECMSGrid", function() {
 				},
 				
 		buildDynamicFilters: function(filterkeys, results) {
-			
+
 			filterkeys.forEach(function(filterKey){
-				console.log("Building result set for :" + filterKey);
+				console.log("Building result set for: " + filterKey);
 				dynamicGridFilters[filterKey] = [];
 				
 				var tempKey;
@@ -63,6 +64,7 @@ globalServicesModule.factory("ECMSGrid", function() {
 		},
 		
 		multiSelectFilter: function (element, fieldName, customFilterMessage) {
+
 			var menu = $(element).parent(); 
 			menu.find(".k-filter-help-text").text(customFilterMessage);
 			menu.find("[data-role=dropdownlist]").remove(); 
@@ -72,7 +74,7 @@ globalServicesModule.factory("ECMSGrid", function() {
 				dataSource: dynamicGridFilters[fieldName].sort(),
 				change: function(e) {
 						filterField = fieldName;
-						console.log('filtered with' + filterField); //this will fire after filtered.
+						console.log('filtered with: ' + filterField); //this will fire after filtered.
 				}
 			}).data("kendoMultiSelect");
 			menu.find("[type=submit]").on("click", {widget: multiSelect}, this.filterByMultipleSelections); 
@@ -127,8 +129,7 @@ globalServicesModule.factory("ECMSGrid", function() {
 						var checked = element.is(':checked');
 						var row = element.closest("tr");
 						var grid = $(ev.target).closest("[kendo-grid]").data("kendoGrid");
-						var item = grid.dataItem(row);
-						
+						var item = grid.dataItem(row);						
 						selectItem(item);
 
 						},

@@ -2,7 +2,7 @@
 
 angular.module('ECMSapp.assignCM', [])
 
-.controller('AssignCMCtrl', [ '$scope', 'DataFtry', '$http', '$location', '$interval', function( $scope, DataFtry, $http, $location, $interval){
+.controller('AssignCMCtrl', [ '$scope', 'DataFtry','ECMSGrid', '$http', '$location', '$interval', function( $scope, DataFtry, ECMSGrid,  $http, $location, $interval){
 
 	// INIT STATES /////////////////////////////////////////////////
 	$scope.init = function (){
@@ -27,6 +27,9 @@ angular.module('ECMSapp.assignCM', [])
 					$scope.warning = savedOptions.warningMessage;
 					$scope.warningClass = savedOptions.warningClass;
 					//$scope.$digest();
+
+					//ECMSGrid.buildDynamicFilters(['caseSource'], savedOptions.searchResult);
+
 				// IF ITS A NEW SESSION LOAD THE DATA
 				} else {
 					$scope.reloadData();
@@ -47,7 +50,8 @@ angular.module('ECMSapp.assignCM', [])
 				"submitDisabled"	: $scope.submitDisabled,
 				"datePickerDisabled"	: $scope.datePickerDisabled,
 				"warningMessage"	: $scope.warning,
-				"warningClass"	: $scope.warningClass
+				"warningClass"	: $scope.warningClass,
+				"searchResult"	: $scope.searchResult
 			};
 			sessionStorage.setItem('optionsToSave', JSON.stringify(optionsToSave));
 		});
@@ -57,7 +61,7 @@ angular.module('ECMSapp.assignCM', [])
 			endDate: null,
 			isUnassignedCases: null
 		};
-	}
+	};
 
 	// SELECT A CASE AND REDIRECT TO THE CASE MANAGMENT //////////////////////////////////////////////////
 	$scope.selectCase = function(e){
@@ -303,15 +307,18 @@ angular.module('ECMSapp.assignCM', [])
 		
 		$scope.mainGridOptions.dataSource.data = [];
 
-		$scope.searchCriteria.startDate 	= $scope.formatStartingDate();
-		$scope.searchCriteria.endDate 	= $scope.formatEndingDate();
+		$scope.searchCriteria.startDate 		= $scope.formatStartingDate();
+		$scope.searchCriteria.endDate 			= $scope.formatEndingDate();
 		$scope.searchCriteria.isUnassignedCases = $scope.isUnassignedCases;
 
 		// GET CASES FROM ANGULARJS DIRECTIVE WIDGET //////////////////////////////////
 		DataFtry.getCasesForAssignment($scope.searchCriteria).then(function(result){
 		// GET CASES FROM JAVASCRIPT OBJECT WIDGET //////////////////////////////////
 		//DataFtry.getCasesForAssignment(dateRange.formatStartingDate(), dateRange.formatEndingDate(), $scope.isUnassignedCases).then(function(result){
-			$scope.mainGridOptions.dataSource.data = result.data.content;
+			$scope.searchResult = result.data.content;
+			ECMSGrid.buildDynamicFilters(['caseSource'], $scope.searchResult );
+			
+			$scope.mainGridOptions.dataSource.data = $scope.searchResult;
 			
 			//console.log(result.data.content);
 			$.each(result.data.content, function(idx, currentCase){ 
@@ -545,10 +552,6 @@ angular.module('ECMSapp.assignCM', [])
 		$scope.urlNarrative = "/rest/caseadmin/narratives?caseNumber=" + caseNumber;
 		DataFtry.getData($scope.urlNarrative).then(function(result){
 
-			console.log("FROM NARRATIVE");
-			console.log(result.data.content);
-
-
 			grid = detailRow.find("#narrative-CM").kendoGrid({
 
 				dataSource:{
@@ -589,12 +592,9 @@ angular.module('ECMSapp.assignCM', [])
 			optionLabel: "--Select Value--"
 		});
 	}
-	
+	// DYNAMIC FILTER /////////////
 	function sourceFilter(element) {
-		element.kendoDropDownList({
-			dataSource: $scope.filterSourcesList.sort(),
-			optionLabel: "--Select Value--"
-		});
+		ECMSGrid.multiSelectFilter(element, 'caseSource', 'Select Case Source(s) you want to filter on:');
 	}		
 	
 	function caseManagerFilter(element) {
@@ -649,10 +649,6 @@ angular.module('ECMSapp.assignCM', [])
 						scope.caseManagersList.dataSource.read();
 
 						scope.caseManagersList.select(function(dataItem) {
-
-							//console.log("FROM CASE MANAGER LIST: " + dataItem.name + " / " + scope.caseManager + "ARE THEY THE SAME? " + (dataItem.name == scope.caseManager));
-
-							// console.log(dataItem.name == scope.caseManager);
 
 							return dataItem.name.trim() === scope.caseManager.trim();
 						});
