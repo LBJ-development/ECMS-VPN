@@ -7,6 +7,66 @@ angular.module('ECMSapp.adminMain', [])
 	$scope.checkedIds =[];
 
 	$scope.init = function (){
+
+		// WAIT UNTIL THE GRID BECOMES AVAILABLE
+		var delay = $interval(function(){
+
+			if($("#grid").data("kendoGrid")) {
+				
+				$interval.cancel(delay);
+
+				// IF THERE IS A PREVIOUS STATE FETCH IT
+				if(sessionStorage.OTSCA){
+
+					var savedOptions =  JSON.parse(sessionStorage.getItem('OTSCA'));
+					var grid = $("#grid").data("kendoGrid");
+
+					grid.setOptions(JSON.parse(savedOptions.gridOptions));
+					$scope.startingDate = new Date(savedOptions.startingDate);
+					$scope.endingDate = new Date(savedOptions.endingDate);
+					
+					$scope.submitDisabled = savedOptions.submitDisabled;
+					$scope.datePickerDisabled = savedOptions.datePickerDisabled;
+					$scope.warning = savedOptions.warningMessage;
+					$scope.warningClass = savedOptions.warningClass;
+
+					ECMSGrid.reselectItems(grid, savedOptions.selectedIds);
+
+					//$scope.$digest();
+
+					//ECMSGrid.buildDynamicFilters(['caseSource'], savedOptions.searchResult);
+
+				// IF ITS A NEW SESSION LOAD THE DATA
+				} else {
+					 console.log("FROM INIT B")
+
+					$scope.reloadData();
+				}
+			}
+		}, 200);
+		// SAVE THE CURRENT STATES WHEN NAVIGATING AWAY FORM THE PAGE 
+		$scope.$on('$locationChangeStart', function (event, next, current) {
+
+			console.log("FROM LOCATION CHANGE: ");
+			console.log($scope);
+		
+			var grid = $("#grid").data("kendoGrid");
+
+			var OTSCA = {
+				"gridOptions"		: kendo.stringify(grid.getOptions()),
+				"startingDate"		: $scope.startingDate,
+				"endingDate"		: $scope.endingDate,
+				
+				"submitDisabled"	: $scope.submitDisabled,
+				"datePickerDisabled": $scope.datePickerDisabled,
+				"warningMessage"	: $scope.warning,
+				"warningClass"		: $scope.warningClass,
+				"searchResult"		: $scope.searchResult,
+				"selectedIds"		: $scope.checkedIds
+			};
+			sessionStorage.setItem('OTSCA', JSON.stringify(OTSCA));
+		});
+
 		$scope.searchCriteria = {
 			startDate: null,
 			endDate: null,
@@ -14,13 +74,6 @@ angular.module('ECMSapp.adminMain', [])
 			rfsSource: "-1", //set default value to ALL for drop-down list
 			rfsStatus: "-1" //set default value to ALL for drop-down list
 		};
-
-		var delay = $interval(function(){
-			if($("#grid").data("kendoGrid")) {
-				$interval.cancel(delay);
-				$scope.reloadData();
-			}
-		}, 200);
 
 		$http.get("/rest/common/lookup?lookupName=rfsSource")
 		.success( function(result) {
@@ -38,11 +91,13 @@ angular.module('ECMSapp.adminMain', [])
 		});
 	};
 
-	
-		
 	var result = {};
 
 	$scope.reloadData = function(){
+
+		console.log("FROM RELOAD DATA")
+
+		$scope.mainGridOptions.dataSource.data = [];
 
 		$scope.searchCriteria.startDate 		= $scope.formatStartingDate();
 		$scope.searchCriteria.endDate 			= $scope.formatEndingDate();
@@ -56,6 +111,7 @@ angular.module('ECMSapp.adminMain', [])
 			ECMSGrid.buildDynamicFilters(['rfsSource' , 'rfsTypeDisplay', 'rfsIncidentState', 'rfsStatus', 'caseManager'], result.data.content );
 			
 			$scope.mainGridOptions.dataSource.data = result.data.content;
+
 			if(result.data.content.length >= 500){
 				$scope.warningClass = "inline-err";
 			} else {
@@ -63,10 +119,7 @@ angular.module('ECMSapp.adminMain', [])
 			}
 			$scope.warning = result.data.messages.RESULTS_LIST;
 			$scope.submitDisabled = true;
-			setTimeout(function(){
-				// DELAY THE INITIALIZATION FOR THE TABLE CLICK ENVENT (CHECK IF CHECKBOX IS CLICKED)
-				//$scope.mainGrid.table.on("click", ".checkbox" , selectRow);
-			}, 1000);
+
 		});
 	};
 	
@@ -78,7 +131,7 @@ angular.module('ECMSapp.adminMain', [])
 	// DISABLE/ENABLE BUTTON WHEN CASE ARE SELECTED /////////////
 	$scope.buttonDisabledClass = "linkButtonDisabled"
 	$scope.$watch('checkedIds.length', function() {
-		console.log($scope.checkedIds.length);
+		//console.log($scope.checkedIds.length);
 		$scope.checkedIds.length == 0? $scope.buttonDisabledClass = "linkButtonDisabled" : $scope.buttonDisabledClass = ""
 	});
 	

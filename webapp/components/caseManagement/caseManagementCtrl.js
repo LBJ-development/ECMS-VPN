@@ -257,8 +257,8 @@ angular.module('ECMSapp.caseManagement', [])
 
 		$("#test-holder").css('width', infoWidth);
 
-		console.log("FROM TEST DIRECTIVE");
-		console.log($("#test-holder").width());
+		//console.log("FROM TEST DIRECTIVE");
+		//console.log($("#test-holder").width());
 
 		$rootScope.$on('wrapperWidthChanges', function (event, data) {
 			

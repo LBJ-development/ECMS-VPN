@@ -11,10 +11,11 @@ angular.module('ECMSapp.assignCM', [])
 			if($("#grid").data("kendoGrid")) {
 				
 				$interval.cancel(delay);
-				// IF THERE IS A PREVIOUS STATE FETCH IT
-				if(sessionStorage.optionsToSave){
 
-					var savedOptions =  JSON.parse(sessionStorage.getItem('optionsToSave'));
+				// IF THERE IS A PREVIOUS STATE FETCH IT
+				if(sessionStorage.OTSACM){
+
+					var savedOptions =  JSON.parse(sessionStorage.getItem('OTSACM'));
 					var grid = $("#grid").data("kendoGrid");
 
 					grid.setOptions(JSON.parse(savedOptions.gridOptions));
@@ -41,7 +42,7 @@ angular.module('ECMSapp.assignCM', [])
 		
 			var grid = $("#grid").data("kendoGrid");
 
-			var optionsToSave = {
+			var OTSACM = {
 				"gridOptions"		: kendo.stringify(grid.getOptions()),
 				"startingDate"		: $scope.startingDate,
 				"endingDate"		: $scope.endingDate,
@@ -53,7 +54,7 @@ angular.module('ECMSapp.assignCM', [])
 				"warningClass"	: $scope.warningClass,
 				"searchResult"	: $scope.searchResult
 			};
-			sessionStorage.setItem('optionsToSave', JSON.stringify(optionsToSave));
+			sessionStorage.setItem('OTSACM', JSON.stringify(OTSACM));
 		});
 
 		$scope.searchCriteria = {
@@ -349,8 +350,7 @@ angular.module('ECMSapp.assignCM', [])
 							$scope.filterCaseManagerList.push(tempCaseManager);
 						}
 					}
-
-			});
+				});
 			
 			if(result.data.content.length >= 500){
 				$scope.warningClass = "inline-err";
