@@ -1,0 +1,39 @@
+<!-- EMAIL WINDOW  /////////////////////////////////////////////////////////////////-->
+<div kendo-window="emailWindow" k-options="emailWindowOptions">
+	<form name="mailMessage" role="form">
+		<div class="filter-holder" style="margin: 25px 10px 0px 15px; padding:20px; width: 700px">
+			<ul style="float:left">
+				<li>
+					<span class="labelClass" style="width: 130px">Enter Recipient(s):</span>
+					<input class="k-textbox" ng-model="mailMessage.to" style="width: 400px" id="quicksearch" type="text" name="recipients">
+					<span class="search-btn"  style="float:left"><a href="" ></a></span>
+					<input   id="includeMyself" type="checkbox" name="copyMyself" ng-click="ccMyself()" style="float:left; margin-top:7px">
+					<label  class="labelClass"  for="includeMyself"> Copy Myself</label>
+				</li>
+				<li >
+					<span  class="labelClass" style="width: 130px" >Subject Text:</span>
+					<input class="k-textbox" ng-model="mailMessage.subject" style="width: 400px" id="" type="text" name="">
+				</li>
+				<li >
+					<span class="labelClass" style="width: 130px">Body Text:</span>
+					<textarea  kendo-editor   class="narrative-text-box" k-ng-model="mailMessage.text" style="width: 700px; height: 300px;" id="" type="text" name=""></textarea>
+				</li>
+				<li style="padding-bottom:0">
+					<span class="labelClass" style="width: 130px">Attachment(s):</span>
+					<span class="linkButton toXLS" style="padding-top:6px"><a target="_blank" href ng-click="exportRFSes()" >{{attachmentFileName}}*</a></span>
+				</li>
+			</ul>
+		</div>
+		<span class="captionText" style="padding-left:15px">*Click to preview</span>
+		<div class="bottom-window" style="padding: 0px 15px 0px 0">
+			<ul>
+				<li  class="submit-btn">
+					<kendo-button class="k-button" ng-click="sendEmail()">SEND</kendo-button>
+				</li>
+				<li  class="submit-btn">
+					<kendo-button  class="k-button"  ng-click="emailWindow.close()">CANCEL</kendo-button>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>

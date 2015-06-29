@@ -18,6 +18,7 @@ angular.module('ECMSapp.login', [])
                     console.log(JSON.stringify(data));
                     $rootScope.permissions = data.content.permissions;
                     $rootScope.usernameScope = data.content.firstName;
+                    $rootScope.userId = data.content.userId;
                     StorageService.setToken(data.content.token);
                 }
                 else

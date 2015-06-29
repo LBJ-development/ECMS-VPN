@@ -499,6 +499,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 	};
 
 	$scope.openEmailWindow = function() {
+
 		$scope.mailMessage = {
 			from:  $rootScope.userId + "@ncmec.org",
 			//to: $rootScope.userId + "@ncmec.org",
@@ -530,8 +531,7 @@ angular.module('ECMSapp.intakeDistribution', [])
 		$scope.mailMessage.to = $scope.mailMessage.to.split(',');
 	
 		DataFtry.sendEmail($scope.mailMessage).then(function(result){
-			console.log("SENT EMAIL !!!");
-			console.log(result.status);
+
 			if(result.data.status == "SUCCESS")	alert("Your email has been successfully sent!");
 		});
 		$scope.emailWindow.close();

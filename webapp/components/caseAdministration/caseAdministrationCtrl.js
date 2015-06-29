@@ -38,8 +38,7 @@ angular.module('ECMSapp.adminMain', [])
 
 				// IF ITS A NEW SESSION LOAD THE DATA
 				} else {
-					 console.log("FROM INIT B")
-
+					//console.log("FROM INIT B")
 					$scope.reloadData();
 				}
 			}
@@ -47,8 +46,8 @@ angular.module('ECMSapp.adminMain', [])
 		// SAVE THE CURRENT STATES WHEN NAVIGATING AWAY FORM THE PAGE 
 		$scope.$on('$locationChangeStart', function (event, next, current) {
 
-			console.log("FROM LOCATION CHANGE: ");
-			console.log($scope);
+			//console.log("FROM LOCATION CHANGE: ");
+			//console.log($scope);
 		
 			var grid = $("#grid").data("kendoGrid");
 
@@ -56,7 +55,6 @@ angular.module('ECMSapp.adminMain', [])
 				"gridOptions"		: kendo.stringify(grid.getOptions()),
 				"startingDate"		: $scope.startingDate,
 				"endingDate"		: $scope.endingDate,
-				
 				"submitDisabled"	: $scope.submitDisabled,
 				"datePickerDisabled": $scope.datePickerDisabled,
 				"warningMessage"	: $scope.warning,
@@ -346,14 +344,14 @@ angular.module('ECMSapp.adminMain', [])
 	}
 
 	// CUSTOM EMAIL WINDOW //////////////////////////////////////////////////
-	$scope.emailWindowOptions = {
-		title: "Please provide email info:",
-		width: 790,
-		height:600,
-		visible: false,	
-		modal: true,
-		scrollable : false
-	};
+	// $scope.emailWindowOptions = {
+	// 	title: "Please provide email info:",
+	// 	width: 790,
+	// 	height:600,
+	// 	visible: false,	
+	// 	modal: true,
+	// 	scrollable : false
+	// };
 
 	$scope.openEmailWindow = function() {
 		$scope.mailMessage = {
@@ -373,16 +371,15 @@ angular.module('ECMSapp.adminMain', [])
 				}
 			]
 		};
-		$scope.attachmentFileName = "RfsReport.xls";
-			
+		$scope.attachmentFileName = "RfsReport.xls";	
 		$scope.emailWindow.center().open();
 	};
 	
-	$scope.ccMyself = function() {
+/*	$scope.ccMyself = function() {
 		$scope.mailMessage.cc = ($rootScope.userId + "@ncmec.org").split(",");
 	}
-	
-	$scope.sendEmail = function(){
+	*/
+/*	$scope.sendEmail = function(){
 		$scope.mailMessage.to = $scope.mailMessage.to.split(',');
 
 		DataFtry.sendEmail($scope.mailMessage).then(function(result){
@@ -393,7 +390,7 @@ angular.module('ECMSapp.adminMain', [])
 		$scope.emailWindow.close();
 		
 	};
-	
+	*/
 	//PRINT RFSs ////////////////////////////////
 	$scope.previewWindowOptions = {};
 	$scope.previewRFSes = function(){

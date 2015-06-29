@@ -69,12 +69,14 @@ angular.module('ECMSapp.services', [])
 		console.log("FROM EXECUTE POST: " + restservice + dataobject);
 	
 		$promise.then(function(result){
-			if(result.data.status == 'SUCCESS'){
+
+			if(result.data.status == 'SUCCESS' || result.statusText == 'OK'){
+
 				//console.log(result.data.status);
 				deferred.resolve(result);
 			} else {
 				console.log(result);
-				alert(result.data.messages['ROOT']);
+				//alert(result.data.messages['ROOT']);
 			}
 		});
 		return deferred.promise;
@@ -92,8 +94,9 @@ angular.module('ECMSapp.services', [])
 		console.log("FROM EXECUTE GET: " + restservice + dataobject);
 	
 		$promise.then(function(result){
+
 			if(result.data.status == 'SUCCESS'){
-				console.log(result.data.status);
+				//console.log(result.data.status);
 				deferred.resolve(result);
 			} else {
 				//alert("Something better is coming!");
