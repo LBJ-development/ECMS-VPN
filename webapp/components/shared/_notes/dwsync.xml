@@ -18,6 +18,9 @@
 <file name="footer.html" server="Z:/ECMS/app/" local="130711982049705970" remote="130711982040000000" Dst="2" />
 <file name="config.js" server="Z:/ECMS/app/" local="130746981060653095" remote="130746981060000000" Dst="2" />
 <file name="servicesGeneral.js" server="Z:/ECMS/app/" local="130777441669261005" remote="130777441660000000" Dst="2" />
-<file name="dateRange-O.js" server="Z:/UIDesigns/ECMS/app/" local="130784155781182000" remote="130784155780000000" Dst="2" />
-<file name="servicesGeneral.js" server="Z:/UIDesigns/ECMS/app/" local="130782527515909508" remote="130782527510000000" Dst="2" />
+<file name="dateRange-O.js" server="Z:/UIDesigns/ECMS/app/" local="130785017326854000" remote="130785017320000000" Dst="2" />
+<file name="servicesGeneral.js" server="Z:/UIDesigns/ECMS/app/" local="130790484964499415" remote="130790484960000000" Dst="2" />
+<file name="emailSender.js" server="Z:/UIDesigns/ECMS/app/" local="130800829461074676" remote="130800829460000000" Dst="2" />
+<file name="emailSender.html" server="Z:/UIDesigns/ECMS/app/" local="130800779863474676" remote="130800779860000000" Dst="2" />
+<file name="GlobalServices.js" server="Z:/UIDesigns/ECMS/app/" local="130792217887172706" remote="130792217880000000" Dst="2" />
 </dwsync>
